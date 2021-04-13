@@ -1,0 +1,8 @@
+name: StelyClaimConfig
+author: Flowsqy
+version: ${project.version}
+main: fr.flowsqy.stelyclaimconfig.StelyClaimConfigPlugin
+api-version: "1.13"
+depend:
+  - StelyClaim
+  - AbstractMenu
