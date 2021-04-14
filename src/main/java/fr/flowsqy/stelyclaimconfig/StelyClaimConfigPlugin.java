@@ -1,5 +1,7 @@
 package fr.flowsqy.stelyclaimconfig;
 
+import fr.flowsqy.stelyclaim.io.Messages;
+import fr.flowsqy.stelyclaimconfig.commands.CommandManager;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -14,6 +16,7 @@ import java.util.logging.Logger;
 public class StelyClaimConfigPlugin extends JavaPlugin {
 
     private YamlConfiguration configuration;
+    private Messages messages;
 
     @Override
     public void onEnable() {
@@ -28,6 +31,9 @@ public class StelyClaimConfigPlugin extends JavaPlugin {
         }
 
         this.configuration = initFile(dataFolder, "config.yml");
+        this.messages = new Messages(initFile(dataFolder, "messages.yml"), "&7[&5StelyClaimConfig&7]&f");
+
+        new CommandManager(this);
     }
 
     private boolean checkDataFolder(File dataFolder) {
@@ -48,4 +54,11 @@ public class StelyClaimConfigPlugin extends JavaPlugin {
         return YamlConfiguration.loadConfiguration(file);
     }
 
+    public YamlConfiguration getConfiguration() {
+        return configuration;
+    }
+
+    public Messages getMessages() {
+        return messages;
+    }
 }
