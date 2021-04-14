@@ -51,6 +51,12 @@
             <version>2.0.0</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>fr.flowsqy.stelyclaim</groupId>
+            <artifactId>stelyclaim</artifactId>
+            <version>3.0.0</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
     <build>
