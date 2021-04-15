@@ -13,6 +13,7 @@ import org.bukkit.entity.Player;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 public class ConfigSubCommand extends RegionSubCommand {
@@ -64,9 +65,11 @@ public class ConfigSubCommand extends RegionSubCommand {
     public List<String> tab(CommandSender sender, List<String> args, boolean isPlayer) {
         if (args.size() == 2 && sender.hasPermission(getPermission() + "-other")) {
             final Player player = (Player) sender;
+            final String arg = args.get(1).toLowerCase(Locale.ROOT);
             return Bukkit.getOnlinePlayers().stream()
                     .filter(player::canSee)
                     .map(HumanEntity::getName)
+                    .filter(name -> name.toLowerCase(Locale.ROOT).startsWith(arg))
                     .collect(Collectors.toList());
         }
 
