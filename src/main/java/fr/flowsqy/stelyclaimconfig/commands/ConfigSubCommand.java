@@ -3,9 +3,14 @@ package fr.flowsqy.stelyclaimconfig.commands;
 import fr.flowsqy.stelyclaim.StelyClaimPlugin;
 import fr.flowsqy.stelyclaim.command.subcommand.SubCommand;
 import fr.flowsqy.stelyclaim.io.Messages;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.HumanEntity;
+import org.bukkit.entity.Player;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ConfigSubCommand extends SubCommand {
 
@@ -14,12 +19,20 @@ public class ConfigSubCommand extends SubCommand {
     }
 
     @Override
-    public boolean execute(CommandSender commandSender, List<String> list, int i, boolean b) {
+    public boolean execute(CommandSender sender, List<String> args, int size, boolean isPlayer) {
         return false;
     }
 
     @Override
-    public List<String> tab(CommandSender commandSender, List<String> list, boolean b) {
-        return null;
+    public List<String> tab(CommandSender sender, List<String> args, boolean isPlayer) {
+        if (args.size() == 2 && sender.hasPermission(getPermission() + "-other")) {
+            final Player player = (Player) sender;
+            return Bukkit.getOnlinePlayers().stream()
+                    .filter(player::canSee)
+                    .map(HumanEntity::getName)
+                    .collect(Collectors.toList());
+        }
+
+        return Collections.emptyList();
     }
 }
