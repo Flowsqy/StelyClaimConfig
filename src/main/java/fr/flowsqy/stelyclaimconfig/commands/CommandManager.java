@@ -7,7 +7,7 @@ public class CommandManager {
 
     public CommandManager(StelyClaimConfigPlugin plugin) {
         final ConfigSubCommand configSubCommand = new ConfigSubCommand(
-                null,
+                StelyClaimPlugin.getInstance(),
                 plugin.getMessages(),
                 "config",
                 "c",
