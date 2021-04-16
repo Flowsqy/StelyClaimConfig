@@ -1,99 +1,100 @@
-name: "&7Configuration"
-line: 5
-items:
-  'flags':
-    item:
-      type: STONE
-      lore: []
-      amount: 1
-    slots:
-      - 10
-      - 11
-      - 12
-      - 13
-      - 14
-      - 15
-      - 16
-      - 19
-      - 20
-      - 21
-      - 22
-      - 23
-      - 24
-      - 25
-  'toggle-all-off':
-    item:
-      type: RED_CONCRETE
-      name: '&cTout désactiver'
-      lore:
-        - '&7Clique ici pour'
-        - '&7tout &8désactiver'
-      amount: 1
-    slots:
-      - 37
-  'toggle-all-on':
-    item:
-      type: GREEN_CONCRETE
-      name: '&aTout activer'
-      lore:
-        - '&7Clique ici pour'
-        - '&7tout &8activer'
-      amount: 1
-    slots:
-      - 43
-  'previous':
-    item:
-      type: PLAYER_HEAD
-      name: '&fPrécédent'
-      lore:
-        - '&7Clique ici pour aller'
-        - '&7à la page &8précédente'
-      amount: 1
-      head-data:
-        texture: ewogICJ0aW1lc3RhbXAiIDogMTYxODM1NjkzNDg2NSwKICAicHJvZmlsZUlkIiA6ICIwYWFjMWRlZjUwZmI0N2RjODNmOGU2Njk3MTg1ODRkZSIsCiAgInByb2ZpbGVOYW1lIiA6ICJQZW50YWdyaWQiLAogICJzaWduYXR1cmVSZXF1aXJlZCIgOiB0cnVlLAogICJ0ZXh0dXJlcyIgOiB7CiAgICAiU0tJTiIgOiB7CiAgICAgICJ1cmwiIDogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDAxMzVhYzY3ZWIwZTY1MWIxNmZkZTUzZDU2MGE0NjNjZjAwODM0ZWEyMTNkMjk4ZmNlOGIxMTNkOWQ4NGM2YyIsCiAgICAgICJtZXRhZGF0YSIgOiB7CiAgICAgICAgIm1vZGVsIiA6ICJzbGltIgogICAgICB9CiAgICB9CiAgfQp9
-        signature: ydFoRx1L1Ddy6z8uTHrGGgEmkaHu5pPco37ga5ArrOpZvOfBNHhRPS2YnrMKAsdxFHsD4dwR/IrrhK7vhDBsE4/3nPWKVuvTAml4QaIot8gOi9kQz6SxjCpjnBnI8Ub8pfqEE97o7624cFlBTf0z82xhXprb0906938mXmQLaqBid8PEXHDBrgzbPHrFU7M88Sz//RJMqBsUT1ZpJ6SyjLPaqfqjMZEkXn3qEtdxhN8dFhXpnDKrZrG/btTPXvUnJyphzPXN88017vdDFTMQa+P1SxnbiYVsaK5dembWnf6etuYNOhUFLAA26lrOAdnQVS27m0QyBEPYAjo3+psZ5wzSg2tpBGl6z94/AMio0BqjWrUahYtEU0stFptK+YML0ATWMQ+xAJY5KqPumYrWGTOXvSW64b4wcDT2C46DbSgLKi3tuQVVrcmhK3NjlD/hDJfuBCpkRevZDvrGGHgfWGexW008iv5zSw0Bz+6nDE79EDHJ0VlACpiv+kNuMH/5pMzqAEa8u6uPaq9cqKaZ3kF0qofzEmLgykLybHarvb0eATamSlSna3ggKQQxIw4HNS20zg0yIbIgd6vDcQBiiKP5y2LkG+A1oy196/iJQDO6P8Ym2QxWgexXtXESB+kreKtK2xHAWn2lefARxl8Uf26ukmCrW1RqTrpxrfIPKTo=
-    slots:
-      - 39
-  'next':
-    item:
-      type: PLAYER_HEAD
-      name: '&fSuivant'
-      lore:
-        - '&7Clique ici pour aller'
-        - '&7à la page &8suivante'
-      amount: 1
-      head-data:
-        texture: ewogICJ0aW1lc3RhbXAiIDogMTYxODM1MzI3MzI0NSwKICAicHJvZmlsZUlkIiA6ICJiNzVjZDRmMThkZjg0MmNlYjJhY2MxNTU5MTNiMjA0YiIsCiAgInByb2ZpbGVOYW1lIiA6ICJLcmlzdGlqb25hczEzIiwKICAic2lnbmF0dXJlUmVxdWlyZWQiIDogdHJ1ZSwKICAidGV4dHVyZXMiIDogewogICAgIlNLSU4iIDogewogICAgICAidXJsIiA6ICJodHRwOi8vdGV4dHVyZXMubWluZWNyYWZ0Lm5ldC90ZXh0dXJlLzMyY2JiOGE3OWJiMjk3ZjY1MTQyMjUwMjliOGZhODllOWQzNGRlZTkyNTRkODExYjNkMmFhNWViNzUwZjJiZWMiLAogICAgICAibWV0YWRhdGEiIDogewogICAgICAgICJtb2RlbCIgOiAic2xpbSIKICAgICAgfQogICAgfQogIH0KfQ==
-        signature: tc/tw5PTxs+yqCovhfy29LAsW7bOKfF0NpGsTjcbsIk0cOWEqXiyCFFLYOgIEGpoN5tj2NrNTFIvwAdmriNfQV5GJtZWamIhyIQZlhjPFt+wj19mLCCXYlmThXrKxXwZT3UZACUliw11XN//tjJ88DRE3J1CIVdeNMLqyjrk+mAWY4p6TS4zcVXkyvdU2BKC/U+t8SZSqLKU9RmMN08GQXvYt4wnwJQoj3stcSHCrDqeZfYAkilcsAtAqXZnXLnkWGw/M+5KkwNZ+I0aDIkP028UK9nRdDq8pH5bElGg4vyZiO9n6qxsiTQATthc26eQXtc70wNfNkw+YoWKD4hlRVOfpTLM7QvoLdx6zYf+k1wrKyrWdSiOetkMlO9JnRpFPIAdSPdGQx4M/dMHiAShqrBwO/zD1eKpV/wtWCpHDsd3BHBnPXxcdum7bI8O/mRIjNeroUVCBmLpcKFprT/AXT+r1RYQmnmuPQHoxPR8YCedcMCA5eA/7icBil4iF0Vml5X1wLHbBg9860KiZLBcduWB3HW+rWJ8XUOh8DWiJZPOs+/GwAP2D6n6ZxxVqB5Ohfc/58bjXW32i1pK8v0oW4kcTmBzCAXJXDs5b7a6n3DSrhMsm9J/uXm5KV7N62KZKPIMCfhFQXc18Y0T9rG7V2u2CyJbZN99B3sCHw25aaA=
-    slots:
-      - 41
-  'info':
-    item:
-      type: PAPER
-      name: '&6Information'
-      lore:
-        - '&7Tu es actuellement'
-        - '&7à la page &8%page%'
-      amount: 1
-    slots:
-      - 40
-  'leave':
-    item:
-      type: BARRIER
-      name: '&cQuitter'
-      lore:
-        - '&7Clique ici pour'
-        - '&8quitter &7l''inventaire'
-      amount: 1
-    slots:
-      - 36
-  'valid':
-    item:
-      type: HEART_OF_THE_SEA
-      name: '&9Valider'
-      lore:
-        - '&7Clique ici pour'
-        - '&8valider &7les paramètres'
-      amount: 1
-    slots:
-      - 44
+menu:
+  name: "&7Configuration"
+  line: 5
+  items:
+    'flags':
+      item:
+        type: STONE
+        lore: []
+        amount: 1
+      slots:
+        - 10
+        - 11
+        - 12
+        - 13
+        - 14
+        - 15
+        - 16
+        - 19
+        - 20
+        - 21
+        - 22
+        - 23
+        - 24
+        - 25
+    'toggle-all-off':
+      item:
+        type: RED_CONCRETE
+        name: '&cTout désactiver'
+        lore:
+          - '&7Clique ici pour'
+          - '&7tout &8désactiver'
+        amount: 1
+      slots:
+        - 37
+    'toggle-all-on':
+      item:
+        type: GREEN_CONCRETE
+        name: '&aTout activer'
+        lore:
+          - '&7Clique ici pour'
+          - '&7tout &8activer'
+        amount: 1
+      slots:
+        - 43
+    'previous':
+      item:
+        type: PLAYER_HEAD
+        name: '&fPrécédent'
+        lore:
+          - '&7Clique ici pour aller'
+          - '&7à la page &8précédente'
+        amount: 1
+        head-data:
+          texture: ewogICJ0aW1lc3RhbXAiIDogMTYxODM1NjkzNDg2NSwKICAicHJvZmlsZUlkIiA6ICIwYWFjMWRlZjUwZmI0N2RjODNmOGU2Njk3MTg1ODRkZSIsCiAgInByb2ZpbGVOYW1lIiA6ICJQZW50YWdyaWQiLAogICJzaWduYXR1cmVSZXF1aXJlZCIgOiB0cnVlLAogICJ0ZXh0dXJlcyIgOiB7CiAgICAiU0tJTiIgOiB7CiAgICAgICJ1cmwiIDogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDAxMzVhYzY3ZWIwZTY1MWIxNmZkZTUzZDU2MGE0NjNjZjAwODM0ZWEyMTNkMjk4ZmNlOGIxMTNkOWQ4NGM2YyIsCiAgICAgICJtZXRhZGF0YSIgOiB7CiAgICAgICAgIm1vZGVsIiA6ICJzbGltIgogICAgICB9CiAgICB9CiAgfQp9
+          signature: ydFoRx1L1Ddy6z8uTHrGGgEmkaHu5pPco37ga5ArrOpZvOfBNHhRPS2YnrMKAsdxFHsD4dwR/IrrhK7vhDBsE4/3nPWKVuvTAml4QaIot8gOi9kQz6SxjCpjnBnI8Ub8pfqEE97o7624cFlBTf0z82xhXprb0906938mXmQLaqBid8PEXHDBrgzbPHrFU7M88Sz//RJMqBsUT1ZpJ6SyjLPaqfqjMZEkXn3qEtdxhN8dFhXpnDKrZrG/btTPXvUnJyphzPXN88017vdDFTMQa+P1SxnbiYVsaK5dembWnf6etuYNOhUFLAA26lrOAdnQVS27m0QyBEPYAjo3+psZ5wzSg2tpBGl6z94/AMio0BqjWrUahYtEU0stFptK+YML0ATWMQ+xAJY5KqPumYrWGTOXvSW64b4wcDT2C46DbSgLKi3tuQVVrcmhK3NjlD/hDJfuBCpkRevZDvrGGHgfWGexW008iv5zSw0Bz+6nDE79EDHJ0VlACpiv+kNuMH/5pMzqAEa8u6uPaq9cqKaZ3kF0qofzEmLgykLybHarvb0eATamSlSna3ggKQQxIw4HNS20zg0yIbIgd6vDcQBiiKP5y2LkG+A1oy196/iJQDO6P8Ym2QxWgexXtXESB+kreKtK2xHAWn2lefARxl8Uf26ukmCrW1RqTrpxrfIPKTo=
+      slots:
+        - 39
+    'next':
+      item:
+        type: PLAYER_HEAD
+        name: '&fSuivant'
+        lore:
+          - '&7Clique ici pour aller'
+          - '&7à la page &8suivante'
+        amount: 1
+        head-data:
+          texture: ewogICJ0aW1lc3RhbXAiIDogMTYxODM1MzI3MzI0NSwKICAicHJvZmlsZUlkIiA6ICJiNzVjZDRmMThkZjg0MmNlYjJhY2MxNTU5MTNiMjA0YiIsCiAgInByb2ZpbGVOYW1lIiA6ICJLcmlzdGlqb25hczEzIiwKICAic2lnbmF0dXJlUmVxdWlyZWQiIDogdHJ1ZSwKICAidGV4dHVyZXMiIDogewogICAgIlNLSU4iIDogewogICAgICAidXJsIiA6ICJodHRwOi8vdGV4dHVyZXMubWluZWNyYWZ0Lm5ldC90ZXh0dXJlLzMyY2JiOGE3OWJiMjk3ZjY1MTQyMjUwMjliOGZhODllOWQzNGRlZTkyNTRkODExYjNkMmFhNWViNzUwZjJiZWMiLAogICAgICAibWV0YWRhdGEiIDogewogICAgICAgICJtb2RlbCIgOiAic2xpbSIKICAgICAgfQogICAgfQogIH0KfQ==
+          signature: tc/tw5PTxs+yqCovhfy29LAsW7bOKfF0NpGsTjcbsIk0cOWEqXiyCFFLYOgIEGpoN5tj2NrNTFIvwAdmriNfQV5GJtZWamIhyIQZlhjPFt+wj19mLCCXYlmThXrKxXwZT3UZACUliw11XN//tjJ88DRE3J1CIVdeNMLqyjrk+mAWY4p6TS4zcVXkyvdU2BKC/U+t8SZSqLKU9RmMN08GQXvYt4wnwJQoj3stcSHCrDqeZfYAkilcsAtAqXZnXLnkWGw/M+5KkwNZ+I0aDIkP028UK9nRdDq8pH5bElGg4vyZiO9n6qxsiTQATthc26eQXtc70wNfNkw+YoWKD4hlRVOfpTLM7QvoLdx6zYf+k1wrKyrWdSiOetkMlO9JnRpFPIAdSPdGQx4M/dMHiAShqrBwO/zD1eKpV/wtWCpHDsd3BHBnPXxcdum7bI8O/mRIjNeroUVCBmLpcKFprT/AXT+r1RYQmnmuPQHoxPR8YCedcMCA5eA/7icBil4iF0Vml5X1wLHbBg9860KiZLBcduWB3HW+rWJ8XUOh8DWiJZPOs+/GwAP2D6n6ZxxVqB5Ohfc/58bjXW32i1pK8v0oW4kcTmBzCAXJXDs5b7a6n3DSrhMsm9J/uXm5KV7N62KZKPIMCfhFQXc18Y0T9rG7V2u2CyJbZN99B3sCHw25aaA=
+      slots:
+        - 41
+    'info':
+      item:
+        type: PAPER
+        name: '&6Information'
+        lore:
+          - '&7Tu es actuellement'
+          - '&7à la page &8%page%'
+        amount: 1
+      slots:
+        - 40
+    'leave':
+      item:
+        type: BARRIER
+        name: '&cQuitter'
+        lore:
+          - '&7Clique ici pour'
+          - '&8quitter &7l''inventaire'
+        amount: 1
+      slots:
+        - 36
+    'valid':
+      item:
+        type: HEART_OF_THE_SEA
+        name: '&9Valider'
+        lore:
+          - '&7Clique ici pour'
+          - '&8valider &7les paramètres'
+        amount: 1
+      slots:
+        - 44

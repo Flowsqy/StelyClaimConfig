@@ -2,6 +2,7 @@ package fr.flowsqy.stelyclaimconfig.commands;
 
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
+import fr.flowsqy.abstractmenu.inventory.EventInventory;
 import fr.flowsqy.stelyclaim.StelyClaimPlugin;
 import fr.flowsqy.stelyclaim.command.subcommand.RegionSubCommand;
 import fr.flowsqy.stelyclaim.io.Messages;
@@ -18,8 +19,11 @@ import java.util.stream.Collectors;
 
 public class ConfigSubCommand extends RegionSubCommand {
 
-    public ConfigSubCommand(StelyClaimPlugin plugin, Messages messages, String name, String alias, String permission, boolean console, List<String> allowedWorlds, boolean statistic) {
+    private final EventInventory inventory;
+
+    public ConfigSubCommand(StelyClaimPlugin plugin, Messages messages, String name, String alias, String permission, boolean console, List<String> allowedWorlds, boolean statistic, EventInventory inventory) {
         super(plugin, messages, name, alias, permission, console, allowedWorlds, statistic, StelyClaimPlugin.getInstance().getRegionContainer());
+        this.inventory = inventory;
     }
 
     @Override
@@ -56,7 +60,7 @@ public class ConfigSubCommand extends RegionSubCommand {
             return false;
         }
 
-        // TODO Open inventory
+        inventory.open(player, region.getId());
 
         return true;
     }
