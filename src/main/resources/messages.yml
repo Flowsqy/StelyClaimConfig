@@ -3,3 +3,6 @@ prefix: "&7[&5StelyClaim&7]&f"
 help:
   config: "%prefix% &6/claim config"
   config-other: "%prefix% &6/claim config [Joueur]"
+
+menu:
+  success: "%prefix% &6Tu as mis à jour les paramètres de ton claim"

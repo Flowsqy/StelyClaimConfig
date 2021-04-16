@@ -36,7 +36,7 @@ public class StelyClaimConfigPlugin extends JavaPlugin {
 
         final MenuManager menuManager = new MenuManager(this, initFile(dataFolder, "menu.yml"));
 
-        new CommandManager(this, menuManager.getInventory());
+        new CommandManager(this, menuManager);
     }
 
     private boolean checkDataFolder(File dataFolder) {

@@ -1,12 +1,12 @@
 package fr.flowsqy.stelyclaimconfig.commands;
 
-import fr.flowsqy.abstractmenu.inventory.EventInventory;
 import fr.flowsqy.stelyclaim.StelyClaimPlugin;
 import fr.flowsqy.stelyclaimconfig.StelyClaimConfigPlugin;
+import fr.flowsqy.stelyclaimconfig.menu.MenuManager;
 
 public class CommandManager {
 
-    public CommandManager(StelyClaimConfigPlugin plugin, EventInventory inventory) {
+    public CommandManager(StelyClaimConfigPlugin plugin, MenuManager menuManager) {
         final ConfigSubCommand configSubCommand = new ConfigSubCommand(
                 StelyClaimPlugin.getInstance(),
                 plugin.getMessages(),
@@ -16,7 +16,7 @@ public class CommandManager {
                 false,
                 plugin.getConfiguration().getStringList("allowed-worlds"),
                 plugin.getConfiguration().getBoolean("statistic"),
-                inventory
+                menuManager
         );
         StelyClaimPlugin
                 .getInstance()

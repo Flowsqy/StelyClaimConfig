@@ -2,10 +2,10 @@ package fr.flowsqy.stelyclaimconfig.commands;
 
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
-import fr.flowsqy.abstractmenu.inventory.EventInventory;
 import fr.flowsqy.stelyclaim.StelyClaimPlugin;
 import fr.flowsqy.stelyclaim.command.subcommand.RegionSubCommand;
 import fr.flowsqy.stelyclaim.io.Messages;
+import fr.flowsqy.stelyclaimconfig.menu.MenuManager;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
@@ -19,11 +19,11 @@ import java.util.stream.Collectors;
 
 public class ConfigSubCommand extends RegionSubCommand {
 
-    private final EventInventory inventory;
+    private final MenuManager menuManager;
 
-    public ConfigSubCommand(StelyClaimPlugin plugin, Messages messages, String name, String alias, String permission, boolean console, List<String> allowedWorlds, boolean statistic, EventInventory inventory) {
+    public ConfigSubCommand(StelyClaimPlugin plugin, Messages messages, String name, String alias, String permission, boolean console, List<String> allowedWorlds, boolean statistic, MenuManager menuManager) {
         super(plugin, messages, name, alias, permission, console, allowedWorlds, statistic, StelyClaimPlugin.getInstance().getRegionContainer());
-        this.inventory = inventory;
+        this.menuManager = menuManager;
     }
 
     @Override
@@ -60,7 +60,7 @@ public class ConfigSubCommand extends RegionSubCommand {
             return false;
         }
 
-        inventory.open(player, region.getId());
+        menuManager.open(player, region);
 
         return true;
     }
