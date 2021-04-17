@@ -1,5 +1,10 @@
 package fr.flowsqy.stelyclaimconfig.menu;
 
+import com.sk89q.worldguard.WorldGuard;
+import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import com.sk89q.worldguard.internal.permission.RegionPermissionModel;
+import com.sk89q.worldguard.protection.flags.Flag;
+import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import fr.flowsqy.abstractmenu.factory.MenuFactory;
 import fr.flowsqy.abstractmenu.inventory.EventInventory;
@@ -48,15 +53,21 @@ public class MenuManager {
     }
 
     public void open(Player player, ProtectedRegion region) {
-        playerSessions.put(player.getName(), new PlayerSession(calculateFlags(player), region.getId(), 1));
+        playerSessions.put(player.getName(), new PlayerSession(calculateFlags(player, region), region.getId(), 1));
         final List<String> inventories = regionPlayers.computeIfAbsent(region.getId(), k -> new ArrayList<>());
         inventories.add(player.getName());
         inventory.open(player, player.getName());
     }
 
-    private List<String> calculateFlags(Player player) {
-        // TODO Fill with allowed flags
-        return new ArrayList<>();
+    private List<String> calculateFlags(Player player, ProtectedRegion region) {
+        final List<String> flags = new ArrayList<>();
+        final RegionPermissionModel model = new RegionPermissionModel(WorldGuardPlugin.inst().wrapPlayer(player));
+        for (Flag<?> flag : WorldGuard.getInstance().getFlagRegistry()) {
+            if (flag instanceof StateFlag && model.maySetFlag(region, flag)) {
+                flags.add(flag.getName());
+            }
+        }
+        return flags;
     }
 
     private void applySession(InventoryClickEvent event) {
