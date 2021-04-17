@@ -70,11 +70,11 @@ public class MenuManager {
     }
 
     public void open(Player player, ProtectedRegion region) {
-        final PlayerSession session = new PlayerSession(calculateFlags(player, region), region.getId(), 1);
+        final PlayerSession session = new PlayerSession(region, calculateFlags(player, region), region.getId(), 1);
         playerSessions.put(player.getName(), session);
         final List<String> inventories = regionPlayers.computeIfAbsent(region.getId(), k -> new ArrayList<>());
         inventories.add(player.getName());
-        session.initFlagStates(region);
+        session.initFlagStates();
         session.generatePageItem();
         final Inventory bukkitInventory = inventory.open(player, player.getName());
         session.clearPageItem();
@@ -94,6 +94,9 @@ public class MenuManager {
 
     private void applySession(InventoryClickEvent event) {
         messages.sendMessage(event.getWhoClicked(), "menu.success");
+        final PlayerSession session = playerSessions.get(event.getWhoClicked().getName());
+        final ProtectedRegion region = session.getRegion();
+        //TODO update region with flags states map
     }
 
     private void close(Player player) {
@@ -146,17 +149,23 @@ public class MenuManager {
 
     private final class PlayerSession {
 
+        private final ProtectedRegion region;
         private final List<String> flags;
         private final String sessionId;
         private final Map<String, Boolean> flagsStates;
         private int page;
         private Iterator<String> pageItems;
 
-        public PlayerSession(List<String> flags, String sessionId, int page) {
+        public PlayerSession(ProtectedRegion region, List<String> flags, String sessionId, int page) {
+            this.region = region;
             this.flags = flags;
             this.sessionId = sessionId;
             this.flagsStates = new HashMap<>();
             this.page = page;
+        }
+
+        public ProtectedRegion getRegion() {
+            return region;
         }
 
         public String getSessionId() {
@@ -179,7 +188,7 @@ public class MenuManager {
             return pageItems;
         }
 
-        public void initFlagStates(ProtectedRegion region) {
+        public void initFlagStates() {
             for (String flagName : flags) {
                 final Flag<?> flag = WorldGuard.getInstance().getFlagRegistry().get(flagName);
                 if (!(flag instanceof StateFlag))
