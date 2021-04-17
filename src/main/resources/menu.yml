@@ -98,7 +98,8 @@ menu:
         amount: 1
       slots:
         - 44
-items:
+
+
 # Schéma:
 #
 # 'nom_du_flag':
@@ -119,3 +120,19 @@ items:
 # 'name' est le nom de l'item, supportant les couleurs (utiliser le symbole '&' suivit du numéro correspondant)
 # 'lore' est une liste yaml de chaînes de charactère représentant chaque ligne, supportant les couleurs
 # 'amount' est un entier correspondant au nombre d'item
+
+items:
+  'block-break':
+    type: CRACKED_STONE_BRICKS
+    name: "&4Minage des blocs"
+    lore:
+      - "&7Possibilité de miner"
+      - "&7les blocs"
+    amount: 1
+  'block-place':
+    type: STONE_BRICKS
+    name: "&2Placement des blocs"
+    lore:
+      - "&7Possibilité de placer"
+      - "&7les blocs"
+    amount: 1
