@@ -33,7 +33,6 @@ public class MenuManager {
 
     private final Messages messages;
     private final Map<String, PlayerSession> playerSessions;
-    private final Map<String, List<String>> regionPlayers;
     private final Map<String, ItemBuilder> flagsItems;
     private final List<Integer> slots;
     private final EventInventory inventory;
@@ -41,7 +40,6 @@ public class MenuManager {
     public MenuManager(StelyClaimConfigPlugin plugin, YamlConfiguration menuConfiguration) {
         messages = plugin.getMessages();
         playerSessions = new HashMap<>();
-        regionPlayers = new HashMap<>();
         flagsItems = new HashMap<>();
         final ConfigurationSection itemSection = menuConfiguration.getConfigurationSection("items");
         if (itemSection != null)
@@ -72,8 +70,6 @@ public class MenuManager {
     public void open(Player player, ProtectedRegion region) {
         final PlayerSession session = new PlayerSession(region, calculateFlags(player, region), region.getId(), 1);
         playerSessions.put(player.getName(), session);
-        final List<String> inventories = regionPlayers.computeIfAbsent(region.getId(), k -> new ArrayList<>());
-        inventories.add(player.getName());
         session.initFlagStates();
         session.generatePageItem();
         final Inventory bukkitInventory = inventory.open(player, player.getName());
@@ -100,14 +96,7 @@ public class MenuManager {
     }
 
     private void close(Player player) {
-        final PlayerSession session = playerSessions.remove(player.getName());
-        if (session != null) {
-            final List<String> players = regionPlayers.get(session.getSessionId());
-            players.remove(player.getName());
-            if (players.size() == 0) {
-                regionPlayers.remove(session.getSessionId());
-            }
-        }
+        playerSessions.remove(player.getName());
     }
 
     private void changePage(InventoryClickEvent event, Function<Integer, Integer> modifier) {
