@@ -104,6 +104,16 @@ public class MenuManager {
     }
 
     private void changePage(InventoryClickEvent event, Function<Integer, Integer> modifier) {
+        if (event.getCurrentItem() == null)
+            return;
+        final Player player = (Player) event.getWhoClicked();
+        final PlayerSession session = playerSessions.get(player.getName());
+        if (session == null)
+            return;
+        session.setPage(modifier.apply(session.getPage()));
+        session.generatePageItem();
+        inventory.refresh(player.getName(), player);
+        session.clearPageItem();
     }
 
     private void handleFlagClick(InventoryClickEvent event) {
