@@ -69,7 +69,7 @@ public class MenuManager {
     }
 
     public void open(Player player, ProtectedRegion region) {
-        final PlayerSession session = new PlayerSession(region, calculateFlags(player, region), region.getId(), 1);
+        final PlayerSession session = new PlayerSession(region, calculateFlags(player, region), 1);
         playerSessions.put(player.getName(), session);
         session.initFlagStates();
         session.generatePageItem();
@@ -172,25 +172,19 @@ public class MenuManager {
 
         private final ProtectedRegion region;
         private final List<String> flags;
-        private final String sessionId;
         private final Map<String, Boolean> flagsStates;
         private int page;
         private Iterator<String> pageItems;
 
-        public PlayerSession(ProtectedRegion region, List<String> flags, String sessionId, int page) {
+        public PlayerSession(ProtectedRegion region, List<String> flags, int page) {
             this.region = region;
             this.flags = flags;
-            this.sessionId = sessionId;
             this.flagsStates = new HashMap<>();
             this.page = page;
         }
 
         public ProtectedRegion getRegion() {
             return region;
-        }
-
-        public String getSessionId() {
-            return sessionId;
         }
 
         public Map<String, Boolean> getFlagsStates() {
