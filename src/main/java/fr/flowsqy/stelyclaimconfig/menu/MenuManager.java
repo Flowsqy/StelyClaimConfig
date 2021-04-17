@@ -41,7 +41,8 @@ public class MenuManager {
         regionPlayers = new HashMap<>();
         flagsItems = new HashMap<>();
         final ConfigurationSection itemSection = menuConfiguration.getConfigurationSection("items");
-        fillFlagsItems(itemSection);
+        if (itemSection != null)
+            fillFlagsItems(itemSection);
         slots = new ArrayList<>(0);
         final MenuFactory factory = new MenuFactory(plugin);
         final ConfigurationSection menuSection = menuConfiguration.getConfigurationSection("menu");
@@ -57,14 +58,22 @@ public class MenuManager {
     }
 
     private void fillFlagsItems(ConfigurationSection section) {
-
+        for (String sectionKey : section.getKeys(false)) {
+            final ConfigurationSection itemSection = section.getConfigurationSection(sectionKey);
+            assert itemSection != null;
+            final ItemBuilder itemBuilder = ItemBuilder.deserialize(itemSection);
+            flagsItems.put(sectionKey, itemBuilder);
+        }
     }
 
     public void open(Player player, ProtectedRegion region) {
-        playerSessions.put(player.getName(), new PlayerSession(calculateFlags(player, region), region.getId(), 1));
+        final PlayerSession session = new PlayerSession(calculateFlags(player, region), region.getId(), 1);
+        playerSessions.put(player.getName(), session);
         final List<String> inventories = regionPlayers.computeIfAbsent(region.getId(), k -> new ArrayList<>());
         inventories.add(player.getName());
+        session.generatePageItem();
         inventory.open(player, player.getName());
+        session.clearPageItem();
     }
 
     private List<String> calculateFlags(Player player, ProtectedRegion region) {
@@ -97,12 +106,13 @@ public class MenuManager {
 
     }
 
-    private final static class PlayerSession {
+    private final class PlayerSession {
 
         private final List<String> flags;
         private final String sessionId;
         private final Map<String, Boolean> changes;
         private int page;
+        private Iterator<String> pageItems;
 
         public PlayerSession(List<String> flags, String sessionId, int page) {
             this.flags = flags;
@@ -130,59 +140,109 @@ public class MenuManager {
         public void setPage(int page) {
             this.page = page;
         }
+
+        public Iterator<String> getPageItems() {
+            return pageItems;
+        }
+
+        public void generatePageItem() {
+            final List<String> items = new ArrayList<>();
+            if (!flags.isEmpty()) {
+                // Fill the temp item list
+                for (int index = (page - 1) * slots.size(), i = 0; index < flags.size() && i < slots.size(); index++, i++) {
+                    items.add(flags.get(index));
+                }
+            }
+            pageItems = items.iterator();
+        }
+
+        public void clearPageItem() {
+            pageItems = null;
+        }
+
     }
 
     private final class FlagCreatorListener implements CreatorListener {
 
+        final Map<String, ItemBuilder> createSession;
 
-        @Override
-        public String handleName(Player player, String s) {
-            return null;
+        public FlagCreatorListener() {
+            createSession = new HashMap<>();
         }
 
         @Override
-        public List<String> handleLore(Player player, List<String> list) {
-            return null;
+        public void open(Player player) {
+            final PlayerSession session = playerSessions.get(player.getName());
+            if (session == null)
+                return;
+            final String nextId = session.getPageItems().hasNext() ? session.getPageItems().next() : null;
+            final ItemBuilder item = nextId == null ? null : flagsItems.get(nextId);
+            createSession.put(player.getName(), item);
         }
 
         @Override
-        public boolean handleUnbreakable(Player player, boolean b) {
-            return false;
+        public void close(Player player) {
+            createSession.remove(player.getName());
+        }
+
+        @Override
+        public String handleName(Player player, String name) {
+            final ItemBuilder builder = createSession.get(player.getName());
+            return builder != null ? builder.name() : name;
+        }
+
+        @Override
+        public List<String> handleLore(Player player, List<String> lore) {
+            final ItemBuilder builder = createSession.get(player.getName());
+            return builder != null ? builder.lore() : lore;
+        }
+
+        @Override
+        public boolean handleUnbreakable(Player player, boolean unbreakable) {
+            final ItemBuilder builder = createSession.get(player.getName());
+            return builder != null ? builder.unbreakable() : unbreakable;
         }
 
         @Override
         public Material handleMaterial(Player player, Material material) {
-            return null;
+            final ItemBuilder builder = createSession.get(player.getName());
+            return builder != null ? builder.material() : material;
         }
 
         @Override
-        public int handleAmount(Player player, int i) {
-            return 0;
+        public int handleAmount(Player player, int amount) {
+            final ItemBuilder builder = createSession.get(player.getName());
+            return builder != null ? builder.amount() : amount;
         }
 
         @Override
-        public Map<Enchantment, Integer> handleEnchants(Player player, Map<Enchantment, Integer> map) {
-            return null;
+        public Map<Enchantment, Integer> handleEnchants(Player player, Map<Enchantment, Integer> enchants) {
+            final ItemBuilder builder = createSession.get(player.getName());
+            return builder != null ? builder.enchants() : enchants;
         }
 
         @Override
-        public Set<ItemFlag> handleFlags(Player player, Set<ItemFlag> set) {
-            return null;
+        public Set<ItemFlag> handleFlags(Player player, Set<ItemFlag> flags) {
+            final ItemBuilder builder = createSession.get(player.getName());
+            return builder != null ? builder.flags() : flags;
         }
 
         @Override
-        public Map<Attribute, AttributeModifier> handleAttributes(Player player, Map<Attribute, AttributeModifier> map) {
-            return null;
+        public Map<Attribute, AttributeModifier> handleAttributes(Player player, Map<Attribute, AttributeModifier> attributes) {
+            final ItemBuilder builder = createSession.get(player.getName());
+            return builder != null ? builder.attributes() : attributes;
         }
 
         @Override
-        public String handleHeadDataTextures(Player player, String s) {
-            return null;
+        public String handleHeadDataTextures(Player player, String textures) {
+            final ItemBuilder builder = createSession.get(player.getName());
+            return builder != null ? builder.headDataTexture() : textures;
         }
 
         @Override
-        public String handleHeadDataSignature(Player player, String s) {
-            return null;
+        public String handleHeadDataSignature(Player player, String signature) {
+            final ItemBuilder builder = createSession.get(player.getName());
+            return builder != null ? builder.headDataSignature() : signature;
         }
     }
 
