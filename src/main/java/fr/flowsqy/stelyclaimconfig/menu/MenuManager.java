@@ -5,6 +5,7 @@ import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.internal.permission.RegionPermissionModel;
 import com.sk89q.worldguard.protection.flags.Flag;
 import com.sk89q.worldguard.protection.flags.StateFlag;
+import com.sk89q.worldguard.protection.flags.registry.FlagRegistry;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import fr.flowsqy.abstractmenu.factory.MenuFactory;
 import fr.flowsqy.abstractmenu.inventory.EventInventory;
@@ -89,10 +90,30 @@ public class MenuManager {
     }
 
     private void applySession(InventoryClickEvent event) {
-        messages.sendMessage(event.getWhoClicked(), "menu.success");
-        final PlayerSession session = playerSessions.get(event.getWhoClicked().getName());
+        final Player player = (Player) event.getWhoClicked();
+        messages.sendMessage(player, "menu.success");
+        final PlayerSession session = playerSessions.get(player.getName());
+        if (session == null)
+            return;
         final ProtectedRegion region = session.getRegion();
-        //TODO update region with flags states map
+        final FlagRegistry registry = WorldGuard.getInstance().getFlagRegistry();
+        for (Map.Entry<String, Boolean> entry : session.getFlagsStates().entrySet()) {
+            final Flag<?> flag = registry.get(entry.getKey());
+            if (!(flag instanceof StateFlag))
+                continue;
+            final StateFlag stateFlag = (StateFlag) flag;
+            final boolean value = entry.getValue();
+            if (value && region.getFlag(stateFlag) == StateFlag.State.ALLOW)
+                continue;
+            if (
+                    (stateFlag.getDefault() == StateFlag.State.ALLOW && value)
+                            || (stateFlag.getDefault() == null && !value)
+            ) {
+                region.setFlag(stateFlag, null);
+            } else {
+                region.setFlag(stateFlag, value ? StateFlag.State.ALLOW : StateFlag.State.DENY);
+            }
+        }
     }
 
     private void close(Player player) {
