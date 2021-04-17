@@ -3,6 +3,7 @@ package fr.flowsqy.stelyclaimconfig.menu;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import fr.flowsqy.abstractmenu.factory.MenuFactory;
 import fr.flowsqy.abstractmenu.inventory.EventInventory;
+import fr.flowsqy.abstractmenu.item.CreatorAdaptor;
 import fr.flowsqy.abstractmenu.item.CreatorListener;
 import fr.flowsqy.abstractmenu.item.ItemBuilder;
 import fr.flowsqy.stelyclaim.io.Messages;
@@ -18,6 +19,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemFlag;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class MenuManager {
 
@@ -46,10 +48,10 @@ public class MenuManager {
     }
 
     public void open(Player player, ProtectedRegion region) {
-        inventory.open(player, player.getName());
         playerSessions.put(player.getName(), new PlayerSession(calculateFlags(player), region.getId(), 1));
         final List<String> inventories = regionPlayers.computeIfAbsent(region.getId(), k -> new ArrayList<>());
         inventories.add(player.getName());
+        inventory.open(player, player.getName());
     }
 
     private List<String> calculateFlags(Player player) {
@@ -113,43 +115,54 @@ public class MenuManager {
 
     private final class FlagCreatorListener implements CreatorListener {
 
+
         @Override
-        public String handleName(String name) {
+        public String handleName(Player player, String s) {
             return null;
         }
 
         @Override
-        public List<String> handleLore(List<String> lore) {
+        public List<String> handleLore(Player player, List<String> list) {
             return null;
         }
 
         @Override
-        public boolean handleUnbreakable(boolean unbreakable) {
+        public boolean handleUnbreakable(Player player, boolean b) {
             return false;
         }
 
         @Override
-        public Material handleMaterial(Material material) {
+        public Material handleMaterial(Player player, Material material) {
             return null;
         }
 
         @Override
-        public int handleAmount(int amount) {
+        public int handleAmount(Player player, int i) {
             return 0;
         }
 
         @Override
-        public Map<Enchantment, Integer> handleEnchants(Map<Enchantment, Integer> enchants) {
+        public Map<Enchantment, Integer> handleEnchants(Player player, Map<Enchantment, Integer> map) {
             return null;
         }
 
         @Override
-        public Set<ItemFlag> handleFlags(Set<ItemFlag> flags) {
+        public Set<ItemFlag> handleFlags(Player player, Set<ItemFlag> set) {
             return null;
         }
 
         @Override
-        public Map<Attribute, AttributeModifier> handleAttributes(Map<Attribute, AttributeModifier> attributes) {
+        public Map<Attribute, AttributeModifier> handleAttributes(Player player, Map<Attribute, AttributeModifier> map) {
+            return null;
+        }
+
+        @Override
+        public String handleHeadDataTextures(Player player, String s) {
+            return null;
+        }
+
+        @Override
+        public String handleHeadDataSignature(Player player, String s) {
             return null;
         }
     }
@@ -186,6 +199,19 @@ public class MenuManager {
                     MenuManager.this.slots.addAll(slots);
                     break;
                 case "info":
+                    builder.creatorListener(new CreatorAdaptor() {
+                        @Override
+                        public List<String> handleLore(Player player, List<String> lore) {
+                            if (lore == null)
+                                return null;
+                            final PlayerSession session = playerSessions.get(player.getName());
+                            final String page = String.valueOf(session == null ? 1 : session.getPage());
+                            return lore.stream()
+                                    .map(line -> line.replace("%page%", page))
+                                    .collect(Collectors.toList());
+                        }
+                    });
+                    eventInventory.register(builder, slots);
                 default:
                     eventInventory.register(
                             builder,
