@@ -31,6 +31,7 @@ public class MenuManager {
     private final Messages messages;
     private final Map<String, PlayerSession> playerSessions;
     private final Map<String, List<String>> regionPlayers;
+    private final Map<String, ItemBuilder> flagsItems;
     private final List<Integer> slots;
     private final EventInventory inventory;
 
@@ -38,18 +39,25 @@ public class MenuManager {
         messages = plugin.getMessages();
         playerSessions = new HashMap<>();
         regionPlayers = new HashMap<>();
+        flagsItems = new HashMap<>();
+        final ConfigurationSection itemSection = menuConfiguration.getConfigurationSection("items");
+        fillFlagsItems(itemSection);
         slots = new ArrayList<>(0);
         final MenuFactory factory = new MenuFactory(plugin);
-        final ConfigurationSection section = menuConfiguration.getConfigurationSection("menu");
-        if (section == null)
+        final ConfigurationSection menuSection = menuConfiguration.getConfigurationSection("menu");
+        if (menuSection == null)
             inventory = new EventInventory(factory, "", 1);
         else
             inventory = EventInventory.deserialize(
-                    section,
+                    menuSection,
                     factory,
                     new CustomRegisterHandle()
             );
         inventory.setCloseCallback(this::close);
+    }
+
+    private void fillFlagsItems(ConfigurationSection section) {
+
     }
 
     public void open(Player player, ProtectedRegion region) {
