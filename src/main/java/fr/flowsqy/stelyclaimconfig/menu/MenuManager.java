@@ -21,7 +21,9 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
 import java.util.function.Function;
@@ -72,9 +74,11 @@ public class MenuManager {
         playerSessions.put(player.getName(), session);
         final List<String> inventories = regionPlayers.computeIfAbsent(region.getId(), k -> new ArrayList<>());
         inventories.add(player.getName());
+        session.initFlagStates(region);
         session.generatePageItem();
-        inventory.open(player, player.getName());
+        final Inventory bukkitInventory = inventory.open(player, player.getName());
         session.clearPageItem();
+        session.initStates(bukkitInventory);
     }
 
     private List<String> calculateFlags(Player player, ProtectedRegion region) {
@@ -114,14 +118,30 @@ public class MenuManager {
         session.generatePageItem();
         inventory.refresh(player.getName(), player);
         session.clearPageItem();
+        session.initStates(event.getClickedInventory());
     }
 
     private void handleFlagClick(InventoryClickEvent event) {
+        if (event.getCurrentItem() == null)
+            return;
         final PlayerSession session = playerSessions.get(event.getWhoClicked().getName());
         if (session == null)
             return;
         final String flagId = session.flagId(event.getSlot());
+        if (flagId == null)
+            return;
+        final Map<String, Boolean> states = session.getFlagsStates();
+        final Boolean value = states.computeIfPresent(flagId, (k, v) -> !v);
+        applyState(event.getCurrentItem(), value, false);
+    }
 
+    private void applyState(ItemStack itemStack, Boolean state, boolean init) {
+        if (state == null || !state) {
+            if (!init)
+                itemStack.removeEnchantment(Enchantment.LUCK);
+        } else {
+            itemStack.addUnsafeEnchantment(Enchantment.LUCK, 1);
+        }
     }
 
     private final class PlayerSession {
@@ -137,10 +157,6 @@ public class MenuManager {
             this.sessionId = sessionId;
             this.flagsStates = new HashMap<>();
             this.page = page;
-        }
-
-        public List<String> getFlags() {
-            return flags;
         }
 
         public String getSessionId() {
@@ -161,6 +177,27 @@ public class MenuManager {
 
         public Iterator<String> getPageItems() {
             return pageItems;
+        }
+
+        public void initFlagStates(ProtectedRegion region) {
+            for (String flagName : flags) {
+                final Flag<?> flag = WorldGuard.getInstance().getFlagRegistry().get(flagName);
+                if (!(flag instanceof StateFlag))
+                    return;
+                final StateFlag stateFlag = (StateFlag) flag;
+                final StateFlag.State value = region.getFlag(stateFlag);
+                flagsStates.put(flagName, (value == null ? stateFlag.getDefault() : value) == StateFlag.State.ALLOW);
+            }
+        }
+
+        public void initStates(Inventory inventory) {
+            for (int index = (page - 1) * slots.size(), i = 0; index < flags.size() && i < slots.size(); index++, i++) {
+                final ItemStack item = inventory.getItem(slots.get(i));
+                if (item == null)
+                    return;
+                final Boolean value = flagsStates.get(flags.get(index));
+                applyState(item, value, true);
+            }
         }
 
         public String flagId(int slot) {
