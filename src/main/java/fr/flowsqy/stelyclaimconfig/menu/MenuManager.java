@@ -74,7 +74,7 @@ public class MenuManager {
         session.generatePageItem();
         final Inventory bukkitInventory = inventory.open(player, player.getName());
         session.clearPageItem();
-        session.initStates(bukkitInventory);
+        session.applyStates(bukkitInventory, true);
     }
 
     private List<String> calculateFlags(Player player, ProtectedRegion region) {
@@ -110,7 +110,7 @@ public class MenuManager {
         session.generatePageItem();
         inventory.refresh(player.getName(), player);
         session.clearPageItem();
-        session.initStates(event.getClickedInventory());
+        session.applyStates(event.getClickedInventory(), false);
     }
 
     private void handleFlagClick(InventoryClickEvent event) {
@@ -125,6 +125,17 @@ public class MenuManager {
         final Map<String, Boolean> states = session.getFlagsStates();
         final Boolean value = states.computeIfPresent(flagId, (k, v) -> !v);
         applyState(event.getCurrentItem(), value, false);
+    }
+
+    private void toggleAll(InventoryClickEvent event, boolean state) {
+        final PlayerSession session = playerSessions.get(event.getWhoClicked().getName());
+        if (session == null)
+            return;
+        final Map<String, Boolean> flagStates = session.getFlagsStates();
+        for (String key : flagStates.keySet().toArray(new String[0])) {
+            flagStates.put(key, state);
+        }
+        session.applyStates(event.getInventory(), false);
     }
 
     private void applyState(ItemStack itemStack, Boolean state, boolean init) {
@@ -188,13 +199,13 @@ public class MenuManager {
             }
         }
 
-        public void initStates(Inventory inventory) {
+        public void applyStates(Inventory inventory, boolean init) {
             for (int index = (page - 1) * slots.size(), i = 0; index < flags.size() && i < slots.size(); index++, i++) {
                 final ItemStack item = inventory.getItem(slots.get(i));
                 if (item == null)
                     return;
                 final Boolean value = flagsStates.get(flags.get(index));
-                applyState(item, value, true);
+                applyState(item, value, init);
             }
         }
 
@@ -391,6 +402,20 @@ public class MenuManager {
                     eventInventory.register(
                             builder,
                             event -> changePage(event, page -> page + 1),
+                            slots
+                    );
+                    break;
+                case "toggle-all-off":
+                    eventInventory.register(
+                            builder,
+                            event -> toggleAll(event, false),
+                            slots
+                    );
+                    break;
+                case "toggle-all-on":
+                    eventInventory.register(
+                            builder,
+                            event -> toggleAll(event, true),
                             slots
                     );
                     break;
