@@ -24,6 +24,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemFlag;
 
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class MenuManager {
@@ -102,6 +103,9 @@ public class MenuManager {
         }
     }
 
+    private void changePage(InventoryClickEvent event, Function<Integer, Integer> modifier) {
+    }
+
     private void handleFlagClick(InventoryClickEvent event) {
 
     }
@@ -143,6 +147,11 @@ public class MenuManager {
 
         public Iterator<String> getPageItems() {
             return pageItems;
+        }
+
+        public int numberOfPage() {
+            final int modulo = flags.size() % slots.size();
+            return (flags.size() - modulo) / slots.size() + (modulo > 0 ? 1 : 0);
         }
 
         public void generatePageItem() {
@@ -291,6 +300,39 @@ public class MenuManager {
                         }
                     });
                     eventInventory.register(builder, slots);
+                    break;
+                case "previous":
+                    builder.creatorListener(new CreatorAdaptor() {
+                        @Override
+                        public Material handleMaterial(Player player, Material material) {
+                            final PlayerSession session = playerSessions.get(player.getName());
+                            if (session == null)
+                                return null;
+                            return session.getPage() < 2 ? null : material;
+                        }
+                    });
+                    eventInventory.register(
+                            builder,
+                            event -> changePage(event, page -> page - 1),
+                            slots
+                    );
+                    break;
+                case "next":
+                    builder.creatorListener(new CreatorAdaptor() {
+                        @Override
+                        public Material handleMaterial(Player player, Material material) {
+                            final PlayerSession session = playerSessions.get(player.getName());
+                            if (session == null)
+                                return null;
+                            return session.getPage() >= session.numberOfPage() ? null : material;
+                        }
+                    });
+                    eventInventory.register(
+                            builder,
+                            event -> changePage(event, page -> page + 1),
+                            slots
+                    );
+                    break;
                 default:
                     eventInventory.register(
                             builder,
