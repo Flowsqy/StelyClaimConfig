@@ -117,6 +117,10 @@ public class MenuManager {
     }
 
     private void handleFlagClick(InventoryClickEvent event) {
+        final PlayerSession session = playerSessions.get(event.getWhoClicked().getName());
+        if (session == null)
+            return;
+        final String flagId = session.flagId(event.getSlot());
 
     }
 
@@ -124,14 +128,14 @@ public class MenuManager {
 
         private final List<String> flags;
         private final String sessionId;
-        private final Map<String, Boolean> changes;
+        private final Map<String, Boolean> flagsStates;
         private int page;
         private Iterator<String> pageItems;
 
         public PlayerSession(List<String> flags, String sessionId, int page) {
             this.flags = flags;
             this.sessionId = sessionId;
-            this.changes = new HashMap<>();
+            this.flagsStates = new HashMap<>();
             this.page = page;
         }
 
@@ -143,8 +147,8 @@ public class MenuManager {
             return sessionId;
         }
 
-        public Map<String, Boolean> getChanges() {
-            return changes;
+        public Map<String, Boolean> getFlagsStates() {
+            return flagsStates;
         }
 
         public int getPage() {
@@ -157,6 +161,10 @@ public class MenuManager {
 
         public Iterator<String> getPageItems() {
             return pageItems;
+        }
+
+        public String flagId(int slot) {
+            return flags.get((page - 1) * slots.size() + slots.indexOf(slot));
         }
 
         public int numberOfPage() {
@@ -184,6 +192,7 @@ public class MenuManager {
     private final class FlagCreatorListener implements CreatorListener {
 
         final Map<String, ItemBuilder> createSession;
+        private final ItemBuilder EMPTY = new ItemBuilder();
 
         public FlagCreatorListener() {
             createSession = new HashMap<>();
@@ -192,10 +201,12 @@ public class MenuManager {
         @Override
         public void open(Player player) {
             final PlayerSession session = playerSessions.get(player.getName());
-            if (session == null)
+            if (session == null) {
+                createSession.put(player.getName(), EMPTY);
                 return;
+            }
             final String nextId = session.getPageItems().hasNext() ? session.getPageItems().next() : null;
-            final ItemBuilder item = nextId == null ? null : flagsItems.get(nextId);
+            final ItemBuilder item = nextId == null ? EMPTY : flagsItems.get(nextId);
             createSession.put(player.getName(), item);
         }
 
@@ -243,7 +254,10 @@ public class MenuManager {
         @Override
         public Set<ItemFlag> handleFlags(Player player, Set<ItemFlag> flags) {
             final ItemBuilder builder = createSession.get(player.getName());
-            return builder != null ? builder.flags() : flags;
+            final Set<ItemFlag> itemFlags = builder != null ? builder.flags() : flags;
+            if (itemFlags != null)
+                flags.add(ItemFlag.HIDE_ENCHANTS);
+            return itemFlags;
         }
 
         @Override
@@ -294,7 +308,9 @@ public class MenuManager {
                             MenuManager.this::handleFlagClick,
                             slots
                     );
-                    MenuManager.this.slots.addAll(slots);
+                    final List<Integer> sanitizedSlots = new ArrayList<>(new HashSet<>(slots));
+                    Collections.sort(sanitizedSlots);
+                    MenuManager.this.slots.addAll(sanitizedSlots);
                     break;
                 case "info":
                     builder.creatorListener(new CreatorAdaptor() {
