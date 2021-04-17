@@ -5,7 +5,10 @@ menu:
     'flags':
       item:
         type: STONE
-        lore: []
+        name: "&7Flag par défaut"
+        lore:
+          - "&7Cet item n'a pas"
+          - "&7été configuré"
         amount: 1
       slots:
         - 10
