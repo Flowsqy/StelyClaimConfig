@@ -252,90 +252,79 @@ public class MenuManager {
 
     private final class FlagCreatorListener implements CreatorListener {
 
-        final Map<String, ItemBuilder> createSession;
         private final ItemBuilder EMPTY = new ItemBuilder();
+        private String flagId;
+        private ItemBuilder builder;
 
         public FlagCreatorListener() {
-            createSession = new HashMap<>();
         }
 
         @Override
         public void open(Player player) {
             final PlayerSession session = playerSessions.get(player.getName());
             if (session == null) {
-                createSession.put(player.getName(), EMPTY);
+                builder = EMPTY;
                 return;
             }
-            final String nextId = session.getPageItems().hasNext() ? session.getPageItems().next() : null;
-            final ItemBuilder item = nextId == null ? EMPTY : flagsItems.get(nextId);
-            createSession.put(player.getName(), item);
+            flagId = session.getPageItems().hasNext() ? session.getPageItems().next() : null;
+            builder = flagId == null ? EMPTY : flagsItems.get(flagId);
         }
 
         @Override
         public void close(Player player) {
-            createSession.remove(player.getName());
+            flagId = null;
+            builder = null;
         }
 
         @Override
         public String handleName(Player player, String name) {
-            final ItemBuilder builder = createSession.get(player.getName());
             return builder != null ? builder.name() : name;
         }
 
         @Override
         public List<String> handleLore(Player player, List<String> lore) {
-            final ItemBuilder builder = createSession.get(player.getName());
             return builder != null ? builder.lore() : lore;
         }
 
         @Override
         public boolean handleUnbreakable(Player player, boolean unbreakable) {
-            final ItemBuilder builder = createSession.get(player.getName());
             return builder != null ? builder.unbreakable() : unbreakable;
         }
 
         @Override
         public Material handleMaterial(Player player, Material material) {
-            final ItemBuilder builder = createSession.get(player.getName());
             return builder != null ? builder.material() : material;
         }
 
         @Override
         public int handleAmount(Player player, int amount) {
-            final ItemBuilder builder = createSession.get(player.getName());
             return builder != null ? builder.amount() : amount;
         }
 
         @Override
         public Map<Enchantment, Integer> handleEnchants(Player player, Map<Enchantment, Integer> enchants) {
-            final ItemBuilder builder = createSession.get(player.getName());
             return builder != null ? builder.enchants() : enchants;
         }
 
         @Override
         public Set<ItemFlag> handleFlags(Player player, Set<ItemFlag> flags) {
-            final ItemBuilder builder = createSession.get(player.getName());
-            final Set<ItemFlag> itemFlags = builder != null ? builder.flags() : flags;
-            if (itemFlags != null)
-                flags.add(ItemFlag.HIDE_ENCHANTS);
+            final Set<ItemFlag> itemFlags = new HashSet<>(builder != null ? builder.flags() : flags);
+            flags.add(ItemFlag.HIDE_ENCHANTS);
             return itemFlags;
         }
 
         @Override
         public Map<Attribute, AttributeModifier> handleAttributes(Player player, Map<Attribute, AttributeModifier> attributes) {
-            final ItemBuilder builder = createSession.get(player.getName());
             return builder != null ? builder.attributes() : attributes;
         }
 
         @Override
         public String handleHeadDataTextures(Player player, String textures) {
-            final ItemBuilder builder = createSession.get(player.getName());
             return builder != null ? builder.headDataTexture() : textures;
         }
 
         @Override
         public String handleHeadDataSignature(Player player, String signature) {
-            final ItemBuilder builder = createSession.get(player.getName());
             return builder != null ? builder.headDataSignature() : signature;
         }
     }
