@@ -278,12 +278,17 @@ public class MenuManager {
 
         @Override
         public String handleName(Player player, String name) {
-            return builder != null ? builder.name() : name;
+            final String finalName = builder != null ? builder.name() : name;
+            return finalName != null ? finalName.replace("%flag%", flagId) : null;
         }
 
         @Override
         public List<String> handleLore(Player player, List<String> lore) {
-            return builder != null ? builder.lore() : lore;
+            final List<String> finalLore = builder != null ? builder.lore() : lore;
+            return finalLore == null ? null :
+                    finalLore.stream()
+                            .map(line -> line.replace("%flag%", flagId))
+                            .collect(Collectors.toList());
         }
 
         @Override
