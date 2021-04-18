@@ -108,6 +108,7 @@ menu:
 # Schéma:
 #
 # 'nom_du_flag':
+#    order: 1
 #    type: STONE
 #    name: "Nom de l'item"
 #    lore:
@@ -120,6 +121,8 @@ menu:
 # Où:
 # 'nom_du_flag' est le nom du flag, respectant la case (majuscule et minuscule)
 # (cf. https://worldguard.enginehub.org/en/latest/regions/flags/ plus les flags ajoutés par d'autres plugins)
+# 'order' est un entier supérieur ou égal à zéro qui représente l'ordre
+#  dans lequel le flag est affiché par ordre croissant. (0, 1, 2, ...)
 # 'type' est le matériaux de l'item en tant que tel, respectant la case
 # (cf. https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html pour la liste des matériaux possibles)
 # 'name' est le nom de l'item, supportant les couleurs (utiliser le symbole '&' suivit du numéro correspondant)
@@ -128,6 +131,7 @@ menu:
 
 items:
   'block-break':
+    order: 0
     type: CRACKED_STONE_BRICKS
     name: "&4Minage des blocs"
     lore:
@@ -135,6 +139,7 @@ items:
       - "&7les blocs"
     amount: 1
   'block-place':
+    order: 1
     type: STONE_BRICKS
     name: "&2Placement des blocs"
     lore:

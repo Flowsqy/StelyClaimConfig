@@ -35,6 +35,7 @@ public class MenuManager {
     private final Messages messages;
     private final Map<String, PlayerSession> playerSessions;
     private final Map<String, ItemBuilder> flagsItems;
+    private final Map<String, Integer> flagsOrder;
     private final List<Integer> slots;
     private final EventInventory inventory;
 
@@ -42,6 +43,7 @@ public class MenuManager {
         messages = plugin.getMessages();
         playerSessions = new HashMap<>();
         flagsItems = new HashMap<>();
+        flagsOrder = new HashMap<>();
         final ConfigurationSection itemSection = menuConfiguration.getConfigurationSection("items");
         if (itemSection != null)
             fillFlagsItems(itemSection);
@@ -65,6 +67,9 @@ public class MenuManager {
             assert itemSection != null;
             final ItemBuilder itemBuilder = ItemBuilder.deserialize(itemSection);
             flagsItems.put(sectionKey, itemBuilder);
+            final int order = itemSection.getInt("order", -1);
+            if (order > -1)
+                flagsOrder.put(sectionKey, order);
         }
     }
 
@@ -86,6 +91,7 @@ public class MenuManager {
                 flags.add(flag.getName());
             }
         }
+        flags.sort(Comparator.comparingInt(flagName -> flagsOrder.getOrDefault(flagName, Integer.MAX_VALUE)));
         return flags;
     }
 
