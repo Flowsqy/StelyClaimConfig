@@ -2,6 +2,37 @@ menu:
   name: "&7Configuration"
   line: 5
   items:
+    'empty':
+      item:
+        type: BLACK_STAINED_GLASS_PANE
+        name: ""
+        amount: 1
+      slots:
+        - 0
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+        - 6
+        - 7
+        - 8
+        - 9
+        - 17
+        - 18
+        - 26
+        - 27
+        - 28
+        - 29
+        - 30
+        - 31
+        - 32
+        - 33
+        - 34
+        - 35
+        - 38
+        - 42
+
     'flags':
       item:
         type: STONE
@@ -108,7 +139,6 @@ menu:
 # Schéma:
 #
 # 'nom_du_flag':
-#    order: 1
 #    type: STONE
 #    name: "Nom de l'item"
 #    lore:
@@ -121,8 +151,6 @@ menu:
 # Où:
 # 'nom_du_flag' est le nom du flag, respectant la case (majuscule et minuscule)
 # (cf. https://worldguard.enginehub.org/en/latest/regions/flags/ plus les flags ajoutés par d'autres plugins)
-# 'order' est un entier supérieur ou égal à zéro qui représente l'ordre
-#  dans lequel le flag est affiché par ordre croissant. (0, 1, 2, ...)
 # 'type' est le matériaux de l'item en tant que tel, respectant la case
 # (cf. https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html pour la liste des matériaux possibles)
 # 'name' est le nom de l'item, supportant les couleurs (utiliser le symbole '&' suivit du numéro correspondant)
@@ -130,8 +158,423 @@ menu:
 # 'amount' est un entier correspondant au nombre d'item
 
 items:
-  'block-break':
+  'build':
+    type: BRICKS
+    name: "&cConstuire"
+    lore:
+      - "&7Permet de pouvoir construire"
+      - "&7dans le claim"
+  'frosted-ice-form':
+    type: PACKED_ICE
+    name: "&bCréation de la glace givrée"
+    lore:
+      - "&7Permet à la glace givrée d'apparaître"
+      - "&7lorsque des bottes semelles givrante"
+      - "&7sont utilisées"
+  'frosted-ice-melt':
+    type: PACKED_ICE
+    name: "&bGlace givrée fondu"
+    lore:
+      - "&7Permet à la glace givrée de fondre"
+      - "&7lorsque des bottes semelles givrante"
+      - "&7sont utilisées"
+  'exit-via-teleport':
+    type: ENDER_PEARL
+    name: "&cSortir du claim avec téléportation"
+    lore:
+      - "&7Permet aux autres joueurs de"
+      - "&7sortir du claim avec une téléportation"
+  'exit-override':
+    type: CRIMSON_DOOR
+    name: "&cToujours sortir du claim"
+    lore:
+      - "&7Permet aux autres joueurs de"
+      - "&7toujours sortir du claim"
+  'exit':
+    type: CRIMSON_DOOR
+    name: "&cSortir du claim"
+    lore:
+      - "&7Permet aux autres joueurs de"
+      - "&7sortir du claim"
+  'entry':
+    type: WARPED_DOOR
+    name: "&9Entrer dans le claim"
+    lore:
+      - "&7Permet aux autres joueurs de"
+      - "&7rentrer dans le claim"
+  'natural-hunger-drain':
+    type: BREAD
+    name: "&eRégénation de la faim"
+    lore:
+      - "&7Active la régénération de la faim"
+      - "&7dans le claim"
+  'natural-health-regen':
+    type: GOLDEN_APPLE
+    name: "&eRégénation de la vie"
+    lore:
+      - "&7Active la régénération de la vie"
+      - "&7dans le claim"
+  'invincible':
+    type: TOTEM_OF_UNDYING
+    name: "&eInvincible"
+    lore:
+      - "&7Active l'invincibilité"
+      - "&7dans le claim"
+  'receive-chat':
+    type: PAPER
+    name: "&fRecevoir un message"
+    lore:
+      - "&7Active la réception des message"
+      - "&7dans le claim"
+  'send-chat':
+    type: FEATHER
+    name: "&fEnvoyer un message"
+    lore:
+      - "&7Active l'envoie d'un message"
+      - "&7dans le claim"
+  'soil-dry':
+    order: 25
+    type: FARMLAND
+    name: "&fDéshydratation du sol"
+    lore:
+      - "&7Active la sécheresse du sol"
+      - "&7dans le claim"
+  'vine-growth':
+    order: 24
+    type: VINE
+    name: "&eCroissance des lianes"
+    lore:
+      - "&7Active la croissance des lianes"
+      - "&7dans le claim"
+  'mycelium-spread':
+    order: 23
+    type: MYCELIUM
+    name: "&ePropagation du mycelium"
+    lore:
+      - "&7Active la propagation du mycelium"
+      - "&7dans le claim"
+  'mushroom-growth':
+    order: 22
+    type: RED_MUSHROOM
+    name: "&cCroissance des champignons"
+    lore:
+      - "&7Active la croissance des champignons"
+      - "&7dans le claim"
+  'ice-melt':
+    order: 21
+    type: ICE
+    name: "&bGlace fondu"
+    lore:
+      - "&7Active le fait que la glace"
+      - "&7puisse fondre"
+  'ice-form':
+    order: 20
+    type: ICE
+    name: "&bCréation de la glace"
+    lore:
+      - "&7Active le fait que la glace"
+      - "&7puisse se créer"
+  'snow-melt':
+    order: 19
+    type: SNOW
+    name: "&fNeige fondu"
+    lore:
+      - "&7Active le fait que la neige"
+      - "&7puisse fondre"
+  'snow-fall':
+    order: 18
+    type: SNOWBALL
+    name: "&fTombée de la neige"
+    lore:
+      - "&7Active la tombée de la neige"
+      - "&7dans le claim"
+  'fire-spread':
+    order: 17
+    type: BLAZE_POWDER
+    name: "&6Propagation du feu"
+    lore:
+      - "&7Active la propagation du feu"
+      - "&7dans le claim"
+  'pistons':
+    order: 16
+    type: PISTON
+    name: "&ePistons"
+    lore:
+      - "&7Active les pistons"
+      - "&7dans le claim"
+  'mob-spawning':
+    order: 15
+    type: ZOMBIE_SPAWN_EGG
+    name: "&2Spawn des mobs"
+    lore:
+      - "&7Active le spawn des mobs"
+      - "&7dans le claim"
+  'entity-item-frame-destroy':
+    type: ITEM_FRAME
+    name: "&fMobs & cadres"
+    lore:
+      - "&7Active la destruction des cadres"
+      - "&7par les mobs"
+  'entity-painting-destroy':
+    type: PAINTING
+    name: "&fMobs & peintures"
+    lore:
+      - "&7Active la destruction des peintures"
+      - "&7par les mobs"
+  'ravager-grief':
+    type: RAVAGER_SPAWN_EGG
+    name: "&fDégàts des Ravageurs"
+    lore:
+      - "&7Active les dégàts fait par"
+      - "&7les Ravageurs sur les blocs"
+  'enderman-grief':
+    type: ENDER_EYE
+    name: "&5Enderman"
+    lore:
+      - "&7Active le vol des blocs"
+      - "&7par les Endermans"
+  'wither-damage':
+    type: WITHER_SKELETON_SKULL
+    name: "&5Explosions"
+    lore:
+      - "&7Active les dégàts causés par"
+      - "&7les Withers"
+  'other-explosion':
+    type: GUNPOWDER
+    name: "&5Explosions"
+    lore:
+      - "&7Active les dégàts causés par"
+      - "&7les explosions"
+  'ghast-fireball':
+    type: FIRE_CHARGE
+    name: "&5Dégats par le dragon"
+    lore:
+      - "&7Active les dégàts sur les blocs"
+      - "&7causés par le dragon"
+  'enderdragon-block-damage':
+    type: DRAGON_HEAD
+    name: "&5Dégats par le dragon"
+    lore:
+      - "&7Active les dégàts sur les blocs"
+      - "&7causés par le dragon"
+  'creeper-explosion':
+    type: CREEPER_SPAWN_EGG
+    name: "&cDégats par les creepers"
+    lore:
+      - "&7Active les dégàts causés"
+      - "&7par les creepers"
+  'mob-damage':
+    order: 14
+    type: SHIELD
+    name: "&cDégats"
+    lore:
+      - "&7Active les dégàts causés "
+      - "&7par les mobs"
+  'exp-drops':
+    type: EXPERIENCE_BOTTLE
+    name: "&fDrops d'experience"
+    lore:
+      - "&7Active le drop d'expérience "
+      - "&7les items"
+  'item-drop':
+    type: STICK
+    name: "&fJeter les items"
+    lore:
+      - "&7Active le fait de pouvoir jeter"
+      - "&7les items"
+  'item-pickup':
+    type: DIAMOND
+    name: "&bRamasser les items"
+    lore:
+      - "&7Active le fait de pouvoir ramasser"
+      - "&7les items"
+  'firework-damage':
+    order: 13
+    type: FIREWORK_ROCKET
+    name: "&cDégàts des feux d'artifice"
+    lore:
+      - "&7Active les dégàats causés par"
+      - "&7les feux d'artifice"
+  'block-trampling':
+    order: 12
+    type: FARMLAND
+    name: "&ePiétiner"
+    lore:
+      - "&7Active le fait de pouvoir piétinier"
+      - "&7sur les terres labourés et les oeufs"
+      - "&7de tortues"
+  'item-frame-rotation':
+    type: ITEM_FRAME
+    name: "&fRotation des cadres"
+    lore:
+      - "&7Active le fait de pouvoir"
+      - "&7tourner l'item dans les cadres"
+  'potion-splash':
+    type: SPLASH_POTION
+    name: "&dPotions jetables"
+    lore:
+      - "&7Active l'effet causé par les"
+      - "&7potions jetables"
+  'ride':
+    order: 11
+    type: SADDLE
+    name: "&fMonter les animaux/véhicules"
+    lore:
+      - "&7Active le fait de pouvoir monter"
+      - "&7sur les animaux et les véhicules"
+  'lighter':
+    order: 10
+    type: FLINT_AND_STEEL
+    name: "&6Briquet"
+    lore:
+      - "&7Active l'utilisation du briquet"
+  'vehicle-destroy':
+    type: MINECART
+    name: "&ePlacer un wagon"
+    lore:
+      - "&7Active le fait de pouvoir placer"
+      - "&7un wagon dans le claim"
+  'vehicle-place':
+    type: MINECART
+    name: "&ePlacer un wagon"
+    lore:
+      - "&7Active le fait de pouvoir placer"
+      - "&7un wagon dans le claim"
+  'chest-access':
+    type: CHEST
+    name: "&eAccès aux coffres"
+    lore:
+      - "&7Active les TNT"
+      - "&7dans le claim"
+  'tnt':
+    type: TNT
+    name: "&cT&fN&cT"
+    lore:
+      - "&7Active les respawn anchor"
+      - "&7dans le claim"
+  'respawn-anchors':
+    order: 9
+    type: RESPAWN_ANCHOR
+    name: "&5Respawn Anchor"
+    lore:
+      - "&7Active les respawn anchor"
+      - "&7dans le claim"
+  'sleep':
+    order: 8
+    type: PINK_BED
+    name: "&dDormir"
+    lore:
+      - "&7Active le fait de pouvoir"
+      - "&7dormir dans le claim"
+  'pvp':
+    type: DIAMOND_SWORD
+    name: "&fPVP"
+    lore:
+      - "&7Active le pvp dans"
+      - "&7le claim"
+  'damage-animals':
+    type: PIG_SPAWN_EGG
+    name: "&dDégàts des animaux"
+    lore:
+      - "&7Active les dégàts sur"
+      - "&7les animaux"
+  'interact':
+    type: CONDUIT
+    name: "&fDroit d'intéragir"
+    lore:
+      - "&7Active le fait de pouvoir"
+      - "&7intéragir avec certaines choses dans"
+      - "&7le claim"
+  'use':
+    type: CONDUIT
+    name: "&fDroit d'utiliser"
+    lore:
+      - "&7Active le fait de pouvoir"
+      - "&7utiliser certaines choses dans"
+      - "&7le claim"
+  'lava-fire':
+    type: LAVA_BUCKET
+    name: "&cFlamme avec la lave"
+    lore:
+      - "&7Active la création de flamme"
+      - "&7quand un bloc est au contact"
+      - "&7de la lave"
+  'snowman-trails':
+    order: 7
+    type: POLAR_BEAR_SPAWN_EGG
+    name: "&fTrainées de neige"
+    lore:
+      - "&7Active la trainée de neige"
+      - "&7derrière les bohnomes de neige"
+  'coral-fade':
+    order: 6
+    type: FIRE_CORAL
+    name: "&cProtection des coraux"
+    lore:
+      - "&7Active le fait que"
+      - "&7les coraux ne meurent pas"
+  'enderpearl':
+    order: 5
+    type: ENDER_PEARL
+    name: "&2Enderpearl"
+    lore:
+      - "&7Active la téléportation"
+      - "&7avec les enderpearls"
+  'chorus-fruit-teleport':
+    order: 5
+    type: CHORUS_FRUIT
+    name: "&5Chorus"
+    lore:
+      - "&7Active la téléportation"
+      - "&7avec les chorus"
+  'fall-damage':
+    order: 4
+    type: LEATHER_BOOTS
+    name: "&fDégats de chute"
+    lore:
+      - "&7Active les dégàats"
+      - "&7de chute"
+  'lightning':
+    order: 3
+    type: GRAY_DYE
+    name: "&fFoudre"
+    lore:
+      - "&7Active la foudre"
+  'crop-growth':
+    order: 2
+    type: WHEAT_SEEDS
+    name: "&2Croissance des pousses"
+    lore:
+      - "&7Active la croissance"
+      - "&7des pousses"
+  'leaf-decay':
+    order: 1
+    type: JUNGLE_LEAVES
+    name: "&2Disparition des feuilles"
+    lore:
+      - "&7Active la disparition"
+      - "&7des feuilles"
+  'grass-growth':
     order: 0
+    type: GRASS_BLOCK
+    name: "&2Propagation de l'herbe"
+    lore:
+      - "&7Active la propagation"
+      - "&7de l'herbe"
+  'lava-flow':
+    type: LAVA_BUCKET
+    name: "&9Lave statique"
+    lore:
+      - "&7Active la propagation"
+      - "&7de la lave"
+  'water-flow':
+    type: WATER_BUCKET
+    name: "&9Eau statique"
+    lore:
+      - "&7Active la propagation"
+      - "&7de l'eau"
+    amount: 1
+  'block-break':
     type: CRACKED_STONE_BRICKS
     name: "&4Minage des blocs"
     lore:
@@ -139,7 +582,6 @@ items:
       - "&7les blocs"
     amount: 1
   'block-place':
-    order: 1
     type: STONE_BRICKS
     name: "&2Placement des blocs"
     lore:
