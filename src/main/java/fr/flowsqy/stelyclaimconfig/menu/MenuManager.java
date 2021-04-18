@@ -309,7 +309,7 @@ public class MenuManager {
         @Override
         public Set<ItemFlag> handleFlags(Player player, Set<ItemFlag> flags) {
             final Set<ItemFlag> itemFlags = new HashSet<>(builder != null ? builder.flags() : flags);
-            flags.add(ItemFlag.HIDE_ENCHANTS);
+            itemFlags.add(ItemFlag.HIDE_ENCHANTS);
             return itemFlags;
         }
 
