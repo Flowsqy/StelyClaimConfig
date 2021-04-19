@@ -34,8 +34,7 @@ public class MenuManager {
 
     private final Messages messages;
     private final Map<String, PlayerSession> playerSessions;
-    private final Map<String, ItemBuilder> flagsItems;
-    private final Map<String, Integer> flagsOrder;
+    private final Map<String, FlagItem> flagsItems;
     private final List<Integer> slots;
     private final EventInventory inventory;
 
@@ -43,7 +42,6 @@ public class MenuManager {
         messages = plugin.getMessages();
         playerSessions = new HashMap<>();
         flagsItems = new HashMap<>();
-        flagsOrder = new HashMap<>();
         final ConfigurationSection itemSection = menuConfiguration.getConfigurationSection("items");
         if (itemSection != null)
             fillFlagsItems(itemSection);
@@ -66,10 +64,8 @@ public class MenuManager {
             final ConfigurationSection itemSection = section.getConfigurationSection(sectionKey);
             assert itemSection != null;
             final ItemBuilder itemBuilder = ItemBuilder.deserialize(itemSection);
-            flagsItems.put(sectionKey, itemBuilder);
             final int order = itemSection.getInt("order", -1);
-            if (order > -1)
-                flagsOrder.put(sectionKey, order);
+            flagsItems.put(sectionKey, new FlagItem(order > -1 ? order : Integer.MAX_VALUE, itemBuilder));
         }
     }
 
@@ -91,7 +87,11 @@ public class MenuManager {
                 flags.add(flag.getName());
             }
         }
-        flags.sort(Comparator.comparingInt(flagName -> flagsOrder.getOrDefault(flagName, Integer.MAX_VALUE)));
+        flags.sort(Comparator.comparingInt(flagName -> {
+                    final FlagItem flagItem = flagsItems.get(flagName);
+                    return flagItem == null ? Integer.MAX_VALUE : flagItem.getOrder();
+                })
+        );
         return flags;
     }
 
@@ -171,6 +171,25 @@ public class MenuManager {
                 itemStack.removeEnchantment(Enchantment.LUCK);
         } else {
             itemStack.addUnsafeEnchantment(Enchantment.LUCK, 1);
+        }
+    }
+
+    private final static class FlagItem {
+
+        private final int order;
+        private final ItemBuilder builder;
+
+        private FlagItem(int order, ItemBuilder builder) {
+            this.order = order;
+            this.builder = builder;
+        }
+
+        public int getOrder() {
+            return order;
+        }
+
+        public ItemBuilder getBuilder() {
+            return builder;
         }
     }
 
@@ -273,7 +292,12 @@ public class MenuManager {
                 return;
             }
             flagId = session.getPageItems().hasNext() ? session.getPageItems().next() : null;
-            builder = flagId == null ? EMPTY : flagsItems.get(flagId);
+            if (flagId == null)
+                builder = EMPTY;
+            else {
+                final FlagItem flagItem = flagsItems.get(flagId);
+                builder = flagItem == null ? null : flagItem.getBuilder();
+            }
         }
 
         @Override
