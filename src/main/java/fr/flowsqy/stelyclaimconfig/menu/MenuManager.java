@@ -18,6 +18,7 @@ import fr.flowsqy.stelyclaim.api.ClaimOwner;
 import fr.flowsqy.stelyclaim.io.Messages;
 import fr.flowsqy.stelyclaim.protocol.RegionFinder;
 import fr.flowsqy.stelyclaimconfig.StelyClaimConfigPlugin;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
@@ -191,6 +192,14 @@ public class MenuManager {
                 itemStack.removeEnchantment(Enchantment.LUCK);
         } else {
             itemStack.addUnsafeEnchantment(Enchantment.LUCK, 1);
+        }
+    }
+
+    public void disable() {
+        for (UUID playerUUID : playerSessions.keySet()) {
+            final Player player = Bukkit.getPlayer(playerUUID);
+            if (player != null)
+                player.closeInventory();
         }
     }
 

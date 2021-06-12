@@ -18,6 +18,7 @@ public class StelyClaimConfigPlugin extends JavaPlugin {
 
     private YamlConfiguration configuration;
     private Messages messages;
+    private MenuManager menuManager;
     private CommandManager commandManager;
 
     @Override
@@ -35,13 +36,14 @@ public class StelyClaimConfigPlugin extends JavaPlugin {
         this.configuration = initFile(dataFolder, "config.yml");
         this.messages = new Messages(initFile(dataFolder, "messages.yml"), "&7[&5StelyClaimConfig&7]&f");
 
-        final MenuManager menuManager = new MenuManager(this, initFile(dataFolder, "menu.yml"));
+        menuManager = new MenuManager(this, initFile(dataFolder, "menu.yml"));
 
         commandManager = new CommandManager(this, menuManager);
     }
 
     @Override
     public void onDisable() {
+        menuManager.disable();
         commandManager.disable();
     }
 
