@@ -37,7 +37,7 @@ import java.util.stream.Collectors;
 public class MenuManager {
 
     private final Messages messages;
-    private final Map<String, PlayerSession> playerSessions;
+    private final Map<UUID, PlayerSession> playerSessions;
     private final Map<String, FlagItem> flagsItems;
     private final List<Integer> slots;
     private final EventInventory inventory;
@@ -75,7 +75,7 @@ public class MenuManager {
 
     public void open(Player player, ProtectedRegion region) {
         final PlayerSession session = new PlayerSession(region, calculateFlags(player, region), 1);
-        playerSessions.put(player.getName(), session);
+        playerSessions.put(player.getUniqueId(), session);
         session.initFlagStates();
         session.generatePageItem();
         final Inventory bukkitInventory = inventory.open(player, player.getName());
@@ -101,7 +101,7 @@ public class MenuManager {
 
     private void applySession(InventoryClickEvent event) {
         final Player player = (Player) event.getWhoClicked();
-        final PlayerSession session = playerSessions.get(player.getName());
+        final PlayerSession session = playerSessions.get(player.getUniqueId());
         if (session == null) {
             messages.sendMessage(player, "menu.fail");
             return;
@@ -143,14 +143,14 @@ public class MenuManager {
     }
 
     private void close(Player player) {
-        playerSessions.remove(player.getName());
+        playerSessions.remove(player.getUniqueId());
     }
 
     private void changePage(InventoryClickEvent event, Function<Integer, Integer> modifier) {
         if (event.getCurrentItem() == null)
             return;
         final Player player = (Player) event.getWhoClicked();
-        final PlayerSession session = playerSessions.get(player.getName());
+        final PlayerSession session = playerSessions.get(player.getUniqueId());
         if (session == null)
             return;
         session.setPage(modifier.apply(session.getPage()));
@@ -163,7 +163,7 @@ public class MenuManager {
     private void handleFlagClick(InventoryClickEvent event) {
         if (event.getCurrentItem() == null)
             return;
-        final PlayerSession session = playerSessions.get(event.getWhoClicked().getName());
+        final PlayerSession session = playerSessions.get(event.getWhoClicked().getUniqueId());
         if (session == null)
             return;
         final String flagId = session.flagId(event.getSlot());
@@ -175,7 +175,7 @@ public class MenuManager {
     }
 
     private void toggleAll(InventoryClickEvent event, boolean state) {
-        final PlayerSession session = playerSessions.get(event.getWhoClicked().getName());
+        final PlayerSession session = playerSessions.get(event.getWhoClicked().getUniqueId());
         if (session == null)
             return;
         final Map<String, Boolean> flagStates = session.getFlagsStates();
@@ -306,7 +306,7 @@ public class MenuManager {
 
         @Override
         public void open(Player player) {
-            final PlayerSession session = playerSessions.get(player.getName());
+            final PlayerSession session = playerSessions.get(player.getUniqueId());
             if (session == null) {
                 builder = EMPTY;
                 return;
@@ -423,7 +423,7 @@ public class MenuManager {
                         public List<String> handleLore(Player player, List<String> lore) {
                             if (lore == null)
                                 return null;
-                            final PlayerSession session = playerSessions.get(player.getName());
+                            final PlayerSession session = playerSessions.get(player.getUniqueId());
                             final String page = String.valueOf(session == null ? 1 : session.getPage());
                             return lore.stream()
                                     .map(line -> line.replace("%page%", page))
@@ -436,7 +436,7 @@ public class MenuManager {
                     builder.creatorListener(new CreatorAdaptor() {
                         @Override
                         public Material handleMaterial(Player player, Material material) {
-                            final PlayerSession session = playerSessions.get(player.getName());
+                            final PlayerSession session = playerSessions.get(player.getUniqueId());
                             if (session == null)
                                 return null;
                             return session.getPage() < 2 ? null : material;
@@ -452,7 +452,7 @@ public class MenuManager {
                     builder.creatorListener(new CreatorAdaptor() {
                         @Override
                         public Material handleMaterial(Player player, Material material) {
-                            final PlayerSession session = playerSessions.get(player.getName());
+                            final PlayerSession session = playerSessions.get(player.getUniqueId());
                             if (session == null)
                                 return null;
                             return session.getPage() >= session.numberOfPage() ? null : material;
