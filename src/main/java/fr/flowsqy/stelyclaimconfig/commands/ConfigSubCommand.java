@@ -38,9 +38,17 @@ public class ConfigSubCommand extends SubCommand {
         final PlayerOwner owner;
         if (size == 1) {
             owner = new PlayerOwner(player);
-        } else if (size == 2 && sender.hasPermission(getOtherPermission())) {
+        } else if (size == 2) {
             owner = new PlayerOwner(Bukkit.getOfflinePlayer(args.get(1)));
         } else {
+            return !messages.sendMessage(
+                    player,
+                    "help." + getName() + (sender.hasPermission(getOtherPermission()) ? "-other" : "")
+            );
+        }
+
+        final boolean ownRegion = owner.own(player);
+        if (!ownRegion && !player.hasPermission(getOtherPermission())) {
             return !messages.sendMessage(
                     player,
                     "help." + getName() + (sender.hasPermission(getOtherPermission()) ? "-other" : "")
