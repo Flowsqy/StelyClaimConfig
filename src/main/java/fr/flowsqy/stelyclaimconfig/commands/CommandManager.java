@@ -6,8 +6,10 @@ import fr.flowsqy.stelyclaimconfig.menu.MenuManager;
 
 public class CommandManager {
 
+    private final ConfigSubCommand configSubCommand;
+
     public CommandManager(StelyClaimConfigPlugin plugin, MenuManager menuManager) {
-        final ConfigSubCommand configSubCommand = new ConfigSubCommand(
+        configSubCommand = new ConfigSubCommand(
                 StelyClaimPlugin.getInstance(),
                 plugin.getMessages(),
                 "config",
@@ -25,4 +27,11 @@ public class CommandManager {
                 .registerCommand(configSubCommand, true);
     }
 
+    public void disable() {
+        StelyClaimPlugin
+                .getInstance()
+                .getCommandManager()
+                .getClaimCommand()
+                .unregisterCommand(configSubCommand);
+    }
 }
