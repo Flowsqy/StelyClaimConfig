@@ -12,7 +12,11 @@ import fr.flowsqy.abstractmenu.inventory.EventInventory;
 import fr.flowsqy.abstractmenu.item.CreatorAdaptor;
 import fr.flowsqy.abstractmenu.item.CreatorListener;
 import fr.flowsqy.abstractmenu.item.ItemBuilder;
+import fr.flowsqy.stelyclaim.StelyClaimPlugin;
+import fr.flowsqy.stelyclaim.api.ClaimHandler;
+import fr.flowsqy.stelyclaim.api.ClaimOwner;
 import fr.flowsqy.stelyclaim.io.Messages;
+import fr.flowsqy.stelyclaim.protocol.RegionFinder;
 import fr.flowsqy.stelyclaimconfig.StelyClaimConfigPlugin;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
@@ -97,10 +101,11 @@ public class MenuManager {
 
     private void applySession(InventoryClickEvent event) {
         final Player player = (Player) event.getWhoClicked();
-        messages.sendMessage(player, "menu.success");
         final PlayerSession session = playerSessions.get(player.getName());
-        if (session == null)
+        if (session == null) {
+            messages.sendMessage(player, "menu.fail");
             return;
+        }
         final ProtectedRegion region = session.getRegion();
         final FlagRegistry registry = WorldGuard.getInstance().getFlagRegistry();
         for (Map.Entry<String, Boolean> entry : session.getFlagsStates().entrySet()) {
@@ -120,6 +125,21 @@ public class MenuManager {
                 region.setFlag(stateFlag, value ? StateFlag.State.ALLOW : StateFlag.State.DENY);
             }
         }
+        String regionId = region.getId();
+        boolean ownRegion = false;
+        if (RegionFinder.isCorrectId(regionId)) {
+            final String[] partId = regionId.split("_", 3);
+            final ClaimHandler<?> handler = StelyClaimPlugin.getInstance().getProtocolManager().getHandler(partId[1]);
+            if (handler != null) {
+                final ClaimOwner owner = handler.getOwner(partId[2]);
+                if (owner != null) {
+                    regionId = owner.getName();
+                    ownRegion = owner.own(player);
+                }
+            }
+        }
+
+        messages.sendMessage(player, "menu.success" + (ownRegion ? "" : "-other"), "%region%", regionId);
     }
 
     private void close(Player player) {

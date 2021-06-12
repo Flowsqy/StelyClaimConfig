@@ -5,4 +5,6 @@ help:
   config-other: "%prefix% &6/claim config [Joueur]"
 
 menu:
-  success: "%prefix% &6Tu as mis à jour les paramètres du claim"
+  fail: "%prefix% &cLa configuration à échouée, impossible de retrouver tes donnés"
+  success: "%prefix% &6Tu as mis à jour les paramètres de ton claim"
+  success-other: "%prefix% &6Tu as mis à jour les paramètres du claim de &a%region%"
