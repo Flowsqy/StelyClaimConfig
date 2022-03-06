@@ -1,10 +1,12 @@
 package fr.flowsqy.stelyclaimconfig;
 
+import fr.flowsqy.stelyclaim.StelyClaimPlugin;
 import fr.flowsqy.stelyclaim.io.Messages;
 import fr.flowsqy.stelyclaimconfig.commands.CommandManager;
 import fr.flowsqy.stelyclaimconfig.menu.MenuManager;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -23,6 +25,12 @@ public class StelyClaimConfigPlugin extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        final Plugin rawSCPlugin = getServer().getPluginManager().getPlugin("StelyClaim");
+        if (!(rawSCPlugin instanceof StelyClaimPlugin)) {
+            throw new RuntimeException("Wrong StelyClaim plugin, install the correct one");
+        }
+        final StelyClaimPlugin stelyClaimPlugin = (StelyClaimPlugin) rawSCPlugin;
+
         final Logger logger = getLogger();
         final File dataFolder = getDataFolder();
 
@@ -36,9 +44,9 @@ public class StelyClaimConfigPlugin extends JavaPlugin {
         this.configuration = initFile(dataFolder, "config.yml");
         this.messages = new Messages(initFile(dataFolder, "messages.yml"), "&7[&5StelyClaimConfig&7]&f");
 
-        menuManager = new MenuManager(this, initFile(dataFolder, "menu.yml"));
+        menuManager = new MenuManager(this, stelyClaimPlugin, initFile(dataFolder, "menu.yml"));
 
-        commandManager = new CommandManager(this, menuManager);
+        commandManager = new CommandManager(this, stelyClaimPlugin, menuManager);
     }
 
     @Override

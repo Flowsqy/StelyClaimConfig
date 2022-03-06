@@ -15,6 +15,7 @@ import fr.flowsqy.abstractmenu.item.ItemBuilder;
 import fr.flowsqy.stelyclaim.StelyClaimPlugin;
 import fr.flowsqy.stelyclaim.api.ClaimHandler;
 import fr.flowsqy.stelyclaim.api.ClaimOwner;
+import fr.flowsqy.stelyclaim.api.ProtocolManager;
 import fr.flowsqy.stelyclaim.io.Messages;
 import fr.flowsqy.stelyclaim.protocol.RegionFinder;
 import fr.flowsqy.stelyclaimconfig.StelyClaimConfigPlugin;
@@ -37,13 +38,15 @@ import java.util.stream.Collectors;
 
 public class MenuManager {
 
+    private final ProtocolManager protocolManager;
     private final Messages messages;
     private final Map<UUID, PlayerSession> playerSessions;
     private final Map<String, FlagItem> flagsItems;
     private final List<Integer> slots;
     private final EventInventory inventory;
 
-    public MenuManager(StelyClaimConfigPlugin plugin, YamlConfiguration menuConfiguration) {
+    public MenuManager(StelyClaimConfigPlugin plugin, StelyClaimPlugin stelyClaimPlugin, YamlConfiguration menuConfiguration) {
+        protocolManager = stelyClaimPlugin.getProtocolManager();
         messages = plugin.getMessages();
         playerSessions = new HashMap<>();
         flagsItems = new HashMap<>();
@@ -130,7 +133,7 @@ public class MenuManager {
         boolean ownRegion = false;
         if (RegionFinder.isCorrectId(regionId)) {
             final String[] partId = regionId.split("_", 3);
-            final ClaimHandler<?> handler = StelyClaimPlugin.getInstance().getProtocolManager().getHandler(partId[1]);
+            final ClaimHandler<?> handler = protocolManager.getHandler(partId[1]);
             if (handler != null) {
                 final ClaimOwner owner = handler.getOwner(partId[2]);
                 if (owner != null) {

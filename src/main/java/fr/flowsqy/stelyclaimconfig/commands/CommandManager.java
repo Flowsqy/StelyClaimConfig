@@ -6,11 +6,13 @@ import fr.flowsqy.stelyclaimconfig.menu.MenuManager;
 
 public class CommandManager {
 
+    private final StelyClaimPlugin stelyClaimPlugin;
     private final ConfigSubCommand configSubCommand;
 
-    public CommandManager(StelyClaimConfigPlugin plugin, MenuManager menuManager) {
+    public CommandManager(StelyClaimConfigPlugin plugin, StelyClaimPlugin stelyClaimPlugin, MenuManager menuManager) {
+        this.stelyClaimPlugin = stelyClaimPlugin;
         configSubCommand = new ConfigSubCommand(
-                StelyClaimPlugin.getInstance(),
+                stelyClaimPlugin,
                 plugin.getMessages(),
                 "config",
                 "c",
@@ -20,16 +22,14 @@ public class CommandManager {
                 plugin.getConfiguration().getBoolean("statistic"),
                 menuManager
         );
-        StelyClaimPlugin
-                .getInstance()
+        stelyClaimPlugin
                 .getCommandManager()
                 .getClaimCommand()
                 .registerCommand(configSubCommand, true);
     }
 
     public void disable() {
-        StelyClaimPlugin
-                .getInstance()
+        stelyClaimPlugin
                 .getCommandManager()
                 .getClaimCommand()
                 .unregisterCommand(configSubCommand);
