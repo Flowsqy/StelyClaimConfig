@@ -79,7 +79,7 @@ public class MenuManager {
         playerSessions.put(player.getUniqueId(), session);
         session.initFlagStates();
         session.generatePageItem();
-        final Inventory bukkitInventory = inventory.open(player, player.getName());
+        final Inventory bukkitInventory = inventory.open(player, player.getUniqueId());
         session.clearPageItem();
         session.applyStates(bukkitInventory, true);
     }
@@ -156,7 +156,7 @@ public class MenuManager {
             return;
         session.setPage(modifier.apply(session.getPage()));
         session.generatePageItem();
-        inventory.refresh(player.getName(), player);
+        inventory.refresh(player.getUniqueId(), player);
         session.clearPageItem();
         session.applyStates(event.getClickedInventory(), false);
     }
