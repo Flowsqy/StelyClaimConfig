@@ -18,7 +18,6 @@ import java.util.logging.Logger;
 
 public class StelyClaimConfigPlugin extends JavaPlugin {
 
-    private YamlConfiguration configuration;
     private Messages messages;
     private MenuManager menuManager;
     private CommandManager commandManager;
@@ -41,17 +40,17 @@ public class StelyClaimConfigPlugin extends JavaPlugin {
             return;
         }
 
-        this.configuration = initFile(dataFolder, "config.yml");
+        final YamlConfiguration configuration = initFile(dataFolder, "config.yml");
         this.messages = new Messages(initFile(dataFolder, "messages.yml"), "&7[&5StelyClaimConfig&7]&f");
 
         menuManager = new MenuManager(this, stelyClaimPlugin, initFile(dataFolder, "menu.yml"));
 
-        commandManager = new CommandManager(this, stelyClaimPlugin, menuManager);
+        commandManager = new CommandManager(this, stelyClaimPlugin, menuManager, configuration);
     }
 
     @Override
     public void onDisable() {
-        menuManager.disable();
+        menuManager.closeAllSessions();
         commandManager.disable();
     }
 
@@ -71,10 +70,6 @@ public class StelyClaimConfigPlugin extends JavaPlugin {
         }
 
         return YamlConfiguration.loadConfiguration(file);
-    }
-
-    public YamlConfiguration getConfiguration() {
-        return configuration;
     }
 
     public Messages getMessages() {

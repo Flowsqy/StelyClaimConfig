@@ -3,13 +3,14 @@ package fr.flowsqy.stelyclaimconfig.commands;
 import fr.flowsqy.stelyclaim.StelyClaimPlugin;
 import fr.flowsqy.stelyclaimconfig.StelyClaimConfigPlugin;
 import fr.flowsqy.stelyclaimconfig.menu.MenuManager;
+import org.bukkit.configuration.file.YamlConfiguration;
 
 public class CommandManager {
 
     private final StelyClaimPlugin stelyClaimPlugin;
     private final ConfigSubCommand configSubCommand;
 
-    public CommandManager(StelyClaimConfigPlugin plugin, StelyClaimPlugin stelyClaimPlugin, MenuManager menuManager) {
+    public CommandManager(StelyClaimConfigPlugin plugin, StelyClaimPlugin stelyClaimPlugin, MenuManager menuManager, YamlConfiguration configuration) {
         this.stelyClaimPlugin = stelyClaimPlugin;
         configSubCommand = new ConfigSubCommand(
                 stelyClaimPlugin,
@@ -18,8 +19,8 @@ public class CommandManager {
                 "c",
                 "stelyclaimconfig.claim.config",
                 false,
-                plugin.getConfiguration().getStringList("allowed-worlds"),
-                plugin.getConfiguration().getBoolean("statistic"),
+                configuration.getStringList("allowed-worlds"),
+                configuration.getBoolean("statistic"),
                 menuManager
         );
         stelyClaimPlugin
