@@ -408,7 +408,7 @@ public class MenuManager {
          */
         public void applyVisualStates(Inventory inventory, boolean init) {
             for (
-                    int flagIndex = (currentPage - 1) * slots.size(), slotIndex = 0;
+                    int flagIndex = currentPage * slots.size(), slotIndex = 0;
                     flagIndex < flags.size() && slotIndex < slots.size();
                     flagIndex++, slotIndex++
             ) {
@@ -427,7 +427,7 @@ public class MenuManager {
          * @return A flag {@link String} identifier
          */
         public String getAttachedFlagId(int slot) {
-            return flags.get((currentPage - 1) * slots.size() + slots.indexOf(slot));
+            return flags.get(currentPage * slots.size() + slots.indexOf(slot));
         }
 
         /**
@@ -448,7 +448,7 @@ public class MenuManager {
             if (!flags.isEmpty()) {
                 // Get the flag identifier mapped to this slot index on this page
                 for (
-                        int flagIndex = (currentPage - 1) * slots.size(), slotIndex = 0;
+                        int flagIndex = currentPage * slots.size(), slotIndex = 0;
                         flagIndex < flags.size() && slotIndex < slots.size();
                         flagIndex++, slotIndex++
                 ) {
