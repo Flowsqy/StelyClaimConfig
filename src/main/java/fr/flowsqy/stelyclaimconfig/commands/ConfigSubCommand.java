@@ -3,12 +3,10 @@ package fr.flowsqy.stelyclaimconfig.commands;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import fr.flowsqy.stelyclaim.StelyClaimPlugin;
-import fr.flowsqy.stelyclaim.api.ClaimMessage;
 import fr.flowsqy.stelyclaim.command.subcommand.SubCommand;
-import fr.flowsqy.stelyclaim.internal.DefaultClaimMessages;
+import fr.flowsqy.stelyclaim.common.ConfigurationFormattedMessages;
 import fr.flowsqy.stelyclaim.internal.PlayerHandler;
 import fr.flowsqy.stelyclaim.internal.PlayerOwner;
-import fr.flowsqy.stelyclaim.io.Messages;
 import fr.flowsqy.stelyclaim.protocol.RegionFinder;
 import fr.flowsqy.stelyclaim.util.WorldName;
 import fr.flowsqy.stelyclaimconfig.menu.MenuManager;
@@ -27,7 +25,7 @@ public class ConfigSubCommand extends SubCommand {
 
     private final MenuManager menuManager;
 
-    public ConfigSubCommand(StelyClaimPlugin plugin, Messages messages, String name, String alias, String permission, boolean console, List<String> allowedWorlds, boolean statistic, MenuManager menuManager) {
+    public ConfigSubCommand(StelyClaimPlugin plugin, ConfigurationFormattedMessages messages, String name, String alias, String permission, boolean console, List<String> allowedWorlds, boolean statistic, MenuManager menuManager) {
         super(plugin, messages, name, alias, permission, console, allowedWorlds, statistic);
         this.menuManager = menuManager;
     }
@@ -57,9 +55,7 @@ public class ConfigSubCommand extends SubCommand {
 
         final World world = player.getWorld();
 
-        final ClaimMessage claimMessages = new DefaultClaimMessages(plugin.getMessages());
-
-        final RegionManager regionManager = RegionFinder.getRegionManager(new WorldName(world.getName()), player, claimMessages);
+        final RegionManager regionManager = RegionFinder.getRegionManager(new WorldName(world.getName()), player, messages);
         if (regionManager == null)
             return false;
 
@@ -67,7 +63,7 @@ public class ConfigSubCommand extends SubCommand {
 
         final String regionName = RegionFinder.getRegionName(handler, owner);
 
-        final ProtectedRegion region = RegionFinder.mustExist(regionManager, regionName, owner.getName(), owner.own(player), player, claimMessages);
+        final ProtectedRegion region = RegionFinder.mustExist(regionManager, regionName, owner.getName(), owner.own(player), player, messages);
         if (region == null) {
             return false;
         }

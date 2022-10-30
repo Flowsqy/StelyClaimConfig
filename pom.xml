@@ -17,11 +17,11 @@
 
     <repositories>
         <repository>
-            <id>spigot</id>
+            <id>spigot-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
         <repository>
-            <id>sk89q-repo</id>
+            <id>enginehub-repo</id>
             <url>https://maven.enginehub.org/repo/</url>
         </repository>
     </repositories>
@@ -42,7 +42,7 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.16.5-R0.1-SNAPSHOT</version>
+            <version>1.19.2-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -53,8 +53,8 @@
         </dependency>
         <dependency>
             <groupId>fr.flowsqy.stelyclaim</groupId>
-            <artifactId>stelyclaim</artifactId>
-            <version>3.0.0</version>
+            <artifactId>StelyClaim</artifactId>
+            <version>3.0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

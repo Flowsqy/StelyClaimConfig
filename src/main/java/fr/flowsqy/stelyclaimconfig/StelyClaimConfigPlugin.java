@@ -1,10 +1,12 @@
 package fr.flowsqy.stelyclaimconfig;
 
 import fr.flowsqy.stelyclaim.StelyClaimPlugin;
-import fr.flowsqy.stelyclaim.io.Messages;
+import fr.flowsqy.stelyclaim.common.ConfigurationFormattedMessages;
+import fr.flowsqy.stelyclaim.common.PrefixedConfigurationFormattedMessages;
 import fr.flowsqy.stelyclaimconfig.commands.CommandManager;
 import fr.flowsqy.stelyclaimconfig.menu.MenuManager;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -18,7 +20,7 @@ import java.util.logging.Logger;
 
 public class StelyClaimConfigPlugin extends JavaPlugin {
 
-    private Messages messages;
+    private ConfigurationFormattedMessages messages;
     private MenuManager menuManager;
     private CommandManager commandManager;
 
@@ -41,7 +43,10 @@ public class StelyClaimConfigPlugin extends JavaPlugin {
         }
 
         final YamlConfiguration configuration = initFile(dataFolder, "config.yml");
-        this.messages = new Messages(initFile(dataFolder, "messages.yml"), "&7[&5StelyClaimConfig&7]&f");
+        this.messages = PrefixedConfigurationFormattedMessages.create(
+                initFile(dataFolder, "messages.yml"),
+                ChatColor.GRAY + "[" + ChatColor.DARK_PURPLE + "StelyClaimConfig" + ChatColor.GRAY + "]" + ChatColor.WHITE
+        );
 
         menuManager = new MenuManager(this, stelyClaimPlugin, initFile(dataFolder, "menu.yml"));
 
@@ -72,7 +77,7 @@ public class StelyClaimConfigPlugin extends JavaPlugin {
         return YamlConfiguration.loadConfiguration(file);
     }
 
-    public Messages getMessages() {
+    public ConfigurationFormattedMessages getMessages() {
         return messages;
     }
 }

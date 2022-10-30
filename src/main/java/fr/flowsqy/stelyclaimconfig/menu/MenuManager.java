@@ -16,7 +16,7 @@ import fr.flowsqy.stelyclaim.StelyClaimPlugin;
 import fr.flowsqy.stelyclaim.api.ClaimHandler;
 import fr.flowsqy.stelyclaim.api.ClaimOwner;
 import fr.flowsqy.stelyclaim.api.ProtocolManager;
-import fr.flowsqy.stelyclaim.io.Messages;
+import fr.flowsqy.stelyclaim.common.ConfigurationFormattedMessages;
 import fr.flowsqy.stelyclaim.protocol.RegionFinder;
 import fr.flowsqy.stelyclaimconfig.StelyClaimConfigPlugin;
 import org.bukkit.Bukkit;
@@ -39,7 +39,7 @@ import java.util.stream.Collectors;
 public class MenuManager {
 
     private final ProtocolManager protocolManager;
-    private final Messages messages;
+    private final ConfigurationFormattedMessages messages;
     private final Map<UUID, PlayerSession> playerSessions;
     private final Map<String, FlagItem> flagsItems;
     private final List<Integer> slots;
