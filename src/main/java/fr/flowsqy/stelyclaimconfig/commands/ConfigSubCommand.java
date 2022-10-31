@@ -3,7 +3,7 @@ package fr.flowsqy.stelyclaimconfig.commands;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import fr.flowsqy.stelyclaim.StelyClaimPlugin;
-import fr.flowsqy.stelyclaim.command.subcommand.SubCommand;
+import fr.flowsqy.stelyclaim.command.subcommand.ProtocolSubCommand;
 import fr.flowsqy.stelyclaim.common.ConfigurationFormattedMessages;
 import fr.flowsqy.stelyclaim.internal.PlayerHandler;
 import fr.flowsqy.stelyclaim.internal.PlayerOwner;
@@ -21,12 +21,12 @@ import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
-public class ConfigSubCommand extends SubCommand {
+public class ConfigSubCommand extends ProtocolSubCommand {
 
     private final MenuManager menuManager;
 
     public ConfigSubCommand(StelyClaimPlugin plugin, ConfigurationFormattedMessages messages, String name, String alias, String permission, boolean console, List<String> allowedWorlds, boolean statistic, MenuManager menuManager) {
-        super(plugin, messages, name, alias, permission, console, allowedWorlds, statistic);
+        super(plugin.getProtocolManager(), messages, name, alias, permission, console, allowedWorlds, statistic);
         this.menuManager = menuManager;
     }
 
@@ -59,7 +59,7 @@ public class ConfigSubCommand extends SubCommand {
         if (regionManager == null)
             return false;
 
-        final PlayerHandler handler = plugin.getProtocolManager().getHandler("player");
+        final PlayerHandler handler = protocolManager.getHandler("player");
 
         final String regionName = RegionFinder.getRegionName(handler, owner);
 

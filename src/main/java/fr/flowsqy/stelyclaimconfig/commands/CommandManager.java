@@ -4,6 +4,7 @@ import fr.flowsqy.stelyclaim.StelyClaimPlugin;
 import fr.flowsqy.stelyclaimconfig.StelyClaimConfigPlugin;
 import fr.flowsqy.stelyclaimconfig.menu.MenuManager;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.permissions.Permission;
 
 public class CommandManager {
 
@@ -26,7 +27,11 @@ public class CommandManager {
         stelyClaimPlugin
                 .getCommandManager()
                 .getClaimCommand()
-                .registerCommand(configSubCommand, true);
+                .registerCommand(configSubCommand, true, basePerm -> {
+                    final Permission otherPermission = new Permission(configSubCommand.getOtherPermission());
+                    basePerm.addParent(otherPermission, true);
+                    return otherPermission;
+                });
     }
 
     public void disable() {
