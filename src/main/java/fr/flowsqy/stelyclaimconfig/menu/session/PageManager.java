@@ -17,6 +17,9 @@ public class PageManager {
     }
 
     private int calculateNumberOfPages(int numberOfFlagSlot, int numberOfAvailableFlags) {
+        if (numberOfFlagSlot == 0) {
+            return 1;
+        }
         final int remainder = numberOfAvailableFlags % numberOfFlagSlot;
         return (numberOfAvailableFlags - remainder) / numberOfFlagSlot + (remainder > 0 ? 1 : 0);
     }
