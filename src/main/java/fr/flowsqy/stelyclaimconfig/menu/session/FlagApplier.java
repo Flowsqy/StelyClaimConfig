@@ -1,9 +1,6 @@
 package fr.flowsqy.stelyclaimconfig.menu.session;
 
-import com.sk89q.worldguard.WorldGuard;
-import com.sk89q.worldguard.protection.flags.Flag;
 import com.sk89q.worldguard.protection.flags.StateFlag;
-import com.sk89q.worldguard.protection.flags.registry.FlagRegistry;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 
 import java.util.Map;
@@ -19,15 +16,8 @@ public class FlagApplier {
     public void apply() {
         // Apply all flag changes to the region
         final ProtectedRegion region = flagManager.getRegion();
-        final FlagRegistry registry = WorldGuard.getInstance().getFlagRegistry();
-        for (Map.Entry<String, Boolean> entry : flagManager.getFlagsStates().entrySet()) {
-            final Flag<?> flag = registry.get(entry.getKey());
-            // Get the StateFlag from the flag identifier
-            // Skip the change if it's not a (valid) StateFlag
-            if (!(flag instanceof StateFlag)) {
-                continue;
-            }
-            final StateFlag stateFlag = (StateFlag) flag;
+        for (Map.Entry<StateFlag, Boolean> entry : flagManager.getFlagStateManager().getFlagsStates().entrySet()) {
+            final StateFlag stateFlag = entry.getKey();
             final boolean value = entry.getValue();
             // Avoid changes if the flag is already set to true for a 'true' change
             if (value && region.getFlag(stateFlag) == StateFlag.State.ALLOW) {

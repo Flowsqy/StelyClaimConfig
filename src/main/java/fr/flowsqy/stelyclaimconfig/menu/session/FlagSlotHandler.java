@@ -1,5 +1,7 @@
 package fr.flowsqy.stelyclaimconfig.menu.session;
 
+import com.sk89q.worldguard.protection.flags.Flag;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -9,7 +11,7 @@ public class FlagSlotHandler {
     private final List<Integer> flagSlots;
     private final FlagManager flagManager;
     private final PageManager pageManager;
-    private Iterator<String> pageFlagIdItr;
+    private Iterator<Flag<?>> pageFlagsItr;
 
     public FlagSlotHandler(List<Integer> flagSlots, FlagManager flagManager, PageManager pageManager) {
         this.flagSlots = flagSlots;
@@ -22,30 +24,30 @@ public class FlagSlotHandler {
     }
 
     /**
-     * Get the flag identifier mapped to a slot on the current page
+     * Get the flag mapped to a slot on the current page
      *
      * @param slot The slot of the item
-     * @return A flag {@link String} identifier
+     * @return The mapped {@link Flag}
      */
-    public String getAttachedFlagId(int slot) {
+    public Flag<?> getAttachedFlag(int slot) {
         return flagManager.getAvailableFlags().get(pageManager.getCurrentPage() * flagSlots.size() + flagSlots.indexOf(slot));
     }
 
     /**
-     * Get the {@link Iterator} of the flag identifiers of this page
+     * Get the flag {@link Iterator} of this page
      *
-     * @return A {@link String} {@link Iterator}
+     * @return A {@link Flag} {@link Iterator}
      */
-    public Iterator<String> getPageFlagIdItr() {
-        return pageFlagIdItr;
+    public Iterator<Flag<?>> getPageFlagsItr() {
+        return pageFlagsItr;
     }
 
     /**
-     * Initialize the flag identifier iterator of this page
+     * Initialize the flag iterator of this page
      */
-    public void createPageFlagIdItr() {
-        final List<String> flagIdentifiers = new ArrayList<>();
-        final List<String> availableFlags = flagManager.getAvailableFlags();
+    public void createPageFlagsItr() {
+        final List<Flag<?>> flagsOnThePage = new ArrayList<>();
+        final List<Flag<?>> availableFlags = flagManager.getAvailableFlags();
         if (!availableFlags.isEmpty()) {
             final int numberOfFlagSlots = flagSlots.size();
             final int currentPage = pageManager.getCurrentPage();
@@ -55,17 +57,17 @@ public class FlagSlotHandler {
                     flagIndex < availableFlags.size() && slotIndex < numberOfFlagSlots;
                     flagIndex++, slotIndex++
             ) {
-                flagIdentifiers.add(availableFlags.get(flagIndex));
+                flagsOnThePage.add(availableFlags.get(flagIndex));
             }
         }
-        pageFlagIdItr = flagIdentifiers.iterator();
+        pageFlagsItr = flagsOnThePage.iterator();
     }
 
     /**
-     * Clear the flag identifier iterator of this page
+     * Clear the flag iterator of this page
      */
-    public void clearPageFlagIdItr() {
-        pageFlagIdItr = null;
+    public void clearPageFlagsItr() {
+        pageFlagsItr = null;
     }
 
 }

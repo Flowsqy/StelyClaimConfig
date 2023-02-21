@@ -30,8 +30,7 @@ menu:
         - 33
         - 34
         - 35
-        - 38
-        - 42
+        - 43
 
     'flags':
       item:
@@ -85,7 +84,17 @@ menu:
           - '&7tout &8activer'
         amount: 1
       slots:
-        - 43
+        - 38
+    'set-default':
+      item:
+        type: ANVIL
+        name: "&6Par défaut"
+        lore:
+          - "&7Clique ici pour tout"
+          - "&7remettre à sa valeur"
+          - "&7par défaut"
+      slots:
+        - 42
     'previous':
       item:
         type: PLAYER_HEAD

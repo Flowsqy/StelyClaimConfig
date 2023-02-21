@@ -1,5 +1,7 @@
 package fr.flowsqy.stelyclaimconfig.menu.item;
 
+import com.sk89q.worldguard.protection.flags.Flag;
+import com.sk89q.worldguard.protection.flags.StateFlag;
 import fr.flowsqy.abstractmenu.item.CreatorCopy;
 import fr.flowsqy.abstractmenu.item.ItemBuilder;
 import fr.flowsqy.stelyclaimconfig.menu.FlagItem;
@@ -46,14 +48,15 @@ public class FlagCreatorListener extends CreatorCopy {
         }
         // Get the flag id of the current item (null if we are at the end of the available flags)
         final FlagManager flagManager = session.getFlagManager();
-        final Iterator<String> pageFlagIdItr = flagManager.getFlagSlotHandler().getPageFlagIdItr();
-        flagId = pageFlagIdItr.hasNext() ? pageFlagIdItr.next() : null;
-        // Get the matching item (empty item if the identifier is null)
-        if (flagId == null) {
+        final Iterator<Flag<?>> pageFlagIdItr = flagManager.getFlagSlotHandler().getPageFlagsItr();
+        final Flag<?> flag = pageFlagIdItr.hasNext() ? pageFlagIdItr.next() : null;
+        // Get the matching item (empty item if the flag is null)
+        if (flag == null) {
             original(emptyItem);
             return;
         }
-        state = flagManager.getFlagsStates().get(flagId);
+        flagId = flag.getName();
+        state = flagManager.getFlagStateManager().getFlagsStates().get((StateFlag) flag);
         final FlagItem flagItem = menuManager.getFlagsItems().get(flagId);
         original(flagItem == null ? null : flagItem.getBuilder());
     }

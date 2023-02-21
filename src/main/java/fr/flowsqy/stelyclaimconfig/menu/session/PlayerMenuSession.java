@@ -35,16 +35,16 @@ public class PlayerMenuSession {
 
     public void open(Player player) {
         final FlagSlotHandler flagSlotHandler = flagManager.getFlagSlotHandler();
-        flagSlotHandler.createPageFlagIdItr();
+        flagSlotHandler.createPageFlagsItr();
         eventInventory.open(player, player.getUniqueId());
-        flagSlotHandler.clearPageFlagIdItr();
+        flagSlotHandler.clearPageFlagsItr();
     }
 
     public void refresh(Player player) {
         final FlagSlotHandler flagSlotHandler = flagManager.getFlagSlotHandler();
-        flagSlotHandler.createPageFlagIdItr();
+        flagSlotHandler.createPageFlagsItr();
         eventInventory.refresh(player.getUniqueId(), player);
-        flagSlotHandler.clearPageFlagIdItr();
+        flagSlotHandler.clearPageFlagsItr();
     }
 
 }

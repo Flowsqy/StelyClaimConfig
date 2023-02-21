@@ -7,14 +7,12 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 
 import java.util.function.Consumer;
 
-public class SetAllValueAction implements Consumer<InventoryClickEvent> {
+public class SetDefaultValueAction implements Consumer<InventoryClickEvent> {
 
     private final MenuManager menuManager;
-    private final boolean state;
 
-    public SetAllValueAction(MenuManager menuManager, boolean state) {
+    public SetDefaultValueAction(MenuManager menuManager) {
         this.menuManager = menuManager;
-        this.state = state;
     }
 
     @Override
@@ -24,7 +22,8 @@ public class SetAllValueAction implements Consumer<InventoryClickEvent> {
         if (session == null) {
             return;
         }
-        session.getFlagManager().getFlagStateManager().setAllValue(state);
+
+        session.getFlagManager().getFlagStateManager().setDefault();
 
         session.refresh(player);
     }

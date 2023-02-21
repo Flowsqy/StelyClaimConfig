@@ -1,5 +1,7 @@
 package fr.flowsqy.stelyclaimconfig.menu.action;
 
+import com.sk89q.worldguard.protection.flags.Flag;
+import com.sk89q.worldguard.protection.flags.StateFlag;
 import fr.flowsqy.stelyclaimconfig.menu.MenuManager;
 import fr.flowsqy.stelyclaimconfig.menu.session.FlagManager;
 import fr.flowsqy.stelyclaimconfig.menu.session.PlayerMenuSession;
@@ -30,12 +32,12 @@ public class FlagsAction implements Consumer<InventoryClickEvent> {
             return;
         }
         final FlagManager flagManager = session.getFlagManager();
-        // Get the flag id
-        final String flagId = flagManager.getFlagSlotHandler().getAttachedFlagId(event.getSlot());
-        if (flagId == null) {
+        // Get the flag
+        final Flag<?> flag = flagManager.getFlagSlotHandler().getAttachedFlag(event.getSlot());
+        if (flag == null) {
             return;
         }
-        flagManager.toggleFlag(flagId);
+        flagManager.getFlagStateManager().toggleFlag((StateFlag) flag);
         session.refresh(player);
     }
 }

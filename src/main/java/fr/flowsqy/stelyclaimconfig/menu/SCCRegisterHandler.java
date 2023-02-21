@@ -121,6 +121,14 @@ public class SCCRegisterHandler implements EventInventory.RegisterHandler {
                         slots
                 );
                 break;
+            // Set every flag to default value item
+            case "set-default":
+                eventInventory.register(
+                        builder,
+                        new SetDefaultValueAction(menuManager),
+                        slots
+                );
+                break;
             // Any other item
             default:
                 eventInventory.register(
