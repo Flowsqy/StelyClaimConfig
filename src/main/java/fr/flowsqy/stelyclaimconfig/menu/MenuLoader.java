@@ -55,11 +55,14 @@ public class MenuLoader {
             return new EventInventory(factory, "", 1);
         }
 
+        final StateTextLoader stateTextLoader = new StateTextLoader();
+        final StateText stateText = stateTextLoader.load(menuSection);
+
         // Deserialize the GUI
         return EventInventory.deserialize(
                 menuSection,
                 factory,
-                new SCCRegisterHandler(menuManager, plugin, stelyClaimPlugin)
+                new SCCRegisterHandler(menuManager, plugin, stelyClaimPlugin, stateText)
         );
     }
 }

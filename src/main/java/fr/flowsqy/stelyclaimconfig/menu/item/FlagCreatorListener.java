@@ -4,6 +4,7 @@ import fr.flowsqy.abstractmenu.item.CreatorCopy;
 import fr.flowsqy.abstractmenu.item.ItemBuilder;
 import fr.flowsqy.stelyclaimconfig.menu.FlagItem;
 import fr.flowsqy.stelyclaimconfig.menu.MenuManager;
+import fr.flowsqy.stelyclaimconfig.menu.StateText;
 import fr.flowsqy.stelyclaimconfig.menu.session.FlagManager;
 import fr.flowsqy.stelyclaimconfig.menu.session.PlayerMenuSession;
 import org.bukkit.enchantments.Enchantment;
@@ -19,12 +20,14 @@ import java.util.stream.Collectors;
 public class FlagCreatorListener extends CreatorCopy {
 
     private final MenuManager menuManager;
+    private final StateText stateText;
     private final ItemBuilder emptyItem = new ItemBuilder();
     private String flagId;
     private boolean state;
 
-    public FlagCreatorListener(MenuManager menuManager) {
+    public FlagCreatorListener(MenuManager menuManager, StateText stateText) {
         this.menuManager = menuManager;
+        this.stateText = stateText;
     }
 
     /**
@@ -75,7 +78,8 @@ public class FlagCreatorListener extends CreatorCopy {
      */
     private String processPlaceholders(String text) {
         return text
-                .replace("%flag%", flagId);
+                .replace("%flag%", flagId)
+                .replace("%state%", stateText.get(state));
     }
 
     @Override

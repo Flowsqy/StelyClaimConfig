@@ -24,11 +24,13 @@ public class SCCRegisterHandler implements EventInventory.RegisterHandler {
     private final StelyClaimConfigPlugin plugin;
     private final StelyClaimPlugin stelyClaimPlugin;
     private final MenuManager menuManager;
+    private final StateText stateText;
 
-    public SCCRegisterHandler(MenuManager menuManager, StelyClaimConfigPlugin plugin, StelyClaimPlugin stelyClaimPlugin) {
+    public SCCRegisterHandler(MenuManager menuManager, StelyClaimConfigPlugin plugin, StelyClaimPlugin stelyClaimPlugin, StateText stateText) {
         this.menuManager = menuManager;
         this.plugin = plugin;
         this.stelyClaimPlugin = stelyClaimPlugin;
+        this.stateText = stateText;
     }
 
     @Override
@@ -53,7 +55,7 @@ public class SCCRegisterHandler implements EventInventory.RegisterHandler {
             // Flags items
             case "flags":
                 // Add the custom creator to display the item matching the flag
-                builder.creatorListener(new FlagCreatorListener(menuManager));
+                builder.creatorListener(new FlagCreatorListener(menuManager, stateText));
                 menuManager.registerSlotsFlags(slots);
                 // Register the items flags
                 eventInventory.register(
