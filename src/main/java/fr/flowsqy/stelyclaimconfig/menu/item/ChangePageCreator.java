@@ -12,11 +12,12 @@ public class ChangePageCreator extends CreatorCopy {
 
     private final MenuManager menuManager;
     private final Function<Integer, Integer> pageCursorFunction;
-    private final ItemBuilder emptyItem = new ItemBuilder();
+    private final ItemBuilder emptyItem;
 
-    public ChangePageCreator(MenuManager menuManager, Function<Integer, Integer> pageCursorFunction) {
+    public ChangePageCreator(MenuManager menuManager, Function<Integer, Integer> pageCursorFunction, ItemBuilder emptyItem) {
         this.menuManager = menuManager;
         this.pageCursorFunction = pageCursorFunction;
+        this.emptyItem = emptyItem;
     }
 
     @Override

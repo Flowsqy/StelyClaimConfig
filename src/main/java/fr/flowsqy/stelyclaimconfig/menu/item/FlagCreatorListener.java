@@ -21,13 +21,14 @@ public class FlagCreatorListener extends CreatorCopy {
 
     private final MenuManager menuManager;
     private final StateText stateText;
-    private final ItemBuilder emptyItem = new ItemBuilder();
+    private final ItemBuilder emptyItem;
     private String flagId;
     private boolean state;
 
-    public FlagCreatorListener(MenuManager menuManager, StateText stateText) {
+    public FlagCreatorListener(MenuManager menuManager, StateText stateText, ItemBuilder emptyItem) {
         this.menuManager = menuManager;
         this.stateText = stateText;
+        this.emptyItem = emptyItem;
     }
 
     /**

@@ -1,15 +1,20 @@
-package fr.flowsqy.stelyclaimconfig.menu;
+package fr.flowsqy.stelyclaimconfig.menu.loader;
 
 import fr.flowsqy.abstractmenu.factory.MenuFactory;
 import fr.flowsqy.abstractmenu.inventory.EventInventory;
 import fr.flowsqy.abstractmenu.item.ItemBuilder;
 import fr.flowsqy.stelyclaim.StelyClaimPlugin;
 import fr.flowsqy.stelyclaimconfig.StelyClaimConfigPlugin;
+import fr.flowsqy.stelyclaimconfig.menu.FlagItem;
+import fr.flowsqy.stelyclaimconfig.menu.MenuManager;
+import fr.flowsqy.stelyclaimconfig.menu.SCCRegisterHandler;
+import fr.flowsqy.stelyclaimconfig.menu.StateText;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class MenuLoader {
@@ -46,7 +51,7 @@ public class MenuLoader {
      *
      * @param menuConfiguration The {@link ConfigurationSection} that contains the menu
      */
-    public EventInventory loadInventory(YamlConfiguration menuConfiguration, StelyClaimConfigPlugin plugin, StelyClaimPlugin stelyClaimPlugin, MenuManager menuManager) {
+    public EventInventory loadInventory(YamlConfiguration menuConfiguration, StelyClaimConfigPlugin plugin, StelyClaimPlugin stelyClaimPlugin, MenuManager menuManager, List<Integer> flagSlots) {
         final MenuFactory factory = new MenuFactory(plugin);
         // Create the GUI
         final ConfigurationSection menuSection = menuConfiguration.getConfigurationSection("menu");
@@ -58,11 +63,22 @@ public class MenuLoader {
         final StateTextLoader stateTextLoader = new StateTextLoader();
         final StateText stateText = stateTextLoader.load(menuSection);
 
+        final SCCRegisterHandler registerHandler = new SCCRegisterHandler(
+                menuManager,
+                plugin,
+                stelyClaimPlugin,
+                stateText
+        );
+
         // Deserialize the GUI
-        return EventInventory.deserialize(
+        final EventInventory eventInventory = EventInventory.deserialize(
                 menuSection,
                 factory,
-                new SCCRegisterHandler(menuManager, plugin, stelyClaimPlugin, stateText)
+                registerHandler
         );
+
+        registerHandler.link(flagSlots);
+
+        return eventInventory;
     }
 }

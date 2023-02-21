@@ -4,6 +4,7 @@ import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import fr.flowsqy.abstractmenu.inventory.EventInventory;
 import fr.flowsqy.stelyclaim.StelyClaimPlugin;
 import fr.flowsqy.stelyclaimconfig.StelyClaimConfigPlugin;
+import fr.flowsqy.stelyclaimconfig.menu.loader.MenuLoader;
 import fr.flowsqy.stelyclaimconfig.menu.session.PlayerMenuSession;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -25,7 +26,7 @@ public class MenuManager {
         final MenuLoader loader = new MenuLoader();
 
         flagsItems = loader.loadFlagItemById(menuConfiguration);
-        inventory = loader.loadInventory(menuConfiguration, plugin, stelyClaimPlugin, this);
+        inventory = loader.loadInventory(menuConfiguration, plugin, stelyClaimPlugin, this, flagSlots);
         inventory.setCloseCallback(this::removeSession);
     }
 
@@ -78,14 +79,6 @@ public class MenuManager {
                 player.closeInventory();
             }
         }
-    }
-
-    void registerSlotsFlags(List<Integer> slots) {
-        // Register sorted slots to map each slot to its flag
-        final List<Integer> sanitizedSlots = new ArrayList<>(new HashSet<>(slots));
-        Collections.sort(sanitizedSlots);
-
-        this.flagSlots.addAll(sanitizedSlots);
     }
 
 }

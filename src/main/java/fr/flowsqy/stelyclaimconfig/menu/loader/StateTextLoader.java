@@ -1,5 +1,6 @@
-package fr.flowsqy.stelyclaimconfig.menu;
+package fr.flowsqy.stelyclaimconfig.menu.loader;
 
+import fr.flowsqy.stelyclaimconfig.menu.StateText;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 

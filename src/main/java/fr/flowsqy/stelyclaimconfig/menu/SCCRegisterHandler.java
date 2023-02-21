@@ -5,9 +5,10 @@ import fr.flowsqy.abstractmenu.item.ItemBuilder;
 import fr.flowsqy.stelyclaim.StelyClaimPlugin;
 import fr.flowsqy.stelyclaimconfig.StelyClaimConfigPlugin;
 import fr.flowsqy.stelyclaimconfig.menu.action.*;
-import fr.flowsqy.stelyclaimconfig.menu.item.ChangePageCreator;
-import fr.flowsqy.stelyclaimconfig.menu.item.FlagCreatorListener;
 import fr.flowsqy.stelyclaimconfig.menu.item.InfoCreatorListener;
+import fr.flowsqy.stelyclaimconfig.menu.loader.ChangePageItemLinker;
+import fr.flowsqy.stelyclaimconfig.menu.loader.FlagItemLinker;
+import fr.flowsqy.stelyclaimconfig.menu.loader.SlotFlagLinker;
 
 import java.util.List;
 import java.util.function.Function;
@@ -24,13 +25,18 @@ public class SCCRegisterHandler implements EventInventory.RegisterHandler {
     private final StelyClaimConfigPlugin plugin;
     private final StelyClaimPlugin stelyClaimPlugin;
     private final MenuManager menuManager;
-    private final StateText stateText;
+    private final SlotFlagLinker slotFlagLinker;
+    private final FlagItemLinker flagItemLinker;
+    private final ChangePageItemLinker previousItemLinker, nextItemLinker;
 
     public SCCRegisterHandler(MenuManager menuManager, StelyClaimConfigPlugin plugin, StelyClaimPlugin stelyClaimPlugin, StateText stateText) {
         this.menuManager = menuManager;
         this.plugin = plugin;
         this.stelyClaimPlugin = stelyClaimPlugin;
-        this.stateText = stateText;
+        slotFlagLinker = new SlotFlagLinker();
+        flagItemLinker = new FlagItemLinker(menuManager, stateText);
+        previousItemLinker = new ChangePageItemLinker(menuManager, PREVIOUS_PAGE_FUNCTION);
+        nextItemLinker = new ChangePageItemLinker(menuManager, NEXT_PAGE_FUNCTION);
     }
 
     @Override
@@ -55,14 +61,18 @@ public class SCCRegisterHandler implements EventInventory.RegisterHandler {
             // Flags items
             case "flags":
                 // Add the custom creator to display the item matching the flag
-                builder.creatorListener(new FlagCreatorListener(menuManager, stateText));
-                menuManager.registerSlotsFlags(slots);
+                flagItemLinker.setFlagItem(builder);
+                slotFlagLinker.setFlagSlots(slots);
                 // Register the items flags
                 eventInventory.register(
                         builder,
                         new FlagsAction(menuManager),
                         slots
                 );
+                break;
+            // Empty flags item
+            case "empty-flags":
+                flagItemLinker.setEmptyItem(builder);
                 break;
             // Information item
             case "info":
@@ -71,21 +81,29 @@ public class SCCRegisterHandler implements EventInventory.RegisterHandler {
                 break;
             // Previous item
             case "previous":
-                builder.creatorListener(new ChangePageCreator(menuManager, PREVIOUS_PAGE_FUNCTION));
+                previousItemLinker.setChangePageItem(builder);
                 eventInventory.register(
                         builder,
                         new ChangePageAction(menuManager, PREVIOUS_PAGE_FUNCTION),
                         slots
                 );
                 break;
+            // Empty previous item
+            case "empty-previous":
+                previousItemLinker.setEmptyItem(builder);
+                break;
             // Next item
             case "next":
-                builder.creatorListener(new ChangePageCreator(menuManager, NEXT_PAGE_FUNCTION));
+                nextItemLinker.setChangePageItem(builder);
                 eventInventory.register(
                         builder,
                         new ChangePageAction(menuManager, NEXT_PAGE_FUNCTION),
                         slots
                 );
+                break;
+            // Empty previous item
+            case "empty-next":
+                nextItemLinker.setEmptyItem(builder);
                 break;
             // Toggle off everything item
             case "toggle-all-off":
@@ -112,4 +130,10 @@ public class SCCRegisterHandler implements EventInventory.RegisterHandler {
         }
     }
 
+    public void link(List<Integer> flagSlots) {
+        slotFlagLinker.link(flagSlots);
+        flagItemLinker.link();
+        previousItemLinker.link();
+        nextItemLinker.link();
+    }
 }

@@ -61,6 +61,11 @@ menu:
         - 23
         - 24
         - 25
+    'empty-flags':
+      item:
+        type: BLACK_STAINED_GLASS_PANE
+        name: ""
+        amount: 1
     'toggle-all-off':
       item:
         type: RED_CONCRETE
@@ -94,6 +99,11 @@ menu:
           signature: ydFoRx1L1Ddy6z8uTHrGGgEmkaHu5pPco37ga5ArrOpZvOfBNHhRPS2YnrMKAsdxFHsD4dwR/IrrhK7vhDBsE4/3nPWKVuvTAml4QaIot8gOi9kQz6SxjCpjnBnI8Ub8pfqEE97o7624cFlBTf0z82xhXprb0906938mXmQLaqBid8PEXHDBrgzbPHrFU7M88Sz//RJMqBsUT1ZpJ6SyjLPaqfqjMZEkXn3qEtdxhN8dFhXpnDKrZrG/btTPXvUnJyphzPXN88017vdDFTMQa+P1SxnbiYVsaK5dembWnf6etuYNOhUFLAA26lrOAdnQVS27m0QyBEPYAjo3+psZ5wzSg2tpBGl6z94/AMio0BqjWrUahYtEU0stFptK+YML0ATWMQ+xAJY5KqPumYrWGTOXvSW64b4wcDT2C46DbSgLKi3tuQVVrcmhK3NjlD/hDJfuBCpkRevZDvrGGHgfWGexW008iv5zSw0Bz+6nDE79EDHJ0VlACpiv+kNuMH/5pMzqAEa8u6uPaq9cqKaZ3kF0qofzEmLgykLybHarvb0eATamSlSna3ggKQQxIw4HNS20zg0yIbIgd6vDcQBiiKP5y2LkG+A1oy196/iJQDO6P8Ym2QxWgexXtXESB+kreKtK2xHAWn2lefARxl8Uf26ukmCrW1RqTrpxrfIPKTo=
       slots:
         - 39
+    'empty-previous':
+      item:
+        type: BLACK_STAINED_GLASS_PANE
+        name: ""
+        amount: 1
     'next':
       item:
         type: PLAYER_HEAD
@@ -107,6 +117,11 @@ menu:
           signature: tc/tw5PTxs+yqCovhfy29LAsW7bOKfF0NpGsTjcbsIk0cOWEqXiyCFFLYOgIEGpoN5tj2NrNTFIvwAdmriNfQV5GJtZWamIhyIQZlhjPFt+wj19mLCCXYlmThXrKxXwZT3UZACUliw11XN//tjJ88DRE3J1CIVdeNMLqyjrk+mAWY4p6TS4zcVXkyvdU2BKC/U+t8SZSqLKU9RmMN08GQXvYt4wnwJQoj3stcSHCrDqeZfYAkilcsAtAqXZnXLnkWGw/M+5KkwNZ+I0aDIkP028UK9nRdDq8pH5bElGg4vyZiO9n6qxsiTQATthc26eQXtc70wNfNkw+YoWKD4hlRVOfpTLM7QvoLdx6zYf+k1wrKyrWdSiOetkMlO9JnRpFPIAdSPdGQx4M/dMHiAShqrBwO/zD1eKpV/wtWCpHDsd3BHBnPXxcdum7bI8O/mRIjNeroUVCBmLpcKFprT/AXT+r1RYQmnmuPQHoxPR8YCedcMCA5eA/7icBil4iF0Vml5X1wLHbBg9860KiZLBcduWB3HW+rWJ8XUOh8DWiJZPOs+/GwAP2D6n6ZxxVqB5Ohfc/58bjXW32i1pK8v0oW4kcTmBzCAXJXDs5b7a6n3DSrhMsm9J/uXm5KV7N62KZKPIMCfhFQXc18Y0T9rG7V2u2CyJbZN99B3sCHw25aaA=
       slots:
         - 41
+    'empty-next':
+      item:
+        type: BLACK_STAINED_GLASS_PANE
+        name: ""
+        amount: 1
     'info':
       item:
         type: PAPER
