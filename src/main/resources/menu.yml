@@ -43,9 +43,9 @@ menu:
           - "&7Il correspond au flag"
           - "&8%flag%"
         amount: 1
-        state:
-          allow: "&aAllow"
-          deny: "&cDeny"
+      state-text:
+        allow: "&aAllow"
+        deny: "&cDeny"
       slots:
         - 10
         - 11

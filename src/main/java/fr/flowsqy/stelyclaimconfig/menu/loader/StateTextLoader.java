@@ -17,7 +17,7 @@ public class StateTextLoader {
     }
 
     private String getText(ConfigurationSection menuSection, String path) {
-        return menuSection.getString("items.flags.state." + path);
+        return menuSection.getString("items.flags.state-text." + path);
     }
 
     private String formatText(String text) {
