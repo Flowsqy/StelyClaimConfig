@@ -82,7 +82,7 @@ public class FlagCreatorListener extends CreatorCopy {
      */
     private String processPlaceholders(String text) {
         return text
-                .replace("%flag%", flagId)
+                .replace("%flag%", String.valueOf(flagId))
                 .replace("%state%", stateText.get(state));
     }
 
