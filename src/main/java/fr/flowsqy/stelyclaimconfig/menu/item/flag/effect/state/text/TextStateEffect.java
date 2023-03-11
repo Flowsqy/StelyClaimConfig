@@ -1,11 +1,11 @@
-package fr.flowsqy.stelyclaimconfig.menu;
+package fr.flowsqy.stelyclaimconfig.menu.item.flag.effect.state.text;
 
-public class StateText {
+public class TextStateEffect {
 
     private final String allow;
     private final String deny;
 
-    public StateText(String allow, String deny) {
+    public TextStateEffect(String allow, String deny) {
         this.allow = allow;
         this.deny = deny;
     }

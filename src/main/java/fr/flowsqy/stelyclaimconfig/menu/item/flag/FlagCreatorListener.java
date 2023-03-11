@@ -1,4 +1,4 @@
-package fr.flowsqy.stelyclaimconfig.menu.item;
+package fr.flowsqy.stelyclaimconfig.menu.item.flag;
 
 import com.sk89q.worldguard.protection.flags.Flag;
 import com.sk89q.worldguard.protection.flags.StateFlag;
@@ -6,7 +6,7 @@ import fr.flowsqy.abstractmenu.item.CreatorCopy;
 import fr.flowsqy.abstractmenu.item.ItemBuilder;
 import fr.flowsqy.stelyclaimconfig.menu.FlagItem;
 import fr.flowsqy.stelyclaimconfig.menu.MenuManager;
-import fr.flowsqy.stelyclaimconfig.menu.StateText;
+import fr.flowsqy.stelyclaimconfig.menu.item.flag.effect.FlagEffects;
 import fr.flowsqy.stelyclaimconfig.menu.session.FlagManager;
 import fr.flowsqy.stelyclaimconfig.menu.session.PlayerMenuSession;
 import org.bukkit.enchantments.Enchantment;
@@ -22,15 +22,15 @@ import java.util.stream.Collectors;
 public class FlagCreatorListener extends CreatorCopy {
 
     private final MenuManager menuManager;
-    private final StateText stateText;
     private final ItemBuilder emptyItem;
+    private final FlagEffects flagEffects;
     private String flagId;
     private boolean state;
 
-    public FlagCreatorListener(MenuManager menuManager, StateText stateText, ItemBuilder emptyItem) {
+    public FlagCreatorListener(MenuManager menuManager, ItemBuilder emptyItem, FlagEffects flagEffects) {
         this.menuManager = menuManager;
-        this.stateText = stateText;
         this.emptyItem = emptyItem;
+        this.flagEffects = flagEffects;
     }
 
     /**
@@ -83,7 +83,7 @@ public class FlagCreatorListener extends CreatorCopy {
     private String processPlaceholders(String text) {
         return text
                 .replace("%flag%", String.valueOf(flagId))
-                .replace("%state%", stateText.get(state));
+                .replace("%state%", flagEffects.getState().getText().get(state));
     }
 
     @Override
@@ -108,7 +108,7 @@ public class FlagCreatorListener extends CreatorCopy {
     public Map<Enchantment, Integer> handleEnchants(Player player, Map<Enchantment, Integer> enchants) {
         final Map<Enchantment, Integer> usedEnchants = new HashMap<>(super.handleEnchants(player, enchants));
         // Add a glowing effect on allowed flag
-        if (state) {
+        if (flagEffects.getState().getEnchant().isEnchanted(state)) {
             usedEnchants.put(Enchantment.LUCK, 1);
         }
         return usedEnchants;

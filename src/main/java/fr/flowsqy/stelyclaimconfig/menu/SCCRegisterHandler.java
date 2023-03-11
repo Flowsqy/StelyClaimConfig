@@ -6,11 +6,15 @@ import fr.flowsqy.stelyclaim.StelyClaimPlugin;
 import fr.flowsqy.stelyclaimconfig.StelyClaimConfigPlugin;
 import fr.flowsqy.stelyclaimconfig.menu.action.*;
 import fr.flowsqy.stelyclaimconfig.menu.item.InfoCreatorListener;
+import fr.flowsqy.stelyclaimconfig.menu.item.flag.effect.FlagEffectLoader;
+import fr.flowsqy.stelyclaimconfig.menu.item.flag.effect.FlagEffects;
 import fr.flowsqy.stelyclaimconfig.menu.loader.ChangePageItemLinker;
 import fr.flowsqy.stelyclaimconfig.menu.loader.FlagItemLinker;
 import fr.flowsqy.stelyclaimconfig.menu.loader.SlotFlagLinker;
+import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Function;
 
 /**
@@ -24,17 +28,19 @@ public class SCCRegisterHandler implements EventInventory.RegisterHandler {
     private final Function<Integer, Integer> NEXT_PAGE_FUNCTION = currentPage -> currentPage + 1;
     private final StelyClaimConfigPlugin plugin;
     private final StelyClaimPlugin stelyClaimPlugin;
+    private final ConfigurationSection menuSection;
     private final MenuManager menuManager;
     private final SlotFlagLinker slotFlagLinker;
     private final FlagItemLinker flagItemLinker;
     private final ChangePageItemLinker previousItemLinker, nextItemLinker;
 
-    public SCCRegisterHandler(MenuManager menuManager, StelyClaimConfigPlugin plugin, StelyClaimPlugin stelyClaimPlugin, StateText stateText) {
+    public SCCRegisterHandler(MenuManager menuManager, StelyClaimConfigPlugin plugin, StelyClaimPlugin stelyClaimPlugin, ConfigurationSection menuSection) {
         this.menuManager = menuManager;
         this.plugin = plugin;
         this.stelyClaimPlugin = stelyClaimPlugin;
+        this.menuSection = menuSection;
         slotFlagLinker = new SlotFlagLinker();
-        flagItemLinker = new FlagItemLinker(menuManager, stateText);
+        flagItemLinker = new FlagItemLinker(menuManager);
         previousItemLinker = new ChangePageItemLinker(menuManager, PREVIOUS_PAGE_FUNCTION);
         nextItemLinker = new ChangePageItemLinker(menuManager, NEXT_PAGE_FUNCTION);
     }
@@ -60,8 +66,12 @@ public class SCCRegisterHandler implements EventInventory.RegisterHandler {
                 break;
             // Flags items
             case "flags":
+                // Load effects
+                final FlagEffectLoader flagEffectLoader = new FlagEffectLoader();
+                final FlagEffects flagEffects = flagEffectLoader.load(Objects.requireNonNull(menuSection.getConfigurationSection("items." + key)));
+
                 // Add the custom creator to display the item matching the flag
-                flagItemLinker.setFlagItem(builder);
+                flagItemLinker.setFlagItem(builder, flagEffects);
                 slotFlagLinker.setFlagSlots(slots);
                 // Register the items flags
                 eventInventory.register(

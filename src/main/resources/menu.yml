@@ -42,9 +42,18 @@ menu:
           - "&7Il correspond au flag"
           - "&8%flag%"
         amount: 1
-      state-text:
-        allow: "&aAllow"
-        deny: "&cDeny"
+      effect:
+        state:
+          # Replacement text for the %state% placeholder in the item name and lore
+          text:
+            allow: "&aAllow"
+            deny: "&cDeny"
+          # The custom enchant effect of the item regarding of the state
+          # Values : DIRECT;REVERSE;NONE
+          # DIRECT : The item is enchanted if the flag is on "ALLOW"
+          # REVERSE : The item is enchanted if the flag is on "DENY"
+          # NONE : The item is not enchanted
+          enchant: DIRECT
       slots:
         - 10
         - 11

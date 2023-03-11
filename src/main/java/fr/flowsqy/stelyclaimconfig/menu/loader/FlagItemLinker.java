@@ -2,23 +2,23 @@ package fr.flowsqy.stelyclaimconfig.menu.loader;
 
 import fr.flowsqy.abstractmenu.item.ItemBuilder;
 import fr.flowsqy.stelyclaimconfig.menu.MenuManager;
-import fr.flowsqy.stelyclaimconfig.menu.StateText;
-import fr.flowsqy.stelyclaimconfig.menu.item.FlagCreatorListener;
+import fr.flowsqy.stelyclaimconfig.menu.item.flag.FlagCreatorListener;
+import fr.flowsqy.stelyclaimconfig.menu.item.flag.effect.FlagEffects;
 
 public class FlagItemLinker {
 
     private final MenuManager menuManager;
-    private final StateText stateText;
     private ItemBuilder flagItem;
+    private FlagEffects flagEffects;
     private ItemBuilder emptyItem;
 
-    public FlagItemLinker(MenuManager menuManager, StateText stateText) {
+    public FlagItemLinker(MenuManager menuManager) {
         this.menuManager = menuManager;
-        this.stateText = stateText;
     }
 
-    public void setFlagItem(ItemBuilder flagItem) {
+    public void setFlagItem(ItemBuilder flagItem, FlagEffects flagEffects) {
         this.flagItem = flagItem;
+        this.flagEffects = flagEffects;
     }
 
     public void setEmptyItem(ItemBuilder emptyItem) {
@@ -30,9 +30,8 @@ public class FlagItemLinker {
             flagItem.creatorListener(
                     new FlagCreatorListener(
                             menuManager,
-                            stateText,
-                            emptyItem == null ? new ItemBuilder() : emptyItem
-                    )
+                            emptyItem == null ? new ItemBuilder() : emptyItem,
+                            flagEffects)
             );
         }
     }

@@ -8,7 +8,6 @@ import fr.flowsqy.stelyclaimconfig.StelyClaimConfigPlugin;
 import fr.flowsqy.stelyclaimconfig.menu.FlagItem;
 import fr.flowsqy.stelyclaimconfig.menu.MenuManager;
 import fr.flowsqy.stelyclaimconfig.menu.SCCRegisterHandler;
-import fr.flowsqy.stelyclaimconfig.menu.StateText;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -60,14 +59,11 @@ public class MenuLoader {
             return new EventInventory(factory, "", 1);
         }
 
-        final StateTextLoader stateTextLoader = new StateTextLoader();
-        final StateText stateText = stateTextLoader.load(menuSection);
-
         final SCCRegisterHandler registerHandler = new SCCRegisterHandler(
                 menuManager,
                 plugin,
                 stelyClaimPlugin,
-                stateText
+                menuSection
         );
 
         // Deserialize the GUI
