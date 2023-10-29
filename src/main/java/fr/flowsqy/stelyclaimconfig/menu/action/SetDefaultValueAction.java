@@ -23,7 +23,7 @@ public class SetDefaultValueAction implements Consumer<InventoryClickEvent> {
             return;
         }
 
-        session.getFlagManager().getFlagStateManager().setDefault();
+        session.getFlagManager().getFlagStateManager().setDefault(player.getName());
 
         session.refresh(player);
     }

@@ -3,7 +3,7 @@ package fr.flowsqy.stelyclaimconfig.commands;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import fr.flowsqy.stelyclaim.StelyClaimPlugin;
-import fr.flowsqy.stelyclaim.command.subcommand.ProtocolSubCommand;
+import fr.flowsqy.stelyclaim.command.claim.ProtocolSubCommand;
 import fr.flowsqy.stelyclaim.common.ConfigurationFormattedMessages;
 import fr.flowsqy.stelyclaim.internal.PlayerHandler;
 import fr.flowsqy.stelyclaim.internal.PlayerOwner;

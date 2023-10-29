@@ -1,6 +1,7 @@
 package fr.flowsqy.stelyclaimconfig.menu.loader;
 
 import fr.flowsqy.abstractmenu.item.ItemBuilder;
+import fr.flowsqy.stelyclaim.common.ConfigurationFormattedMessages;
 import fr.flowsqy.stelyclaimconfig.menu.MenuManager;
 import fr.flowsqy.stelyclaimconfig.menu.item.flag.FlagCreatorListener;
 import fr.flowsqy.stelyclaimconfig.menu.item.flag.effect.FlagEffects;
@@ -25,10 +26,11 @@ public class FlagItemLinker {
         this.emptyItem = emptyItem;
     }
 
-    public void link() {
+    public void link(ConfigurationFormattedMessages messages) {
         if (flagItem != null) {
             flagItem.creatorListener(
                     new FlagCreatorListener(
+                            messages,
                             menuManager,
                             emptyItem == null ? new ItemBuilder() : emptyItem,
                             flagEffects)

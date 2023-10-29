@@ -10,7 +10,7 @@ import java.util.Map;
 
 public class AvailableFlagLoader {
 
-    public List<Flag<?>> loadAvailableFlags(Map<? extends Flag<?>, Boolean> flagStates, Map<String, FlagItem> flagItems) {
+    public <T> List<Flag<?>> loadAvailableFlags(Map<? extends Flag<?>, T> flagStates, Map<String, FlagItem> flagItems) {
         final List<Flag<?>> availableFlags = new ArrayList<>(flagStates.keySet());
         // Sort the flags by the order specified in the configuration
         availableFlags.sort(Comparator.comparingInt(flag -> {

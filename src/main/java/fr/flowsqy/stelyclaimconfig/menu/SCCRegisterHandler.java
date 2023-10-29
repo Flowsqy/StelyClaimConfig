@@ -76,7 +76,7 @@ public class SCCRegisterHandler implements EventInventory.RegisterHandler {
                 // Register the items flags
                 eventInventory.register(
                         builder,
-                        new FlagsAction(menuManager),
+                        new FlagsAction(menuManager, plugin.getConversationBuilder(), plugin.getConfig(), plugin.getMessages()),
                         slots
                 );
                 break;
@@ -150,7 +150,7 @@ public class SCCRegisterHandler implements EventInventory.RegisterHandler {
 
     public void link(List<Integer> flagSlots) {
         slotFlagLinker.link(flagSlots);
-        flagItemLinker.link();
+        flagItemLinker.link(plugin.getMessages());
         previousItemLinker.link();
         nextItemLinker.link();
     }

@@ -8,3 +8,11 @@ menu:
   fail: "%prefix% &cLa configuration à échouée, impossible de retrouver tes donnés"
   success: "%prefix% &6Tu as mis à jour les paramètres de ton claim"
   success-other: "%prefix% &6Tu as mis à jour les paramètres du claim de &a%region%"
+
+default-string-flags:
+  greeting: "&6Vous rentrez dans le claim de &a%region%"
+  farewell: "&6Vous sortez du claim de &a%region%"
+
+string-flags:
+  send-flag-text: "%prefix% &6Ecris dans le chat le texte que tu veux mettre"
+  contains-blocked-color: "%prefix% &cLe texte contient des couleurs bloquées"

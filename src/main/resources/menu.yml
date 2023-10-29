@@ -624,3 +624,10 @@ items:
       - "&7Possibilité de placer"
       - "&7les blocs"
     amount: 1
+  'greet-message':
+    type: PAPER
+    name: "&6Message de bienvenue"
+    lore:
+      - "&7Active le message de bienvenue"
+      - "&7lorsque le joueur rentre dans le claim"
+    amount: 1
