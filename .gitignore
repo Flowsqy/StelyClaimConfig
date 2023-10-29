@@ -4,3 +4,4 @@
 # Idea configuration files and folders
 /.idea/
 *iml
+.vscode
