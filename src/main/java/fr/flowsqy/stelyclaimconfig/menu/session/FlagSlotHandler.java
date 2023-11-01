@@ -11,7 +11,7 @@ public class FlagSlotHandler {
     private final List<Integer> flagSlots;
     private final FlagManager flagManager;
     private final PageManager pageManager;
-    private Iterator<Flag<?>> pageFlagsItr;
+    private Iterator<String> pageFlagsItr;
 
     public FlagSlotHandler(List<Integer> flagSlots, FlagManager flagManager, PageManager pageManager) {
         this.flagSlots = flagSlots;
@@ -29,7 +29,7 @@ public class FlagSlotHandler {
      * @param slot The slot of the item
      * @return The mapped {@link Flag}
      */
-    public Flag<?> getAttachedFlag(int slot) {
+    public String getAttachedFlag(int slot) {
         return flagManager.getAvailableFlags().get(pageManager.getCurrentPage() * flagSlots.size() + flagSlots.indexOf(slot));
     }
 
@@ -38,7 +38,7 @@ public class FlagSlotHandler {
      *
      * @return A {@link Flag} {@link Iterator}
      */
-    public Iterator<Flag<?>> getPageFlagsItr() {
+    public Iterator<String> getPageFlagsItr() {
         return pageFlagsItr;
     }
 
@@ -46,8 +46,8 @@ public class FlagSlotHandler {
      * Initialize the flag iterator of this page
      */
     public void createPageFlagsItr() {
-        final List<Flag<?>> flagsOnThePage = new ArrayList<>();
-        final List<Flag<?>> availableFlags = flagManager.getAvailableFlags();
+        final List<String> flagsOnThePage = new ArrayList<>();
+        final List<String> availableFlags = flagManager.getAvailableFlags();
         if (!availableFlags.isEmpty()) {
             final int numberOfFlagSlots = flagSlots.size();
             final int currentPage = pageManager.getCurrentPage();

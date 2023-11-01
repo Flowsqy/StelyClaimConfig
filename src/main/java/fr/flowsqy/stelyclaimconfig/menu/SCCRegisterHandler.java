@@ -150,7 +150,7 @@ public class SCCRegisterHandler implements EventInventory.RegisterHandler {
 
     public void link(List<Integer> flagSlots) {
         slotFlagLinker.link(flagSlots);
-        flagItemLinker.link(plugin.getMessages());
+        flagItemLinker.link();
         previousItemLinker.link();
         nextItemLinker.link();
     }

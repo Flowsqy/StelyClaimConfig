@@ -40,7 +40,7 @@ public class ValidAction implements Consumer<InventoryClickEvent> {
             return;
         }
         final FlagManager flagManager = session.getFlagManager();
-        flagManager.apply(player);
+        flagManager.apply(/*player*/);
 
         String regionName = flagManager.getRegion().getId();
         boolean ownRegion = false;

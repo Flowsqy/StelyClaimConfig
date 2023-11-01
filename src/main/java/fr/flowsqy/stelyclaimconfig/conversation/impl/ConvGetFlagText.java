@@ -50,8 +50,9 @@ public class ConvGetFlagText extends StringPrompt {
             author.sendRawMessage(messages.getMessage("string-flags.contains-blocked-color").replace("%prefix%", messages.getMessage("prefix")));
             return this;
         }
-        
-        flagManager.getFlagStateManager().defineStringFlag(flag, answer);
+
+        // TODO Set the value of the flag
+        //flagManager.getFlagStateManager().defineStringFlag(flag, answer);
 
         PlayerOwner owner = new PlayerOwner((Player) author);
         org.bukkit.World world = author.getWorld();

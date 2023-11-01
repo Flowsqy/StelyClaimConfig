@@ -14,14 +14,12 @@ import java.util.*;
 
 public class MenuManager {
 
-    private final StelyClaimConfigPlugin plugin;
     private final Map<UUID, PlayerMenuSession> playerSessions;
     private final Map<String, FlagItem> flagsItems;
     private final List<Integer> flagSlots;
     private final EventInventory inventory;
 
     public MenuManager(StelyClaimConfigPlugin plugin, StelyClaimPlugin stelyClaimPlugin, YamlConfiguration menuConfiguration) {
-        this.plugin = plugin;
         playerSessions = new HashMap<>();
         flagSlots = new ArrayList<>(0);
 
@@ -44,7 +42,7 @@ public class MenuManager {
         if (playerSessions.containsKey(player.getUniqueId())) {
             removeSession(player);
         }
-        final PlayerMenuSession session = new PlayerMenuSession(plugin.getMessages(), inventory, region, flagSlots);
+        final PlayerMenuSession session = new PlayerMenuSession(inventory, region, flagSlots);
         session.load(player, flagsItems);
         playerSessions.put(player.getUniqueId(), session);
         // Open the inventory

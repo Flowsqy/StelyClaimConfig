@@ -1,9 +1,6 @@
 package fr.flowsqy.stelyclaimconfig.menu.session;
 
-import com.sk89q.worldguard.protection.flags.Flag;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
-
-import fr.flowsqy.stelyclaim.common.ConfigurationFormattedMessages;
 import fr.flowsqy.stelyclaimconfig.menu.FlagItem;
 import org.bukkit.entity.Player;
 
@@ -13,32 +10,26 @@ import java.util.Map;
 
 public class FlagManager {
 
-    private final ConfigurationFormattedMessages messages;
     private final ProtectedRegion region;
-    private final List<Flag<?>> availableFlags;
+    private final List<String> availableFlags;
     private final FlagStateManager flagStateManager;
     private final FlagSlotHandler flagSlotHandler;
 
-    public FlagManager(ConfigurationFormattedMessages messages, ProtectedRegion region, List<Integer> flagSlots, PageManager pageManager) {
-        this.messages = messages;
+    public FlagManager(ProtectedRegion region, List<Integer> flagSlots, PageManager pageManager) {
         this.region = region;
         this.availableFlags = new ArrayList<>(0);
-        flagStateManager = new FlagStateManager(messages);
+        flagStateManager = new FlagStateManager();
         flagSlotHandler = new FlagSlotHandler(flagSlots, this, pageManager);
     }
 
     public void load(Player player, Map<String, FlagItem> flagItems) {
         flagStateManager.load(player, region);
         final AvailableFlagLoader availableFlagLoader = new AvailableFlagLoader();
-        availableFlagLoader.addFlag(flagStateManager.getFlagsStates());
-        availableFlagLoader.addFlag(flagStateManager.getFlagsString());
-        availableFlagLoader.sortFlags(flagItems);
-        availableFlags.addAll(availableFlagLoader.getAvailableFlags());
-        // availableFlags.addAll(availableFlagLoader.loadAvailableFlags(flagStateManager.getFlagsStates(), flagItems));
-        // availableFlags.addAll(availableFlagLoader.loadAvailableFlags(flagStateManager.getFlagsString(), flagItems));
+        availableFlags.addAll(availableFlagLoader.loadAvailableFlags(flagStateManager.getAvailableFlags(), flagItems));
     }
 
-    public List<Flag<?>> getAvailableFlags() {
+    // TODO Check deeply if Flag type is needed (try with string, consider revert)
+    public List<String> getAvailableFlags() {
         return availableFlags;
     }
 
@@ -50,9 +41,11 @@ public class FlagManager {
         return flagSlotHandler;
     }
 
-    public void apply(Player player) {
+    public void apply(/*Player player*/) {
+        /*
         final FlagApplier applier = new FlagApplier(messages, this);
-        applier.apply(player);
+        applier.apply(player);*/
+        flagStateManager.apply(region);
     }
 
     public ProtectedRegion getRegion() {

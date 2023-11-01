@@ -43,19 +43,26 @@ public class FlagsAction implements Consumer<InventoryClickEvent> {
     @Override
     public void accept(InventoryClickEvent event) {
         final Player player = (Player) event.getWhoClicked();
-        final String playerName = player.getName();
         // Get the session
         final PlayerMenuSession session = menuManager.getSession(player.getUniqueId());
         if (session == null) {
             return;
         }
         final FlagManager flagManager = session.getFlagManager();
+
+        // TODO Maybe move this whole section to the flag manager
+
         // Get the flag
-        final Flag<?> flag = flagManager.getFlagSlotHandler().getAttachedFlag(event.getSlot());
+        final String flag = flagManager.getFlagSlotHandler().getAttachedFlag(event.getSlot());
         if (flag == null) {
             return;
         }
-        
+
+        flagManager.getFlagStateManager().handleClick(event, flag);
+
+        // TODO Move to the correct location
+
+        /*
         if (flag instanceof StateFlag) {
             flagManager.getFlagStateManager().toggleFlag((StateFlag) flag);
         }else if (flag instanceof StringFlag){
@@ -70,5 +77,6 @@ public class FlagsAction implements Consumer<InventoryClickEvent> {
             // flagManager.getFlagStateManager().defineStringFlag((StringFlag) flag, null);
         }
         session.refresh(player);
+        */
     }
 }

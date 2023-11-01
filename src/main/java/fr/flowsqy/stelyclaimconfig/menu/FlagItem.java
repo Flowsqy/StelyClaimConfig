@@ -1,7 +1,5 @@
 package fr.flowsqy.stelyclaimconfig.menu;
 
-import com.sk89q.worldguard.protection.flags.Flags;
-
 import fr.flowsqy.abstractmenu.item.ItemBuilder;
 
 public class FlagItem {

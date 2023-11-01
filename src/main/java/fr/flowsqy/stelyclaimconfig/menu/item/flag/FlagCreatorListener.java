@@ -1,12 +1,7 @@
 package fr.flowsqy.stelyclaimconfig.menu.item.flag;
 
-import com.sk89q.worldguard.protection.flags.Flag;
-import com.sk89q.worldguard.protection.flags.StateFlag;
-import com.sk89q.worldguard.protection.flags.StringFlag;
-
 import fr.flowsqy.abstractmenu.item.CreatorCopy;
 import fr.flowsqy.abstractmenu.item.ItemBuilder;
-import fr.flowsqy.stelyclaim.common.ConfigurationFormattedMessages;
 import fr.flowsqy.stelyclaimconfig.menu.FlagItem;
 import fr.flowsqy.stelyclaimconfig.menu.MenuManager;
 import fr.flowsqy.stelyclaimconfig.menu.item.flag.effect.FlagEffects;
@@ -24,15 +19,13 @@ import java.util.stream.Collectors;
  */
 public class FlagCreatorListener extends CreatorCopy {
 
-    private final ConfigurationFormattedMessages messages;
     private final MenuManager menuManager;
     private final ItemBuilder emptyItem;
     private final FlagEffects flagEffects;
     private String flagId;
     private boolean state;
 
-    public FlagCreatorListener(ConfigurationFormattedMessages messages, MenuManager menuManager, ItemBuilder emptyItem, FlagEffects flagEffects) {
-        this.messages = messages;
+    public FlagCreatorListener(MenuManager menuManager, ItemBuilder emptyItem, FlagEffects flagEffects) {
         this.menuManager = menuManager;
         this.emptyItem = emptyItem;
         this.flagEffects = flagEffects;
@@ -46,7 +39,6 @@ public class FlagCreatorListener extends CreatorCopy {
     @Override
     public void open(Player player) {
         // Get the player session (should not be null)
-        final String playerName = player.getName();
         final PlayerMenuSession session = menuManager.getSession(player.getUniqueId());
         if (session == null) {
             original(emptyItem);
@@ -54,26 +46,16 @@ public class FlagCreatorListener extends CreatorCopy {
         }
         // Get the flag id of the current item (null if we are at the end of the available flags)
         final FlagManager flagManager = session.getFlagManager();
-        final Iterator<Flag<?>> pageFlagIdItr = flagManager.getFlagSlotHandler().getPageFlagsItr();
-        final Flag<?> flag = pageFlagIdItr.hasNext() ? pageFlagIdItr.next() : null;
+        final Iterator<String> pageFlagIdItr = flagManager.getFlagSlotHandler().getPageFlagsItr();
+        flagId = pageFlagIdItr.hasNext() ? pageFlagIdItr.next() : null;
         // Get the matching item (empty item if the flag is null)
-        if (flag == null) {
+        if (flagId == null) {
             original(emptyItem);
             return;
         }
-        flagId = flag.getName();
 
-        // Get the flag state
-        if (flag instanceof StateFlag) {
-            state = flagManager.getFlagStateManager().getFlagsStates().get((StateFlag) flag);
-        }else if (flag instanceof StringFlag){
-            final String value = flagManager.getFlagStateManager().getFlagsString().get((StringFlag) flag);
-            final String defaultMessage = messages.getFormattedMessage("default-string-flags." + flag.getName(), "%region%", playerName);
-            if (defaultMessage == null)
-                state = false;
-            else
-                state = !defaultMessage.equals(value);
-        }
+        state = Objects.requireNonNull(flagManager.getFlagStateManager().getState(flagId)).isActive();
+
         final FlagItem flagItem = menuManager.getFlagsItems().get(flagId);
         original(flagItem == null ? null : flagItem.getBuilder());
     }
