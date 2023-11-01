@@ -46,12 +46,9 @@ public class FlagApplier {
         for (Map.Entry<StringFlag, String> entry : flagManager.getFlagStateManager().getFlagsString().entrySet()) {
             final StringFlag stringFlag = entry.getKey();
             final String value = entry.getValue();
-            // Avoid changes if the flag is already set to the same value
-            if (value.equals(region.getFlag(stringFlag))) {
-                continue;
-            }
-            // Unset the flag if the 'changed value' is the same as the default one for this flag
-            if (messages.getFormattedMessage("default-string-flags." + stringFlag.getName(), "%region%", playerName).equals(value)) {
+
+            final String defaultMessage = messages.getFormattedMessage("default-string-flags." + stringFlag.getName(), "%region%", playerName);
+            if (defaultMessage == null) {
                 region.setFlag(stringFlag, null);
             } else {
                 // Otherwise, set the flag

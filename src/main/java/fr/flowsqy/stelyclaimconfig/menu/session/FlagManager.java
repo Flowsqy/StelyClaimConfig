@@ -30,8 +30,12 @@ public class FlagManager {
     public void load(Player player, Map<String, FlagItem> flagItems) {
         flagStateManager.load(player, region);
         final AvailableFlagLoader availableFlagLoader = new AvailableFlagLoader();
-        availableFlags.addAll(availableFlagLoader.loadAvailableFlags(flagStateManager.getFlagsStates(), flagItems));
-        availableFlags.addAll(availableFlagLoader.loadAvailableFlags(flagStateManager.getFlagsString(), flagItems));
+        availableFlagLoader.addFlag(flagStateManager.getFlagsStates());
+        availableFlagLoader.addFlag(flagStateManager.getFlagsString());
+        availableFlagLoader.sortFlags(flagItems);
+        availableFlags.addAll(availableFlagLoader.getAvailableFlags());
+        // availableFlags.addAll(availableFlagLoader.loadAvailableFlags(flagStateManager.getFlagsStates(), flagItems));
+        // availableFlags.addAll(availableFlagLoader.loadAvailableFlags(flagStateManager.getFlagsString(), flagItems));
     }
 
     public List<Flag<?>> getAvailableFlags() {

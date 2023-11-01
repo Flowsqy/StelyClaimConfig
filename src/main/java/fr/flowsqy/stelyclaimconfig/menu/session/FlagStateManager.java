@@ -54,7 +54,9 @@ public class FlagStateManager {
 
         final Set<StringFlag> availableStringFlags = flagsString.keySet();
         for (StringFlag flag : availableStringFlags.toArray(new StringFlag[availableStringFlags.size()])) {
-            flagsString.put(flag, messages.getFormattedMessage("default-string-flags." + flag.getName(), "%region%", regionName));
+            final String defaultMessage = messages.getFormattedMessage("default-string-flags." + flag.getName(), "%region%", regionName);
+            if (defaultMessage == null) continue;
+            flagsString.put(flag, defaultMessage);
         }
     }
 

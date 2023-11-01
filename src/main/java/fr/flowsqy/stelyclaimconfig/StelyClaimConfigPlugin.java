@@ -46,17 +46,18 @@ public class StelyClaimConfigPlugin extends JavaPlugin {
             return;
         }
 
-        config = initFile(dataFolder, "config.yml");
+        this.config = initFile(dataFolder, "config.yml");
         this.messages = PrefixedConfigurationFormattedMessages.create(
                 initFile(dataFolder, "messages.yml"),
                 ChatColor.GRAY + "[" + ChatColor.DARK_PURPLE + "StelyClaimConfig" + ChatColor.GRAY + "]" + ChatColor.WHITE
         );
+        
+        conversationBuilder = new ConversationBuilder(this, config);
 
         menuManager = new MenuManager(this, stelyClaimPlugin, initFile(dataFolder, "menu.yml"));
 
-        commandManager = new CommandManager(this, stelyClaimPlugin, menuManager, config);
+        commandManager = new CommandManager(this, stelyClaimPlugin, menuManager, this.config);
 
-        conversationBuilder = new ConversationBuilder(this, config);
     }
 
     @Override

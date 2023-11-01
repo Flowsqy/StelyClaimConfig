@@ -29,7 +29,7 @@ public class MenuManager {
 
         flagsItems = loader.loadFlagItemById(menuConfiguration);
         inventory = loader.loadInventory(menuConfiguration, plugin, stelyClaimPlugin, this, flagSlots);
-        inventory.setCloseCallback(this::removeSession);
+        // inventory.setCloseCallback(this::removeSession);
     }
 
 
@@ -41,10 +41,22 @@ public class MenuManager {
      */
     public void open(Player player, ProtectedRegion region) {
         // Create a session and register it
+        if (playerSessions.containsKey(player.getUniqueId())) {
+            removeSession(player);
+        }
         final PlayerMenuSession session = new PlayerMenuSession(plugin.getMessages(), inventory, region, flagSlots);
         session.load(player, flagsItems);
         playerSessions.put(player.getUniqueId(), session);
         // Open the inventory
+        session.open(player);
+    }
+
+    public void reopen(Player player, ProtectedRegion region) {
+        final PlayerMenuSession session = playerSessions.get(player.getUniqueId());
+        if (session == null) {
+            open(player, region);
+            return;
+        }
         session.open(player);
     }
 

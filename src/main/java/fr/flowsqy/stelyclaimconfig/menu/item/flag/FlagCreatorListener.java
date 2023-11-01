@@ -68,7 +68,11 @@ public class FlagCreatorListener extends CreatorCopy {
             state = flagManager.getFlagStateManager().getFlagsStates().get((StateFlag) flag);
         }else if (flag instanceof StringFlag){
             final String value = flagManager.getFlagStateManager().getFlagsString().get((StringFlag) flag);
-            state = messages.getFormattedMessage("default-string-flags." + flag.getName(), "%region%", playerName).equals(value);
+            final String defaultMessage = messages.getFormattedMessage("default-string-flags." + flag.getName(), "%region%", playerName);
+            if (defaultMessage == null)
+                state = false;
+            else
+                state = !defaultMessage.equals(value);
         }
         final FlagItem flagItem = menuManager.getFlagsItems().get(flagId);
         original(flagItem == null ? null : flagItem.getBuilder());
