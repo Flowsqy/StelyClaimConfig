@@ -55,9 +55,11 @@
             <version>2.0.1</version>
         </dependency>
         <dependency>
-            <groupId>com.github.Flowsqy</groupId>
+            <groupId>fr.flowsqy.stelyclaim</groupId>
             <artifactId>StelyClaim</artifactId>
-            <version>2ca3c5ed05</version>
+            <version>3.0.1-SNAPSHOT</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/api/StelyClaim-3.0.1-SNAPSHOT.jar</systemPath>
         </dependency>
     </dependencies>
 
