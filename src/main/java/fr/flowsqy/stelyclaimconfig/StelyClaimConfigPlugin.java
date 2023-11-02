@@ -1,13 +1,12 @@
 package fr.flowsqy.stelyclaimconfig;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.util.Objects;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
+import fr.flowsqy.stelyclaim.StelyClaimPlugin;
+import fr.flowsqy.stelyclaim.common.ConfigurationFormattedMessages;
+import fr.flowsqy.stelyclaim.common.PrefixedConfigurationFormattedMessages;
+import fr.flowsqy.stelyclaimconfig.commands.CommandManager;
+import fr.flowsqy.stelyclaimconfig.conversation.ConversationBuilder;
 import fr.flowsqy.stelyclaimconfig.conversation.ConversationBuilderLoader;
+import fr.flowsqy.stelyclaimconfig.menu.MenuManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.Configuration;
@@ -15,17 +14,18 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import fr.flowsqy.stelyclaim.StelyClaimPlugin;
-import fr.flowsqy.stelyclaim.common.ConfigurationFormattedMessages;
-import fr.flowsqy.stelyclaim.common.PrefixedConfigurationFormattedMessages;
-import fr.flowsqy.stelyclaimconfig.commands.CommandManager;
-import fr.flowsqy.stelyclaimconfig.conversation.ConversationBuilder;
-import fr.flowsqy.stelyclaimconfig.menu.MenuManager;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.util.Objects;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class StelyClaimConfigPlugin extends JavaPlugin {
 
     private ConfigurationFormattedMessages messages;
     private MenuManager menuManager;
+    private ConversationBuilder conversationBuilder;
     private CommandManager commandManager;
 
     @Override
@@ -52,7 +52,7 @@ public class StelyClaimConfigPlugin extends JavaPlugin {
         );
 
         final ConversationBuilderLoader conversationBuilderLoader = new ConversationBuilderLoader();
-        ConversationBuilder conversationBuilder = conversationBuilderLoader.load(this, configuration);
+        conversationBuilder = conversationBuilderLoader.load(this, configuration);
 
         menuManager = new MenuManager(this, stelyClaimPlugin, initFile(dataFolder, "menu.yml"));
 
@@ -86,6 +86,15 @@ public class StelyClaimConfigPlugin extends JavaPlugin {
 
     public ConfigurationFormattedMessages getMessages() {
         return messages;
+    }
+
+    //TODO Use dependency injection instead
+    public ConversationBuilder getConversationBuilder() {
+        return conversationBuilder;
+    }
+
+    public MenuManager getMenuManager() {
+        return menuManager;
     }
 
 }

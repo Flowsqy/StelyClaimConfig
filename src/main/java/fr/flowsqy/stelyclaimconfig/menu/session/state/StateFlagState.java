@@ -12,8 +12,9 @@ public class StateFlagState implements FlagState {
     private final StateFlag flag;
     private boolean value;
 
-    public StateFlagState(@NotNull StateFlag flag) {
+    public StateFlagState(@NotNull StateFlag flag, boolean value) {
         this.flag = flag;
+        this.value = value;
     }
 
     @Override
