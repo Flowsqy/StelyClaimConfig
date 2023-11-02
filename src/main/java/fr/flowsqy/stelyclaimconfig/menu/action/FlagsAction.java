@@ -1,14 +1,13 @@
 package fr.flowsqy.stelyclaimconfig.menu.action;
 
-import java.util.function.Consumer;
-
-import fr.flowsqy.stelyclaimconfig.menu.session.state.FlagState;
-import org.bukkit.event.inventory.InventoryClickEvent;
-
 import fr.flowsqy.stelyclaimconfig.menu.MenuManager;
 import fr.flowsqy.stelyclaimconfig.menu.session.FlagManager;
 import fr.flowsqy.stelyclaimconfig.menu.session.PlayerMenuSession;
+import fr.flowsqy.stelyclaimconfig.menu.session.state.FlagState;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.function.Consumer;
 
 public class FlagsAction implements Consumer<InventoryClickEvent> {
 
@@ -38,7 +37,7 @@ public class FlagsAction implements Consumer<InventoryClickEvent> {
         }
         // Get the state
         final FlagState flagState = flagManager.getFlagStateManager().getState(flagId);
-        if(flagState == null) {
+        if (flagState == null) {
             // Maybe throw an error; it should not happen
             return;
         }

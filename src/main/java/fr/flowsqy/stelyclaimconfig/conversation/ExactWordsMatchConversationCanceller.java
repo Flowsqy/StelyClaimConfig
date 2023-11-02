@@ -25,7 +25,7 @@ public class ExactWordsMatchConversationCanceller implements ConversationCancell
     }
 
     @Override
-    public ConversationCanceller clone() {
+    public @NotNull ConversationCanceller clone() {
         return new ExactWordsMatchConversationCanceller(cancelWords);
     }
 }

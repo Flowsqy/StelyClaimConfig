@@ -6,7 +6,7 @@ public class FlagItem {
 
     private final int order;
     private final ItemBuilder builder;
-    
+
     public FlagItem(int order, ItemBuilder builder) {
         this.order = order;
         this.builder = builder;

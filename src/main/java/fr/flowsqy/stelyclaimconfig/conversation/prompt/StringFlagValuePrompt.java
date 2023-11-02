@@ -30,7 +30,7 @@ public class StringFlagValuePrompt extends StringPrompt {
     @Override
     public Prompt acceptInput(@NotNull ConversationContext context, String input) {
         final Player author = (Player) context.getForWhom();
-        
+
         if (!inputPredicate.test(input)) {
             author.sendRawMessage(messages.getFormattedMessage("string-flags.contains-blocked-color"));
             return this;

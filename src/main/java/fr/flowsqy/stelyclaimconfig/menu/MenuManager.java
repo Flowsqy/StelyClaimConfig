@@ -108,7 +108,7 @@ public class MenuManager {
     private void onClose(@NotNull Player player) {
         final UUID playerId = player.getUniqueId();
         playerSessions.remove(playerId);
-        if(pauseIds.remove(playerId)) {
+        if (pauseIds.remove(playerId)) {
             return;
         }
         removeSession(playerId);
