@@ -28,7 +28,6 @@ public class FlagManager {
         availableFlags.addAll(availableFlagLoader.loadAvailableFlags(flagStateManager.getAvailableFlags(), flagItems));
     }
 
-    // TODO Check deeply if Flag type is needed (try with string, consider revert)
     public List<String> getAvailableFlags() {
         return availableFlags;
     }
@@ -41,10 +40,7 @@ public class FlagManager {
         return flagSlotHandler;
     }
 
-    public void apply(/*Player player*/) {
-        /*
-        final FlagApplier applier = new FlagApplier(messages, this);
-        applier.apply(player);*/
+    public void apply() {
         flagStateManager.apply(region);
     }
 

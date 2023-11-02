@@ -41,16 +41,6 @@ public class FlagStateManager {
         flagsStates.values().forEach(FlagState::setDefault);
     }
 
-    public void setAllValue(boolean state) {
-
-        // TODO Decide if it's still relevant
-        /*
-        final Set<StateFlag> availableStateFlags = flagsStates.keySet();
-        for (StateFlag flag : availableStateFlags.toArray(new StateFlag[availableStateFlags.size()])) {
-            flagsStates.put(flag, state);
-        }*/
-    }
-
     public void apply(@NotNull ProtectedRegion region) {
         flagsStates.values().forEach(flagState -> flagState.apply(region));
     }

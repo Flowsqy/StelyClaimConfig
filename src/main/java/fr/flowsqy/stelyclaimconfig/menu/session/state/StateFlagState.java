@@ -51,6 +51,10 @@ public class StateFlagState implements FlagState {
         session.refresh((Player) event.getWhoClicked());
     }
 
+    public void setValue(boolean value) {
+        this.value = value;
+    }
+
     public void toggleValue() {
         value = !value;
     }
