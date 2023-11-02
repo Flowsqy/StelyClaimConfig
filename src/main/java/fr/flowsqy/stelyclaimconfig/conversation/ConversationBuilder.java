@@ -1,33 +1,42 @@
 package fr.flowsqy.stelyclaimconfig.conversation;
 
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.conversations.Conversation;
 import org.bukkit.conversations.ConversationFactory;
 import org.bukkit.conversations.Prompt;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
 
-import fr.flowsqy.stelyclaimconfig.StelyClaimConfigPlugin;
+import java.util.Set;
 
 public class ConversationBuilder {
 
-    private final StelyClaimConfigPlugin plugin;
-    private final YamlConfiguration config;
+    private final Plugin plugin;
+    private final Set<String> cancelWords;
+    private final int timeout;
 
-    public ConversationBuilder(StelyClaimConfigPlugin plugin, YamlConfiguration config) {
+    public ConversationBuilder(@NotNull Plugin plugin, @NotNull Set<String> cancelWords, int timeout) {
         this.plugin = plugin;
-        this.config = config;
+        this.cancelWords = cancelWords;
+        this.timeout = timeout;
     }
 
-    public void getNameInput(Player player, Prompt prompt) {
-        ConversationFactory cf = new ConversationFactory(plugin);
+    /**
+     * Build a conversation
+     *
+     * @param player The target player
+     * @param prompt The first {@link Prompt}
+     * @return A {@link Conversation} with plugin specific cancellers
+     */
+    public Conversation buildConversation(@NotNull Player player, @NotNull Prompt prompt) {
+        final ConversationFactory factory = new ConversationFactory(plugin);
 
-        cf.withFirstPrompt(prompt);
-        cf.withLocalEcho(false);
-        cf.withConversationCanceller(new ConversationSetCanceller(config));
-        cf.withTimeout(config.getInt("conversation-timeout"));
+        factory.withFirstPrompt(prompt);
+        factory.withLocalEcho(false);
+        factory.withConversationCanceller(new ExactWordsMatchConversationCanceller(cancelWords));
+        factory.withTimeout(timeout);
 
-        Conversation conv = cf.buildConversation(player);
-        conv.begin();
-        return;
+        return factory.buildConversation(player);
     }
+
 }

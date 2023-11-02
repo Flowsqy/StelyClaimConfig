@@ -5,7 +5,7 @@ statistic: false
 # Time in seconds before a conversation is automatically canceled
 conversation-timeout: 120
 
-# Words that allow to cancel a conversation
+# Words that cancel a conversation
 conversation-cancel-words:
   - "cancel"
   - "annuler"

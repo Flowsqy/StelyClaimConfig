@@ -1,14 +1,8 @@
 package fr.flowsqy.stelyclaimconfig.menu.session;
 
-import com.sk89q.worldguard.protection.flags.StateFlag;
-import com.sk89q.worldguard.protection.flags.StringFlag;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
-
-import fr.flowsqy.stelyclaim.common.ConfigurationFormattedMessages;
-
 import fr.flowsqy.stelyclaimconfig.menu.session.state.FlagState;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -22,23 +16,15 @@ import java.util.Set;
  */
 public class FlagStateManager {
 
-    // TODO Generalize the map
-
-    // private final ConfigurationFormattedMessages messages;
-    //private final Map<StateFlag, Boolean> flagsStates;
-    //private final Map<StringFlag, String> flagsString;
     private final Map<String, FlagState> flagsStates;
 
-    public FlagStateManager(/*ConfigurationFormattedMessages messages*/) {
-        //this.messages = messages;
+    public FlagStateManager() {
         flagsStates = new HashMap<>(0);
-        //flagsString = new HashMap<>(0);
     }
 
     public void load(Player player, ProtectedRegion region) {
         final FlagStateLoader loader = new FlagStateLoader(player, region);
         flagsStates.putAll(loader.loadFlagStates());
-        //flagsString.putAll(loader.loadFlagStrings());
     }
 
     @NotNull
@@ -51,26 +37,7 @@ public class FlagStateManager {
         return flagsStates.get(flagId);
     }
 
-    /*
-    public Map<StateFlag, Boolean> getFlagsStates() {
-        return flagsStates;
-    }*/
-
-    /*
-    public Map<StringFlag, String> getFlagsString() {
-        return flagsString;
-    }*/
-
-    /*
-    public void toggleFlag(StateFlag flag) {
-        flagsStates.computeIfPresent(flag, (k, v) -> !v);
-    }
-
-    public void defineStringFlag(StringFlag flag, String value) {
-        flagsString.computeIfPresent(flag, (k, v) -> value);
-    }*/
-
-    public void setDefault(/*String regionName*/) {
+    public void setDefault() {
         flagsStates.values().forEach(FlagState::setDefault);
     }
 
@@ -82,9 +49,6 @@ public class FlagStateManager {
         for (StateFlag flag : availableStateFlags.toArray(new StateFlag[availableStateFlags.size()])) {
             flagsStates.put(flag, state);
         }*/
-    }
-
-    public void handleClick(@NotNull InventoryClickEvent event, @NotNull String flag) {
     }
 
     public void apply(@NotNull ProtectedRegion region) {

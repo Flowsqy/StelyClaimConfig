@@ -7,8 +7,10 @@ import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import fr.flowsqy.stelyclaimconfig.conversation.ConversationBuilderLoader;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -25,16 +27,13 @@ public class StelyClaimConfigPlugin extends JavaPlugin {
     private ConfigurationFormattedMessages messages;
     private MenuManager menuManager;
     private CommandManager commandManager;
-    private ConversationBuilder conversationBuilder;
-    private YamlConfiguration config;
 
     @Override
     public void onEnable() {
         final Plugin rawSCPlugin = getServer().getPluginManager().getPlugin("StelyClaim");
-        if (!(rawSCPlugin instanceof StelyClaimPlugin)) {
+        if (!(rawSCPlugin instanceof StelyClaimPlugin stelyClaimPlugin)) {
             throw new RuntimeException("Wrong StelyClaim plugin, install the correct one");
         }
-        final StelyClaimPlugin stelyClaimPlugin = (StelyClaimPlugin) rawSCPlugin;
 
         final Logger logger = getLogger();
         final File dataFolder = getDataFolder();
@@ -46,17 +45,18 @@ public class StelyClaimConfigPlugin extends JavaPlugin {
             return;
         }
 
-        this.config = initFile(dataFolder, "config.yml");
+        final Configuration configuration = initFile(dataFolder, "config.yml");
         this.messages = PrefixedConfigurationFormattedMessages.create(
                 initFile(dataFolder, "messages.yml"),
                 ChatColor.GRAY + "[" + ChatColor.DARK_PURPLE + "StelyClaimConfig" + ChatColor.GRAY + "]" + ChatColor.WHITE
         );
-        
-        conversationBuilder = new ConversationBuilder(this, config);
+
+        final ConversationBuilderLoader conversationBuilderLoader = new ConversationBuilderLoader();
+        ConversationBuilder conversationBuilder = conversationBuilderLoader.load(this, configuration);
 
         menuManager = new MenuManager(this, stelyClaimPlugin, initFile(dataFolder, "menu.yml"));
 
-        commandManager = new CommandManager(this, stelyClaimPlugin, menuManager, this.config);
+        commandManager = new CommandManager(this, stelyClaimPlugin, menuManager, configuration);
 
     }
 
@@ -88,11 +88,4 @@ public class StelyClaimConfigPlugin extends JavaPlugin {
         return messages;
     }
 
-    public ConversationBuilder getConversationBuilder() {
-        return conversationBuilder;
-    }
-
-    public YamlConfiguration getConfig() {
-        return config;
-    }
 }

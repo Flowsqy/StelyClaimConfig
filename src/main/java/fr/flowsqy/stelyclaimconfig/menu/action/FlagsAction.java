@@ -2,37 +2,20 @@ package fr.flowsqy.stelyclaimconfig.menu.action;
 
 import java.util.function.Consumer;
 
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
+import fr.flowsqy.stelyclaimconfig.menu.session.state.FlagState;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
-import com.sk89q.worldguard.protection.flags.Flag;
-import com.sk89q.worldguard.protection.flags.StateFlag;
-import com.sk89q.worldguard.protection.flags.StringFlag;
-
-import fr.flowsqy.stelyclaim.api.ProtocolManager;
-import fr.flowsqy.stelyclaim.common.ConfigurationFormattedMessages;
-import fr.flowsqy.stelyclaim.protocol.domain.DomainProtocol.Protocol;
-import fr.flowsqy.stelyclaimconfig.conversation.ConversationBuilder;
-import fr.flowsqy.stelyclaimconfig.conversation.impl.ConvGetFlagText;
 import fr.flowsqy.stelyclaimconfig.menu.MenuManager;
 import fr.flowsqy.stelyclaimconfig.menu.session.FlagManager;
 import fr.flowsqy.stelyclaimconfig.menu.session.PlayerMenuSession;
+import org.jetbrains.annotations.NotNull;
 
 public class FlagsAction implements Consumer<InventoryClickEvent> {
 
     private final MenuManager menuManager;
-    private final ConversationBuilder conv;
-    private final YamlConfiguration config;
-    private final ConfigurationFormattedMessages messages;
-    private final ProtocolManager protocolManager;
 
-    public FlagsAction(MenuManager menuManager, ConversationBuilder conv, YamlConfiguration config, ConfigurationFormattedMessages messages, ProtocolManager protocolManager) {
+    public FlagsAction(MenuManager menuManager) {
         this.menuManager = menuManager;
-        this.conv = conv;
-        this.config = config;
-        this.messages = messages;
-        this.protocolManager = protocolManager;
     }
 
     /**
@@ -41,42 +24,24 @@ public class FlagsAction implements Consumer<InventoryClickEvent> {
      * @param event The {@link InventoryClickEvent} that trigger the method
      */
     @Override
-    public void accept(InventoryClickEvent event) {
-        final Player player = (Player) event.getWhoClicked();
+    public void accept(@NotNull InventoryClickEvent event) {
         // Get the session
-        final PlayerMenuSession session = menuManager.getSession(player.getUniqueId());
+        final PlayerMenuSession session = menuManager.getSession(event.getWhoClicked().getUniqueId());
         if (session == null) {
             return;
         }
         final FlagManager flagManager = session.getFlagManager();
-
-        // TODO Maybe move this whole section to the flag manager
-
         // Get the flag
-        final String flag = flagManager.getFlagSlotHandler().getAttachedFlag(event.getSlot());
-        if (flag == null) {
+        final String flagId = flagManager.getFlagSlotHandler().getAttachedFlag(event.getSlot());
+        if (flagId == null) {
             return;
         }
-
-        flagManager.getFlagStateManager().handleClick(event, flag);
-
-        // TODO Move to the correct location
-
-        /*
-        if (flag instanceof StateFlag) {
-            flagManager.getFlagStateManager().toggleFlag((StateFlag) flag);
-        }else if (flag instanceof StringFlag){
-            final String value = flagManager.getFlagStateManager().getFlagsString().get((StringFlag) flag);
-            final String defaultMessage = messages.getFormattedMessage("default-string-flags." + flag.getName(), "%region%", playerName);
-            if (defaultMessage == null || defaultMessage.equals(value)){
-                player.closeInventory();
-                conv.getNameInput(player, new ConvGetFlagText((StringFlag) flag, flagManager, config, messages, menuManager, protocolManager));
-            }else{
-                flagManager.getFlagStateManager().defineStringFlag((StringFlag) flag, defaultMessage);
-            }
-            // flagManager.getFlagStateManager().defineStringFlag((StringFlag) flag, null);
+        // Get the state
+        final FlagState flagState = flagManager.getFlagStateManager().getState(flagId);
+        if(flagState == null) {
+            // Maybe throw an error; it should not happen
+            return;
         }
-        session.refresh(player);
-        */
+        flagState.handleUserInput(event, session);
     }
 }

@@ -2,6 +2,9 @@ package fr.flowsqy.stelyclaimconfig.menu.session.state;
 
 import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
+import fr.flowsqy.stelyclaimconfig.menu.session.PlayerMenuSession;
+import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.jetbrains.annotations.NotNull;
 
 public class StateFlagState implements FlagState {
@@ -40,4 +43,15 @@ public class StateFlagState implements FlagState {
     public void setDefault() {
         value = flag.getDefault() == StateFlag.State.ALLOW;
     }
+
+    @Override
+    public void handleUserInput(@NotNull InventoryClickEvent event, @NotNull PlayerMenuSession session) {
+        toggleValue();
+        session.refresh((Player) event.getWhoClicked());
+    }
+
+    public void toggleValue() {
+        value = !value;
+    }
+
 }

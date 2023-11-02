@@ -30,6 +30,7 @@ public class ConfigSubCommand extends ProtocolSubCommand {
         this.menuManager = menuManager;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public boolean execute(CommandSender sender, List<String> args, int size, boolean isPlayer) {
         final Player player = (Player) sender;

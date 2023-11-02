@@ -9,6 +9,8 @@ import fr.flowsqy.stelyclaimconfig.menu.session.PlayerMenuSession;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
@@ -16,18 +18,20 @@ public class MenuManager {
 
     private final Map<UUID, PlayerMenuSession> playerSessions;
     private final Map<String, FlagItem> flagsItems;
+    private final Set<UUID> pauseIds;
     private final List<Integer> flagSlots;
     private final EventInventory inventory;
 
     public MenuManager(StelyClaimConfigPlugin plugin, StelyClaimPlugin stelyClaimPlugin, YamlConfiguration menuConfiguration) {
         playerSessions = new HashMap<>();
         flagSlots = new ArrayList<>(0);
+        pauseIds = new HashSet<>();
 
         final MenuLoader loader = new MenuLoader();
 
         flagsItems = loader.loadFlagItemById(menuConfiguration);
         inventory = loader.loadInventory(menuConfiguration, plugin, stelyClaimPlugin, this, flagSlots);
-        // inventory.setCloseCallback(this::removeSession);
+        inventory.setCloseCallback(this::onClose);
     }
 
 
@@ -37,25 +41,39 @@ public class MenuManager {
      * @param player The player that open the GUI
      * @param region The {@link ProtectedRegion} that will be modified
      */
-    public void open(Player player, ProtectedRegion region) {
+    public void open(@NotNull Player player, @NotNull ProtectedRegion region) {
+        final UUID playerId = player.getUniqueId();
         // Create a session and register it
-        if (playerSessions.containsKey(player.getUniqueId())) {
-            removeSession(player);
+        if (playerSessions.containsKey(playerId)) {
+            removeSession(playerId);
         }
         final PlayerMenuSession session = new PlayerMenuSession(inventory, region, flagSlots);
         session.load(player, flagsItems);
-        playerSessions.put(player.getUniqueId(), session);
+        playerSessions.put(playerId, session);
         // Open the inventory
         session.open(player);
     }
 
-    public void reopen(Player player, ProtectedRegion region) {
+    /**
+     * Resume a paused session
+     *
+     * @param player The owner of the session
+     */
+    public void resume(@NotNull Player player) {
         final PlayerMenuSession session = playerSessions.get(player.getUniqueId());
         if (session == null) {
-            open(player, region);
-            return;
+            throw new IllegalStateException("The session should exist to call this method");
         }
         session.open(player);
+    }
+
+    /**
+     * Pause a session. Allow closing the inventory without erasing the session
+     *
+     * @param player The owner of the session
+     */
+    public void pause(@NotNull Player player) {
+        pauseIds.add(player.getUniqueId());
     }
 
     /**
@@ -64,7 +82,8 @@ public class MenuManager {
      * @param playerId The {@link UUID} of the player
      * @return The {@link PlayerMenuSession}. {@code null} if he does not have a session
      */
-    public PlayerMenuSession getSession(UUID playerId) {
+    @Nullable
+    public PlayerMenuSession getSession(@NotNull UUID playerId) {
         return playerSessions.get(playerId);
     }
 
@@ -75,22 +94,38 @@ public class MenuManager {
     /**
      * Remove session
      *
-     * @param player The owner of the session
+     * @param playerId The owner's id of the session
      */
-    private void removeSession(Player player) {
-        playerSessions.remove(player.getUniqueId());
+    private void removeSession(@NotNull UUID playerId) {
+        playerSessions.remove(playerId);
+    }
+
+    /**
+     * Closing listener. Erase the session if needed
+     *
+     * @param player The session owner
+     */
+    private void onClose(@NotNull Player player) {
+        final UUID playerId = player.getUniqueId();
+        playerSessions.remove(playerId);
+        if(pauseIds.remove(playerId)) {
+            return;
+        }
+        removeSession(playerId);
     }
 
     /**
      * Close all sessions
      */
     public void closeAllSessions() {
+        pauseIds.clear();
         for (UUID playerUUID : new HashSet<>(playerSessions.keySet())) {
             final Player player = Bukkit.getPlayer(playerUUID);
             if (player != null) {
                 player.closeInventory();
             }
         }
+        playerSessions.clear();
     }
 
 }

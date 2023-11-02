@@ -76,7 +76,7 @@ public class SCCRegisterHandler implements EventInventory.RegisterHandler {
                 // Register the items flags
                 eventInventory.register(
                         builder,
-                        new FlagsAction(menuManager, plugin.getConversationBuilder(), plugin.getConfig(), plugin.getMessages(), stelyClaimPlugin.getProtocolManager()),
+                        new FlagsAction(menuManager),
                         slots
                 );
                 break;

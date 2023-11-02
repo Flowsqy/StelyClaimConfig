@@ -5,7 +5,7 @@ import java.util.Map;
 
 import fr.flowsqy.stelyclaimconfig.menu.session.state.FlagState;
 import fr.flowsqy.stelyclaimconfig.menu.session.state.StateFlagState;
-import fr.flowsqy.stelyclaimconfig.menu.session.state.StringStateFlag;
+import fr.flowsqy.stelyclaimconfig.menu.session.state.StringFlagState;
 import org.bukkit.entity.Player;
 
 import com.sk89q.worldguard.WorldGuard;
@@ -55,7 +55,7 @@ public class FlagStateLoader {
             if (flag instanceof StateFlag stateFlag) {
                 flagState = new StateFlagState(stateFlag);
             } else {
-                flagState = new StringStateFlag((StringFlag) flag);
+                flagState = new StringFlagState((StringFlag) flag);
             }
 
             flagsStates.put(flag.getName(), flagState);
