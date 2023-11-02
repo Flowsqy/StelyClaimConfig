@@ -13,11 +13,13 @@ public class PlayerMenuSession {
     private final EventInventory eventInventory;
     private final FlagManager flagManager;
     private final PageManager pageManager;
+    private final ConversationManager conversationManager;
 
     public PlayerMenuSession(EventInventory eventInventory, ProtectedRegion region, List<Integer> flagSlots) {
         this.eventInventory = eventInventory;
         pageManager = new PageManager();
         flagManager = new FlagManager(region, flagSlots, pageManager);
+        conversationManager = new ConversationManager();
     }
 
     public FlagManager getFlagManager() {
@@ -45,6 +47,14 @@ public class PlayerMenuSession {
         flagSlotHandler.createPageFlagsItr();
         eventInventory.refresh(player.getUniqueId(), player);
         flagSlotHandler.clearPageFlagsItr();
+    }
+
+    public ConversationManager getConversationManager() {
+        return conversationManager;
+    }
+
+    public void close() {
+        conversationManager.closeConversations();
     }
 
 }

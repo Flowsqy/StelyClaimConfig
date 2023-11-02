@@ -8,6 +8,7 @@ import fr.flowsqy.stelyclaimconfig.conversation.ConversationBuilder;
 import fr.flowsqy.stelyclaimconfig.conversation.prompt.StringFlagValuePrompt;
 import fr.flowsqy.stelyclaimconfig.menu.MenuManager;
 import fr.flowsqy.stelyclaimconfig.menu.session.PlayerMenuSession;
+import org.bukkit.conversations.Conversation;
 import org.bukkit.conversations.Prompt;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -66,7 +67,9 @@ public class StringFlagState implements FlagState {
         player.closeInventory();
         // TODO Check for cancelled colors
         final Prompt prompt = new StringFlagValuePrompt(s -> true, this, messages, menuManager);
-        conversationBuilder.buildConversation(player, prompt).begin();
+        final Conversation conversation = conversationBuilder.buildConversation(player, prompt);
+        session.getConversationManager().registerConversation(conversation);
+        conversation.begin();
     }
 
     public void setValue(@Nullable String value) {

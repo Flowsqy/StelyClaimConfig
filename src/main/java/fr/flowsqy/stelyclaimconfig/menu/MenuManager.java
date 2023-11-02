@@ -97,7 +97,10 @@ public class MenuManager {
      * @param playerId The owner's id of the session
      */
     private void removeSession(@NotNull UUID playerId) {
-        playerSessions.remove(playerId);
+        final PlayerMenuSession session = playerSessions.remove(playerId);
+        if (session != null) {
+            session.close();
+        }
     }
 
     /**
