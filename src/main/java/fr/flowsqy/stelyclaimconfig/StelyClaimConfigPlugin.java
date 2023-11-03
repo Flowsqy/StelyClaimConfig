@@ -4,9 +4,8 @@ import fr.flowsqy.stelyclaim.StelyClaimPlugin;
 import fr.flowsqy.stelyclaim.common.ConfigurationFormattedMessages;
 import fr.flowsqy.stelyclaim.common.PrefixedConfigurationFormattedMessages;
 import fr.flowsqy.stelyclaimconfig.commands.CommandManager;
-import fr.flowsqy.stelyclaimconfig.conversation.ConversationBuilder;
-import fr.flowsqy.stelyclaimconfig.conversation.ConversationBuilderLoader;
 import fr.flowsqy.stelyclaimconfig.menu.MenuManager;
+import fr.flowsqy.stelyclaimconfig.menu.session.state.FlagStateLoaderCreator;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.Configuration;
@@ -25,7 +24,6 @@ public class StelyClaimConfigPlugin extends JavaPlugin {
 
     private ConfigurationFormattedMessages messages;
     private MenuManager menuManager;
-    private ConversationBuilder conversationBuilder;
     private CommandManager commandManager;
 
     @Override
@@ -51,10 +49,9 @@ public class StelyClaimConfigPlugin extends JavaPlugin {
                 ChatColor.GRAY + "[" + ChatColor.DARK_PURPLE + "StelyClaimConfig" + ChatColor.GRAY + "]" + ChatColor.WHITE
         );
 
-        final ConversationBuilderLoader conversationBuilderLoader = new ConversationBuilderLoader();
-        conversationBuilder = conversationBuilderLoader.load(this, configuration);
+        final FlagStateLoaderCreator flagStateLoaderCreator = new FlagStateLoaderCreator(this, configuration);
 
-        menuManager = new MenuManager(this, stelyClaimPlugin, initFile(dataFolder, "menu.yml"));
+        menuManager = new MenuManager(this, stelyClaimPlugin, initFile(dataFolder, "menu.yml"), flagStateLoaderCreator);
 
         commandManager = new CommandManager(this, stelyClaimPlugin, menuManager, configuration);
 
@@ -86,15 +83,6 @@ public class StelyClaimConfigPlugin extends JavaPlugin {
 
     public ConfigurationFormattedMessages getMessages() {
         return messages;
-    }
-
-    //TODO Use dependency injection instead
-    public ConversationBuilder getConversationBuilder() {
-        return conversationBuilder;
-    }
-
-    public MenuManager getMenuManager() {
-        return menuManager;
     }
 
 }

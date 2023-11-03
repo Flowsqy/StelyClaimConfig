@@ -3,7 +3,6 @@ package fr.flowsqy.stelyclaimconfig.menu.session.state;
 import com.sk89q.worldguard.protection.flags.StringFlag;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import fr.flowsqy.stelyclaim.api.FormattedMessages;
-import fr.flowsqy.stelyclaimconfig.StelyClaimConfigPlugin;
 import fr.flowsqy.stelyclaimconfig.conversation.ConversationBuilder;
 import fr.flowsqy.stelyclaimconfig.conversation.prompt.StringFlagValuePrompt;
 import fr.flowsqy.stelyclaimconfig.menu.MenuManager;
@@ -12,19 +11,23 @@ import org.bukkit.conversations.Conversation;
 import org.bukkit.conversations.Prompt;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.function.Predicate;
+
 public class StringFlagState implements FlagState {
 
+    private final StringInteractData stringInteractData;
     private final StringFlag flag;
     private final String defaultValue = null;
     private String value;
 
-    public StringFlagState(@NotNull StringFlag flag, @Nullable String value) {
+    public StringFlagState(@NotNull StringInteractData stringInteractData, @NotNull StringFlag flag, @Nullable String value) {
+        this.stringInteractData = stringInteractData;
         this.flag = flag;
         this.value = value;
+        //this.defaultValue = defaultValue;
     }
 
     @Override
@@ -47,7 +50,6 @@ public class StringFlagState implements FlagState {
 
     @Override
     public void setDefault() {
-        if (defaultValue == null) return;
         value = defaultValue;
     }
 
@@ -57,16 +59,15 @@ public class StringFlagState implements FlagState {
 
         final Player player = (Player) event.getWhoClicked();
 
-        // TODO Use dependency injection pattern
-        final StelyClaimConfigPlugin plugin = JavaPlugin.getPlugin(StelyClaimConfigPlugin.class);
-        final ConversationBuilder conversationBuilder = plugin.getConversationBuilder();
-        final FormattedMessages messages = plugin.getMessages();
-        final MenuManager menuManager = plugin.getMenuManager();
+        final ConversationBuilder conversationBuilder = stringInteractData.conversationBuilder();
+        final FormattedMessages messages = stringInteractData.messages();
+        final MenuManager menuManager = stringInteractData.menuManager();
+        final Predicate<String> inputPredicate = stringInteractData.inputPredicate();
 
         menuManager.pause(player);
         player.closeInventory();
-        // TODO Check for cancelled colors
-        final Prompt prompt = new StringFlagValuePrompt(s -> true, this, messages, menuManager);
+
+        final Prompt prompt = new StringFlagValuePrompt(inputPredicate, this, messages, menuManager);
         final Conversation conversation = conversationBuilder.buildConversation(player, prompt);
         session.getConversationManager().registerConversation(conversation);
         conversation.begin();

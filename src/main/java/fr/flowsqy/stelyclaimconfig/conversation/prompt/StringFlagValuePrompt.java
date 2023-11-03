@@ -14,7 +14,6 @@ import java.util.function.Predicate;
 
 public class StringFlagValuePrompt extends StringPrompt {
 
-    //private final String[] blockedColors; // config.getStringList("blocked-colors")
     private final Predicate<String> inputPredicate;
     private final StringFlagState flagState;
     private final FormattedMessages messages;
@@ -47,15 +46,5 @@ public class StringFlagValuePrompt extends StringPrompt {
     public @NotNull String getPromptText(@NotNull ConversationContext context) {
         return messages.getFormattedMessage("string-flags.send-flag-text");
     }
-
-    /*
-    private boolean containsBlockedColors(String input){
-        for (String color : blockedColors) {
-            if (input.contains(color)) {
-                return true;
-            }
-        }
-        return false;
-    }*/
 
 }

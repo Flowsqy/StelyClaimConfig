@@ -2,6 +2,7 @@ package fr.flowsqy.stelyclaimconfig.menu.session;
 
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import fr.flowsqy.stelyclaimconfig.menu.session.state.FlagState;
+import fr.flowsqy.stelyclaimconfig.menu.session.state.FlagStateLoader;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -16,15 +17,16 @@ import java.util.Set;
  */
 public class FlagStateManager {
 
+    private final FlagStateLoader flagStateLoader;
     private final Map<String, FlagState> flagsStates;
 
-    public FlagStateManager() {
+    public FlagStateManager(@NotNull FlagStateLoader flagStateLoader) {
+        this.flagStateLoader = flagStateLoader;
         flagsStates = new HashMap<>(0);
     }
 
     public void load(Player player, ProtectedRegion region) {
-        final FlagStateLoader loader = new FlagStateLoader(player, region);
-        flagsStates.putAll(loader.loadFlagStates());
+        flagsStates.putAll(flagStateLoader.loadFlagStates(player, region));
     }
 
     @NotNull

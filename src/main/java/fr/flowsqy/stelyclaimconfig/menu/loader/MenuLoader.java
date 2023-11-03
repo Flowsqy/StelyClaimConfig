@@ -8,8 +8,9 @@ import fr.flowsqy.stelyclaimconfig.StelyClaimConfigPlugin;
 import fr.flowsqy.stelyclaimconfig.menu.FlagItem;
 import fr.flowsqy.stelyclaimconfig.menu.MenuManager;
 import fr.flowsqy.stelyclaimconfig.menu.SCCRegisterHandler;
+import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.YamlConfiguration;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -50,7 +51,7 @@ public class MenuLoader {
      *
      * @param menuConfiguration The {@link ConfigurationSection} that contains the menu
      */
-    public EventInventory loadInventory(YamlConfiguration menuConfiguration, StelyClaimConfigPlugin plugin, StelyClaimPlugin stelyClaimPlugin, MenuManager menuManager, List<Integer> flagSlots) {
+    public EventInventory loadInventory(@NotNull Configuration menuConfiguration, @NotNull StelyClaimConfigPlugin plugin, @NotNull StelyClaimPlugin stelyClaimPlugin, @NotNull MenuManager menuManager, @NotNull List<Integer> flagSlots) {
         final MenuFactory factory = new MenuFactory(plugin);
         // Create the GUI
         final ConfigurationSection menuSection = menuConfiguration.getConfigurationSection("menu");

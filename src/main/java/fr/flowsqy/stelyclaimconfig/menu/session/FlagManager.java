@@ -2,7 +2,9 @@ package fr.flowsqy.stelyclaimconfig.menu.session;
 
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import fr.flowsqy.stelyclaimconfig.menu.FlagItem;
+import fr.flowsqy.stelyclaimconfig.menu.session.state.FlagStateLoader;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,10 +17,10 @@ public class FlagManager {
     private final FlagStateManager flagStateManager;
     private final FlagSlotHandler flagSlotHandler;
 
-    public FlagManager(ProtectedRegion region, List<Integer> flagSlots, PageManager pageManager) {
+    public FlagManager(@NotNull FlagStateLoader flagStateLoader, @NotNull ProtectedRegion region, @NotNull List<Integer> flagSlots, @NotNull PageManager pageManager) {
         this.region = region;
         this.availableFlags = new ArrayList<>(0);
-        flagStateManager = new FlagStateManager();
+        flagStateManager = new FlagStateManager(flagStateLoader);
         flagSlotHandler = new FlagSlotHandler(flagSlots, this, pageManager);
     }
 
