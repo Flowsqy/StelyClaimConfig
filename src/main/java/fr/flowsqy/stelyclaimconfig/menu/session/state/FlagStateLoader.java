@@ -15,10 +15,10 @@ import java.util.Map;
 
 public class FlagStateLoader {
 
-    private final FlagStateInteractData flagStateInteractData;
+    private final FlagStateData flagStateData;
 
-    public FlagStateLoader(@NotNull FlagStateInteractData flagStateInteractData) {
-        this.flagStateInteractData = flagStateInteractData;
+    public FlagStateLoader(@NotNull FlagStateData flagStateData) {
+        this.flagStateData = flagStateData;
     }
 
     public Map<String, FlagState> loadFlagStates(@NotNull Player player, @NotNull ProtectedRegion region) {
@@ -54,7 +54,7 @@ public class FlagStateLoader {
         // Get the flag value
         final String value = region.getFlag(stringFlag);
         // Register the value of the StringFlag
-        return new StringFlagState(flagStateInteractData.string(), stringFlag, value == null ? stringFlag.getDefault() : value);
+        return new StringFlagState(flagStateData.string(), stringFlag, value == null ? stringFlag.getDefault() : value);
     }
 
 }

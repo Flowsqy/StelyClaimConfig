@@ -5,7 +5,7 @@ import fr.flowsqy.stelyclaim.common.ConfigurationFormattedMessages;
 import fr.flowsqy.stelyclaim.common.PrefixedConfigurationFormattedMessages;
 import fr.flowsqy.stelyclaimconfig.commands.CommandManager;
 import fr.flowsqy.stelyclaimconfig.menu.MenuManager;
-import fr.flowsqy.stelyclaimconfig.menu.session.state.FlagStateLoaderCreator;
+import fr.flowsqy.stelyclaimconfig.menu.session.state.FlagStateLoaderLoader;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.Configuration;
@@ -49,9 +49,9 @@ public class StelyClaimConfigPlugin extends JavaPlugin {
                 ChatColor.GRAY + "[" + ChatColor.DARK_PURPLE + "StelyClaimConfig" + ChatColor.GRAY + "]" + ChatColor.WHITE
         );
 
-        final FlagStateLoaderCreator flagStateLoaderCreator = new FlagStateLoaderCreator(this, configuration);
+        final FlagStateLoaderLoader flagStateLoaderLoader = new FlagStateLoaderLoader(this, configuration);
 
-        menuManager = new MenuManager(this, stelyClaimPlugin, initFile(dataFolder, "menu.yml"), flagStateLoaderCreator);
+        menuManager = new MenuManager(this, stelyClaimPlugin, initFile(dataFolder, "menu.yml"), flagStateLoaderLoader);
 
         commandManager = new CommandManager(this, stelyClaimPlugin, menuManager, configuration);
 

@@ -19,24 +19,29 @@ import java.util.function.Predicate;
 
 public class StringFlagState implements FlagState {
 
-    private final StringInteractData stringInteractData;
+    private final StringFlagStateData stringFlagStateData;
     private final StringFlag flag;
     private final String defaultValue = null;
     private String value;
 
-    public StringFlagState(@NotNull StringInteractData stringInteractData, @NotNull StringFlag flag, @Nullable String value) {
-        this.stringInteractData = stringInteractData;
+    public StringFlagState(@NotNull StringFlagStateData stringFlagStateData, @NotNull StringFlag flag, @Nullable String value) {
+        this.stringFlagStateData = stringFlagStateData;
         this.flag = flag;
         this.value = value;
         //this.defaultValue = defaultValue;
     }
 
-    @Override
+    /*
     public boolean isActive() {
         //final String defaultMessage = messages.getFormattedMessage("default-string-flags." + flagName.getName(), "%region%", playerName);
         if (defaultValue == null)
             return false;
         return !defaultValue.equals(value);
+    }*/
+
+    @Override
+    public @NotNull FlagStateCreatorListener getCreatorListener() {
+        return new StringFlagStateCreatorListener();
     }
 
     @Override
@@ -59,10 +64,10 @@ public class StringFlagState implements FlagState {
 
         final Player player = (Player) event.getWhoClicked();
 
-        final ConversationBuilder conversationBuilder = stringInteractData.conversationBuilder();
-        final FormattedMessages messages = stringInteractData.messages();
-        final MenuManager menuManager = stringInteractData.menuManager();
-        final Predicate<String> inputPredicate = stringInteractData.inputPredicate();
+        final ConversationBuilder conversationBuilder = stringFlagStateData.conversationBuilder();
+        final FormattedMessages messages = stringFlagStateData.messages();
+        final MenuManager menuManager = stringFlagStateData.menuManager();
+        final Predicate<String> inputPredicate = stringFlagStateData.inputPredicate();
 
         menuManager.pause(player);
         player.closeInventory();
@@ -71,6 +76,10 @@ public class StringFlagState implements FlagState {
         final Conversation conversation = conversationBuilder.buildConversation(player, prompt);
         session.getConversationManager().registerConversation(conversation);
         conversation.begin();
+    }
+
+    public String getValue() {
+        return value;
     }
 
     public void setValue(@Nullable String value) {

@@ -7,6 +7,11 @@ import fr.flowsqy.stelyclaimconfig.menu.MenuManager;
 import fr.flowsqy.stelyclaimconfig.menu.item.flag.effect.FlagEffects;
 import fr.flowsqy.stelyclaimconfig.menu.session.FlagManager;
 import fr.flowsqy.stelyclaimconfig.menu.session.PlayerMenuSession;
+import fr.flowsqy.stelyclaimconfig.menu.session.state.FlagState;
+import fr.flowsqy.stelyclaimconfig.menu.session.state.FlagStateCreatorListener;
+import org.bukkit.Material;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
@@ -23,7 +28,7 @@ public class FlagCreatorListener extends CreatorCopy {
     private final ItemBuilder emptyItem;
     private final FlagEffects flagEffects;
     private String flagId;
-    private boolean state;
+    private FlagStateCreatorListener specificListener;
 
     public FlagCreatorListener(MenuManager menuManager, ItemBuilder emptyItem, FlagEffects flagEffects) {
         this.menuManager = menuManager;
@@ -54,7 +59,9 @@ public class FlagCreatorListener extends CreatorCopy {
             return;
         }
 
-        state = Objects.requireNonNull(flagManager.getFlagStateManager().getState(flagId)).isActive();
+        final FlagState flagState = Objects.requireNonNull(flagManager.getFlagStateManager().getState(flagId));
+        specificListener = flagState.getCreatorListener();
+        specificListener.open(flagState, flagEffects);
 
         final FlagItem flagItem = menuManager.getFlagsItems().get(flagId);
         original(flagItem == null ? null : flagItem.getBuilder());
@@ -69,7 +76,10 @@ public class FlagCreatorListener extends CreatorCopy {
     public void close(Player player) {
         // Reset flags id and item
         flagId = null;
-        state = false;
+        if (specificListener != null) {
+            specificListener.close();
+        }
+        specificListener = null;
         original(null);
     }
 
@@ -80,14 +90,13 @@ public class FlagCreatorListener extends CreatorCopy {
      * @return The same {@link String} but with placeholders replaced by their value
      */
     private String processPlaceholders(String text) {
-        return text
-                .replace("%flag%", String.valueOf(flagId))
-                .replace("%state%", flagEffects.getState().getText().get(state));
+        return text.replace("%flag%", String.valueOf(flagId));
     }
 
     @Override
     public String handleName(Player player, String name) {
-        final String finalName = super.handleName(player, name);
+        final String computedValue = super.handleName(player, name);
+        final String finalName = specificListener == null ? computedValue : specificListener.handleName(player, computedValue);
         // Replace "%flag%" placeholder in the item name
         return finalName != null ? processPlaceholders(finalName) : null;
     }
@@ -95,7 +104,8 @@ public class FlagCreatorListener extends CreatorCopy {
     @Override
     public List<String> handleLore(Player player, List<String> lore) {
         // Get the specific flag item's lore or keep the generic one
-        final List<String> finalLore = super.handleLore(player, lore);
+        final List<String> computedValue = super.handleLore(player, lore);
+        final List<String> finalLore = specificListener == null ? computedValue : specificListener.handleLore(player, computedValue);
         // Replace "%flag%" placeholder in the item lore
         return finalLore == null ? null :
                 finalLore.stream()
@@ -104,20 +114,50 @@ public class FlagCreatorListener extends CreatorCopy {
     }
 
     @Override
+    public boolean handleUnbreakable(Player player, boolean unbreakable) {
+        final boolean computedValue = super.handleUnbreakable(player, unbreakable);
+        return specificListener == null ? computedValue : specificListener.handleUnbreakable(player, computedValue);
+    }
+
+    @Override
+    public Material handleMaterial(Player player, Material material) {
+        final Material computedValue = super.handleMaterial(player, material);
+        return specificListener == null ? computedValue : specificListener.handleMaterial(player, computedValue);
+    }
+
+    @Override
+    public int handleAmount(Player player, int amount) {
+        final int computedValue = super.handleAmount(player, amount);
+        return specificListener == null ? computedValue : specificListener.handleAmount(player, computedValue);
+    }
+
+    @Override
     public Map<Enchantment, Integer> handleEnchants(Player player, Map<Enchantment, Integer> enchants) {
-        final Map<Enchantment, Integer> usedEnchants = new HashMap<>(super.handleEnchants(player, enchants));
-        // Add a glowing effect on allowed flag
-        if (flagEffects.getState().getEnchant().isEnchanted(state)) {
-            usedEnchants.put(Enchantment.LUCK, 1);
-        }
-        return usedEnchants;
+        final Map<Enchantment, Integer> computedValue = new HashMap<>(super.handleEnchants(player, enchants));
+        return specificListener == null ? computedValue : specificListener.handleEnchants(player, computedValue);
     }
 
     @Override
     public Set<ItemFlag> handleFlags(Player player, Set<ItemFlag> flags) {
-        final Set<ItemFlag> itemFlags = new HashSet<>(super.handleFlags(player, flags));
-        itemFlags.add(ItemFlag.HIDE_ENCHANTS); // Hide enchants as they will be used to show if the flag is active
-        return itemFlags;
+        final Set<ItemFlag> computedValue = new HashSet<>(super.handleFlags(player, flags));
+        return specificListener == null ? computedValue : specificListener.handleFlags(player, computedValue);
     }
 
+    @Override
+    public Map<Attribute, AttributeModifier> handleAttributes(Player player, Map<Attribute, AttributeModifier> attributes) {
+        final Map<Attribute, AttributeModifier> computedValue = super.handleAttributes(player, attributes);
+        return specificListener == null ? computedValue : specificListener.handleAttributes(player, computedValue);
+    }
+
+    @Override
+    public String handleHeadDataTextures(Player player, String textures) {
+        final String computedValue = super.handleHeadDataTextures(player, textures);
+        return specificListener == null ? computedValue : specificListener.handleHeadDataTextures(player, computedValue);
+    }
+
+    @Override
+    public String handleHeadDataSignature(Player player, String signature) {
+        final String computedValue = super.handleHeadDataSignature(player, signature);
+        return specificListener == null ? computedValue : specificListener.handleHeadDataSignature(player, computedValue);
+    }
 }

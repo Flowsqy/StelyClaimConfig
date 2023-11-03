@@ -18,8 +18,8 @@ public class StateFlagState implements FlagState {
     }
 
     @Override
-    public boolean isActive() {
-        return value;
+    public @NotNull FlagStateCreatorListener getCreatorListener() {
+        return new StateFlagStateCreatorListener();
     }
 
     @Override
@@ -49,6 +49,10 @@ public class StateFlagState implements FlagState {
     public void handleUserInput(@NotNull InventoryClickEvent event, @NotNull PlayerMenuSession session) {
         toggleValue();
         session.refresh((Player) event.getWhoClicked());
+    }
+
+    public boolean getValue() {
+        return value;
     }
 
     public void setValue(boolean value) {

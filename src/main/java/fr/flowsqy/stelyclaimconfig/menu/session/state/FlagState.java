@@ -7,7 +7,8 @@ import org.jetbrains.annotations.NotNull;
 
 public interface FlagState {
 
-    boolean isActive();
+    @NotNull
+    FlagStateCreatorListener getCreatorListener();
 
     void apply(@NotNull ProtectedRegion region);
 

@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Predicate;
 
-public record StringInteractData(@NotNull ConversationBuilder conversationBuilder, @NotNull FormattedMessages messages,
-                                 @NotNull MenuManager menuManager, @NotNull Predicate<String> inputPredicate) {
+public record StringFlagStateData(@NotNull ConversationBuilder conversationBuilder, @NotNull FormattedMessages messages,
+                                  @NotNull MenuManager menuManager, @NotNull Predicate<String> inputPredicate) {
 
 }

@@ -11,12 +11,12 @@ import org.jetbrains.annotations.NotNull;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-public class FlagStateLoaderCreator implements Function<MenuManager, FlagStateLoader> {
+public class FlagStateLoaderLoader implements Function<MenuManager, FlagStateLoader> {
 
     private final StelyClaimConfigPlugin plugin;
     private final Configuration configuration;
 
-    public FlagStateLoaderCreator(@NotNull StelyClaimConfigPlugin plugin, @NotNull Configuration configuration) {
+    public FlagStateLoaderLoader(@NotNull StelyClaimConfigPlugin plugin, @NotNull Configuration configuration) {
         this.plugin = plugin;
         this.configuration = configuration;
     }
@@ -29,14 +29,14 @@ public class FlagStateLoaderCreator implements Function<MenuManager, FlagStateLo
         final BlockedColorsInputPredicateLoader blockedColorsInputPredicateLoader = new BlockedColorsInputPredicateLoader();
         final Predicate<String> blockedColorsInputPredicate = blockedColorsInputPredicateLoader.load(configuration);
 
-        final StringInteractData stringInteractData = new StringInteractData(
+        final StringFlagStateData stringFlagStateData = new StringFlagStateData(
                 conversationBuilder,
                 messages,
                 menuManager,
                 blockedColorsInputPredicate
         );
-        final FlagStateInteractData flagStateInteractData = new FlagStateInteractData(stringInteractData);
-        return new FlagStateLoader(flagStateInteractData);
+        final FlagStateData flagStateData = new FlagStateData(stringFlagStateData);
+        return new FlagStateLoader(flagStateData);
     }
 
 }
