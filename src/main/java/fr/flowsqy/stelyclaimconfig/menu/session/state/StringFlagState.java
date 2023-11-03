@@ -14,6 +14,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Objects;
 import java.util.function.Predicate;
 
 public class StringFlagState implements FlagState {
@@ -40,12 +41,11 @@ public class StringFlagState implements FlagState {
 
     @Override
     public void apply(@NotNull ProtectedRegion region) {
-        if (defaultValue == null) {
+        if (Objects.equals(value, flag.getDefault())) {
             region.setFlag(flag, null);
-        } else {
-            // Otherwise, set the flag
-            region.setFlag(flag, value);
+            return;
         }
+        region.setFlag(flag, value);
     }
 
     @Override
