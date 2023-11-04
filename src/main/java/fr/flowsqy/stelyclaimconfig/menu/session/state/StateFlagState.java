@@ -10,11 +10,13 @@ import org.jetbrains.annotations.NotNull;
 public class StateFlagState implements FlagState {
 
     private final StateFlag flag;
+    private final boolean defaultValue;
     private boolean value;
 
-    public StateFlagState(@NotNull StateFlag flag, boolean value) {
+    public StateFlagState(@NotNull StateFlag flag, boolean value, boolean defaultValue) {
         this.flag = flag;
         this.value = value;
+        this.defaultValue = defaultValue;
     }
 
     @Override
@@ -42,7 +44,7 @@ public class StateFlagState implements FlagState {
 
     @Override
     public void setDefault() {
-        value = flag.getDefault() == StateFlag.State.ALLOW;
+        value = defaultValue;
     }
 
     @Override

@@ -12,13 +12,16 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
 
 public class FlagStateLoader {
 
     private final FlagStateData flagStateData;
+    private final FlagDefaultValueManager flagDefaultValueManager;
 
-    public FlagStateLoader(@NotNull FlagStateData flagStateData) {
+    public FlagStateLoader(@NotNull FlagStateData flagStateData, @NotNull FlagDefaultValueManager flagDefaultValueManager) {
         this.flagStateData = flagStateData;
+        this.flagDefaultValueManager = flagDefaultValueManager;
     }
 
     public Map<String, FlagState> loadFlagStates(@NotNull Player player, @NotNull ProtectedRegion region) {
@@ -46,15 +49,20 @@ public class FlagStateLoader {
     @NotNull
     private FlagState loadStateFlag(@NotNull Player player, @NotNull ProtectedRegion region, @NotNull StateFlag stateFlag) {
         final StateFlag.State value = region.getFlag(stateFlag);
-        return new StateFlagState(stateFlag, (value == null ? stateFlag.getDefault() : value) == StateFlag.State.ALLOW);
+        final Function<Player, Boolean> defaultValueProvider = flagDefaultValueManager.state().get(stateFlag.getName());
+        final boolean defaultValue = defaultValueProvider == null ? (stateFlag.getDefault() == StateFlag.State.ALLOW) : defaultValueProvider.apply(player);
+        return new StateFlagState(stateFlag, (value == null ? stateFlag.getDefault() : value) == StateFlag.State.ALLOW, defaultValue);
     }
 
     @NotNull
     private FlagState loadStringFlag(@NotNull Player player, @NotNull ProtectedRegion region, @NotNull StringFlag stringFlag) {
         // Get the flag value
         final String value = region.getFlag(stringFlag);
+        // Get the default value
+        final Function<Player, String> defaultValueProvider = flagDefaultValueManager.string().get(stringFlag.getName());
+        final String defaultValue = defaultValueProvider == null ? stringFlag.getDefault() : defaultValueProvider.apply(player);
         // Register the value of the StringFlag
-        return new StringFlagState(flagStateData.string(), stringFlag, value == null ? stringFlag.getDefault() : value);
+        return new StringFlagState(flagStateData.string(), stringFlag, value == null ? stringFlag.getDefault() : value, defaultValue);
     }
 
 }

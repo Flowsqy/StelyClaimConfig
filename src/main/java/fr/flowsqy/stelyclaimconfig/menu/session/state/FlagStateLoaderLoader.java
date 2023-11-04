@@ -36,7 +36,11 @@ public class FlagStateLoaderLoader implements Function<MenuManager, FlagStateLoa
                 blockedColorsInputPredicate
         );
         final FlagStateData flagStateData = new FlagStateData(stringFlagStateData);
-        return new FlagStateLoader(flagStateData);
+
+        final FlagDefaultValueManagerLoader flagDefaultValueManagerLoader = new FlagDefaultValueManagerLoader();
+        final FlagDefaultValueManager flagDefaultValueManager = flagDefaultValueManagerLoader.load(configuration);
+
+        return new FlagStateLoader(flagStateData, flagDefaultValueManager);
     }
 
 }

@@ -21,23 +21,15 @@ public class StringFlagState implements FlagState {
 
     private final StringFlagStateData stringFlagStateData;
     private final StringFlag flag;
-    private final String defaultValue = null;
+    private final String defaultValue;
     private String value;
 
-    public StringFlagState(@NotNull StringFlagStateData stringFlagStateData, @NotNull StringFlag flag, @Nullable String value) {
+    public StringFlagState(@NotNull StringFlagStateData stringFlagStateData, @NotNull StringFlag flag, @Nullable String value, @Nullable String defaultValue) {
         this.stringFlagStateData = stringFlagStateData;
         this.flag = flag;
         this.value = value;
-        //this.defaultValue = defaultValue;
+        this.defaultValue = defaultValue;
     }
-
-    /*
-    public boolean isActive() {
-        //final String defaultMessage = messages.getFormattedMessage("default-string-flags." + flagName.getName(), "%region%", playerName);
-        if (defaultValue == null)
-            return false;
-        return !defaultValue.equals(value);
-    }*/
 
     @Override
     public @NotNull FlagStateCreatorListener getCreatorListener() {

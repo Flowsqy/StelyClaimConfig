@@ -17,3 +17,11 @@ blocked-colors:
   - "&4"
   - "&c"
   - "&k"
+
+default-value:
+  state:
+    # Uncomment the next line to set the default value of the set flag to ALLOW
+    # use: true
+  string:
+    # Uncomment the next line to set the default value of the greeting flag"
+    # greeting: "&6Welcome to the land of &a%player%"
